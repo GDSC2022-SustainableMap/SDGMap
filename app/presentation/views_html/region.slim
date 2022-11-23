@@ -1,0 +1,57 @@
+.container
+  .row
+    h2
+     span.infostat.entity.name
+      = infostat.entity[0].city.capitalize() + "❤️Recommendation"
+    h3
+      span.ip = "Your IP：#{ip}"
+      .row
+    h4 
+      / span.wifi = "_(┐ ◟;ﾟдﾟ)ノ Wifi: #{wifi_average.round}"
+      .row
+      span.stat = "📶 Wifi: #{infostat.wifi_mean}   🪑 seat: #{infostat.seat_mean}   🍽️ tasty: #{infostat.tasty_mean}  💸 cheap: #{infostat.cheap_mean}  🎼 music: #{infostat.music_mean}   🔕 quiet: #{infostat.quiet_mean}"
+  
+  .container
+    .row
+      - infostat.entity.each_with_index  do |info_obj, index|
+        .col-lg-4.col-md-6.col-sm-6
+        table.table
+            thead
+                tr
+                th scope="col"  #
+                th scope="col"  Store Name
+                th scope="col"  Wifi
+                th scope="col"  Seat
+                th scope="col"  Tasty
+                th scope="col"  Cheap
+                th scope="col"  music
+                th scope="col"  quiet
+                th scope="col"  open_time
+                th scope="col"  Address
+                th scope="col"  Google Rating
+                th scope="col"  Reviewer
+                / th scope="col"  Standardized Rating
+                th scope="col"  Nomalization Rating
+            tbody
+                tr
+                th scope="row"  #{index+1}
+                td #{info_obj.name}
+
+                td #{(info_obj.wifi == '0')? "N/A" : info_obj.wifi}
+                td #{(info_obj.seat == '0')? "N/A" : info_obj.seat}
+                td #{(info_obj.tasty == '0')? "N/A" : info_obj.tasty}
+                td #{(info_obj.cheap == '0')? "N/A" : info_obj.cheap}
+                td #{(info_obj.music == '0')? "N/A" : info_obj.music}
+                td #{(info_obj.quiet == '0')? "N/A" : info_obj.quiet}
+
+                td #{(info_obj.open_time == "")? "N/A" : info_obj.open_time}
+                td #{info_obj.address}
+                
+                / googel api data 
+                td #{rating = info_obj.store.map(&:rating).first.to_f }
+                td #{info_obj.store.map(&:user_ratings_total).first}
+
+                / stat features
+                / td #{standard_deviation = (rating - (storestat.mean) / (storestat.standard_deviation)).round(2)}
+                td #{((rating + storestat.scaling_parameter['min_range'])* storestat.scaling_parameter['shrink_value']).round(2)}
+            .row

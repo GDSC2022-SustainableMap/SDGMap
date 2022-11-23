@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title
+      | Google Maps Marker Example
+    script[src="https://maps.googleapis.com/maps/api/js?key=#{CafeMap::App.config.PLACE_TOKEN}"]
+    script
+      |  function createMap(){ const map = new google.maps.Map(document.getElementById('map'), { center: {lat: #{your_lat}, lng: #{your_long}}, zoom: 16 }); const trexMarker = new google.maps.Marker({ position: {lat: #{your_lat}, lng: #{your_long}}, map: map}); } 
+      / |  function createMap(){ $uni_temp = $uni_temp.append(map)} 
+    style
+      |  #map { width: 100%; height: 500px;  } 
+  body[onload="createMap();"]
+    h1
+      | Google Maps Marker Example
+    #map
+    .row
+      span.ip = "Your IP：#{ip}" 
+    .row
+      span.loction  = "Your location(lat)：#{your_lat}" 
+    .row
+      span.loction  = "Your location(long)：#{your_long}" 

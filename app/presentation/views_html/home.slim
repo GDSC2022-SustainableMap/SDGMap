@@ -1,0 +1,114 @@
+.container
+  form role="form" action="/region" method='POST' id='show-store-form'
+    .row.vertical-align.query-bar
+      .col-md-2.col-sm-3
+        .text-right City Name:
+      .col-md-8.col-sm-6
+        input { 
+          type='text' name='The regional keyword you want to search (hsinchu)'
+          id='region' class="form-control"
+          placeholder="e.g. hsinchu"
+        }
+      .col-md-2.col-sm-3
+        button { 
+          type='submit' id='repo-form-submit' class='submit' 
+          value='submit' class="btn btn-success" 
+        } Search☕
+    .row
+      .col-md-8.col-sm-6
+
+.container
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    .container-fluid
+      a.navbar-brand href="#"  Navbar
+      button.navbar-toggler aria-controls="navbarNavDarkDropdown" aria-expanded="true" aria-label=("Toggle navigation") data-bs-target="#navbarNavDarkDropdown" data-bs-toggle="collapse" type="button" 
+        span.navbar-toggler-icon
+      #navbarNavDarkDropdown.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item.dropdown
+            a#navbarDarkDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="true" data-bs-toggle="dropdown" href="#" role="button" 
+              | Northern
+            ul.dropdown-menu.dropdown-menu-dark aria-labelledby="navbarDarkDropdownMenuLink" 
+              li
+                a.dropdown-item href="/region/taipei"  Taipei
+              li
+                a.dropdown-item href="/region/taipei"  New Taipei
+              li
+                a.dropdown-item href="/region/keelung"  Keelung
+              li
+                a.dropdown-item href="/region/yilan"  Yilan
+              li
+                a.dropdown-item href="/region/hsinchu"  Hsinchu
+              li
+                a.dropdown-item href="/region/taoyuan"  Taoyuan
+          li.nav-item.dropdown
+            a#navbarDarkDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button" 
+              | Central
+            ul.dropdown-menu.dropdown-menu-dark aria-labelledby="navbarDarkDropdownMenuLink" 
+              li
+                a.dropdown-item href="/region/taichung"  Taichung
+              li
+                a.dropdown-item href="/region/miaoli"  Miaoli
+              li
+                a.dropdown-item href="/region/changhua"  Changhua
+              li
+                a.dropdown-item href="/region/nantou"  Nantou
+              li
+                a.dropdown-item href="/region/yunlin"  Yunlin
+          li.nav-item.dropdown
+            a#navbarDarkDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button" 
+              | Southern
+            ul.dropdown-menu.dropdown-menu-dark aria-labelledby="navbarDarkDropdownMenuLink" 
+              li
+                a.dropdown-item href="/region/chiayi"   Chiayi
+              li
+                a.dropdown-item href="/region/tainan"   Tainan
+              li
+                a.dropdown-item href="/region/kaohsiung"   Kaohsiung
+              li
+                a.dropdown-item href="/region/pingtung"   Pingtung
+              li
+                a.dropdown-item href="/region/penghu"   Penghu
+              li
+                a.dropdown-item href="/region/yunlin"   Yunlin
+          li.nav-item.dropdown
+            a#navbarDarkDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button" 
+              | Eastern
+            ul.dropdown-menu.dropdown-menu-dark aria-labelledby="navbarDarkDropdownMenuLink" 
+              li
+                a.dropdown-item href="/region/hualien"  Hualien
+              li
+                a.dropdown-item href="/region/taitung" Taitung
+          li.nav-item.dropdown
+            a#navbarDarkDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" data-bs-toggle="dropdown" href="#" role="button" 
+              | Outlying Islands
+            ul.dropdown-menu.dropdown-menu-dark aria-labelledby="navbarDarkDropdownMenuLink" 
+              li
+                a.dropdown-item href="/region/kinmen"  Kinmen
+              li
+                a.dropdown-item href="/region/matsu"  Matsu
+        .col-md-12.blank-row
+
+.container
+  #carouselExampleIndicators.carousel.slide data-bs-ride="carousel" 
+    .carousel-indicators
+      button.active aria-current="true" aria-label=("Slide 1") data-bs-slide-to="0" data-bs-target="#carouselExampleIndicators" type="button" 
+      button aria-label=("Slide 2") data-bs-slide-to="1" data-bs-target="#carouselExampleIndicators" type="button" 
+      button aria-label=("Slide 3") data-bs-slide-to="2" data-bs-target="#carouselExampleIndicators" type="button" 
+    .carousel-inner
+      .carousel-item.active
+        img.d-block.w-100 alt="..." src="https://shopee.tw/blog/wp-content/uploads/2020/10/Frame-123.png"/
+      .carousel-item
+        img.d-block.w-100 alt="..." src="https://opnews.sp88.tw/images/channel_article/819038682d40e6926f43834ce940c046e698b11ca9d11749e9aab3cb0b87c8fd.jpeg" /
+      .carousel-item
+        img.d-block.w-100 alt="..." src="https://i.beauty321.com/816x/https://il.beauty321.com/gallery/gallery/50287/photo-6305cd1b29453.jpg"  /
+    button.carousel-control-prev data-bs-slide="prev" data-bs-target="#carouselExampleIndicators" type="button" 
+      span.carousel-control-prev-icon aria-hidden="true" 
+      span.visually-hidden Previous
+    button.carousel-control-next data-bs-slide="next" data-bs-target="#carouselExampleIndicators" type="button" 
+      span.carousel-control-next-icon aria-hidden="true" 
+      span.visually-hidden Next
+
+.container
+  a.button.btn.btn-primary href="/map" role="button" type="button"  recommendation
+

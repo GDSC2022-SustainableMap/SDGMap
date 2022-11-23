@@ -1,0 +1,646 @@
+---
+ARTROOM14藝室:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市北區勝利路300號
+    geometry:
+      location:
+        lat: 24.8020889
+        lng: 120.9637683
+      viewport:
+        northeast:
+          lat: 24.80342682989272
+          lng: 120.9650957298928
+        southwest:
+          lat: 24.80072717010728
+          lng: 120.9623960701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png
+    icon_background_color: "#7B9EB0"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet
+    name: ARTROOM14 藝室
+    photos:
+    - height: 4032
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/110216474943743693780">傅傅玉霏</a>
+      photo_reference: AcYSjRgsbJKXS7nxSW1XGn70jZovvqg921W3meycwqxU6RfxBeoByF1vX4ivQc_tYqZcs5uw7jx4No1OZ7TEdRKglnlLv0RD0KwraAf82rIh7CDEWdPPkzHvnSophR9qSQOnPRW-GcKwwz8QLYq3auUfUINsBLNvrOhgFVFtiv82F0NsOffX
+      width: 3024
+    place_id: ChIJC2c7HFc1aDQRdtptswP3kko
+    plus_code:
+      compound_code: RX27+RG 北區 新竹市
+      global_code: 7QP2RX27+RG
+    rating: 4.7
+    reference: ChIJC2c7HFc1aDQRdtptswP3kko
+    types:
+    - hair_care
+    - point_of_interest
+    - establishment
+    user_ratings_total: 42
+  status: OK
+Mr.Moon月亮先生咖啡館:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市嘉豐五路二段29號
+    geometry:
+      location:
+        lat: 24.8100316
+        lng: 121.0268825
+      viewport:
+        northeast:
+          lat: 24.81144542989272
+          lng: 121.0281444798927
+        southwest:
+          lat: 24.80874577010728
+          lng: 121.0254448201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: Mr.Moon月亮先生咖啡館
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 2400
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/108962709232143306574">Mr.Moon月亮先生咖啡館</a>
+      photo_reference: AcYSjRgvM-pegLT_sVfCt4ryYmt0ds7juobUF4JsgjIQF81wktlbhZS-EX5BcL3LK8MNH_-TjtVfi1S6WL1vTvaefycUjNPIfFpCNkHYitcK3Ux-eBYId6OKFHJfQDIB-0UnTLL5_B125b4YAPDQ-GE4U8XBq-aznFf-vr3z78xUnjrvjj0s
+      width: 3600
+    place_id: ChIJd3wez5Q2aDQRHjbvsKUhSKI
+    plus_code:
+      compound_code: R26G+2Q 竹北市 新竹縣
+      global_code: 7QP3R26G+2Q
+    price_level: 2
+    rating: 4.2
+    reference: ChIJd3wez5Q2aDQRHjbvsKUhSKI
+    types:
+    - cafe
+    - restaurant
+    - food
+    - point_of_interest
+    - store
+    - establishment
+    user_ratings_total: 1084
+  status: OK
+Aboutcafe:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 224台灣新北市瑞芳區明里路99號
+    geometry:
+      location:
+        lat: 25.118972
+        lng: 121.8615249
+      viewport:
+        northeast:
+          lat: 25.12033432989272
+          lng: 121.8628173798927
+        southwest:
+          lat: 25.11763467010728
+          lng: 121.8601177201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: About Cafe pasta
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 1837
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/109603979960759277163">A Google
+        User</a>
+      photo_reference: AcYSjRhV4Bwf_sDBnx31AK4dOCIxnVWiJ20Yd_WbPhXDc4j_wT9hbhAx8JUfaOWOE2GwY0lv1XKCyDpgi7vrJHxwH4bTbiGltXb_MxldIbzi6AYbbbK1jnVXds8mqTjVWkKcq1d0SjQnXpvbmWTpUm9XBnUO6j6yOsh5iWXz1Uhyeja90NLn
+      width: 3264
+    place_id: ChIJwRmtXh9FXTQRUsTfkbLGfvM
+    plus_code:
+      compound_code: 4V96+HJ 瑞芳區 新北市
+      global_code: 7QQ34V96+HJ
+    price_level: 2
+    rating: 4.4
+    reference: ChIJwRmtXh9FXTQRUsTfkbLGfvM
+    types:
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 837
+  - business_status: CLOSED_PERMANENTLY
+    formatted_address: 224台灣新北市瑞芳區建基路二段83號之1號
+    geometry:
+      location:
+        lat: 25.1338145
+        lng: 121.8058587
+      viewport:
+        northeast:
+          lat: 25.13515187989272
+          lng: 121.8072520798927
+        southwest:
+          lat: 25.13245222010728
+          lng: 121.8045524201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: About Cafe
+    permanently_closed: true
+    photos:
+    - height: 3456
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/117014948775810287398">Sherry
+        Hsueh</a>
+      photo_reference: AcYSjRjzNNJ2hqOmRPjk13X-71WgKAk0sGkTe9KCpLiWg2XYT8dyZIHrCoXA69-YL2K_frt0uUs-LMeX4ccuIyea1etJi8R0aH4Lq3gjAUNv3Z19RzjBeunWBTECQIzAHlm0GC-VSt1xWj5gyssq4uFuF-I2nrAOoqk1JkaNrwd3Wx-GZSwG
+      width: 4608
+    place_id: ChIJA9KgB2VFXTQRdpZiPUPsuj4
+    plus_code:
+      compound_code: 4RM4+G9 瑞芳區 新北市
+      global_code: 7QQ34RM4+G9
+    rating: 3.9
+    reference: ChIJA9KgB2VFXTQRdpZiPUPsuj4
+    types:
+    - cafe
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 125
+  status: OK
+KURUMI哭哭咖啡二店:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市嘉豐六路二段88號
+    geometry:
+      location:
+        lat: 24.8080003
+        lng: 121.0273426
+      viewport:
+        northeast:
+          lat: 24.80932567989272
+          lng: 121.0287446798927
+        southwest:
+          lat: 24.80662602010728
+          lng: 121.0260450201072
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: KURUMI
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 3468
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/104829045662388909674">fanny
+        hsu</a>
+      photo_reference: AcYSjRjBZoutcdEW4NVEnpmIHMYHdc4BTf7SmK3zYGEtLoZ9_ZFOA18djhTkngKGHcShapJMqPhPb6L0Z6cvoywNFjvVig_14YAbazAgXpG2wPGO4pRfzEz1rimzs_fksZ1GSwmzgqN7G8OiEDo6oExV3riDrN3Xez555D6QggmxT_fm0QWY
+      width: 4624
+    place_id: ChIJxfsWkOg3aDQRALzhOx_-rh0
+    plus_code:
+      compound_code: R25G+6W 竹北市 新竹縣
+      global_code: 7QP3R25G+6W
+    rating: 4.1
+    reference: ChIJxfsWkOg3aDQRALzhOx_-rh0
+    types:
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 171
+  - business_status: CLOSED_PERMANENTLY
+    formatted_address: 302台灣新竹縣竹北市文興路二段140號
+    geometry:
+      location:
+        lat: 24.8067567
+        lng: 121.0365084
+      viewport:
+        northeast:
+          lat: 24.80817152989272
+          lng: 121.0378890798927
+        southwest:
+          lat: 24.80547187010728
+          lng: 121.0351894201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 哭哭咖啡
+    permanently_closed: true
+    photos:
+    - height: 1184
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/102566971498038025959">姚國文</a>
+      photo_reference: AcYSjRjt5sq6pAgADDbGIPiIdupdte_EyGi7xAnj4fFrK4DlD--yZ8ShLRRdE9VmUr_7jNA7VlWjweJXauoDdp3rGvPwF2-HtPgJkG2DazxXlzppA4IoAli_xo4ha80hGxDMOJ3hcsRIHTf8-gO-NOWtaO8L2DqDoWgO-Iu1K_OlVI1p3SeB
+      width: 1776
+    place_id: ChIJVcGtgX83aDQR4WeXOfd09v0
+    plus_code:
+      compound_code: R24P+PJ 竹北市 新竹縣
+      global_code: 7QP3R24P+PJ
+    rating: 4.3
+    reference: ChIJVcGtgX83aDQR4WeXOfd09v0
+    types:
+    - cafe
+    - food
+    - store
+    - point_of_interest
+    - establishment
+    user_ratings_total: 78
+  status: OK
+橋恩咖啡竹北店:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市文信路297號
+    geometry:
+      location:
+        lat: 24.8318038
+        lng: 121.0126643
+      viewport:
+        northeast:
+          lat: 24.83320972989272
+          lng: 121.0140243798927
+        southwest:
+          lat: 24.83051007010728
+          lng: 121.0113247201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 橋恩咖啡
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 1080
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/109144699964640169799">橋恩咖啡竹北店</a>
+      photo_reference: AcYSjRj_2t9yUBXeSLBXZ2wHiOLRP_oPTqI1y8_ypIg18o4EXr_WzzXUzXbH668rhdjP-VFFjK3vxttakeGYX3SefWSk8eYUqqxIERJLw3N_DbH199XbtWoeX2h0xm3LrsK0SNXTjoUPF2jZfd56SU9N8hHbamq912Z3vmejMTgDJovZWXce
+      width: 1080
+    place_id: ChIJP3GKDes2aDQR-yf7OSpWNzo
+    plus_code:
+      compound_code: R2J7+P3 竹北市 新竹縣
+      global_code: 7QP3R2J7+P3
+    price_level: 2
+    rating: 4.7
+    reference: ChIJP3GKDes2aDQR-yf7OSpWNzo
+    types:
+    - cafe
+    - store
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 391
+  status: OK
+HILABASECAMP:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市北區長安街107號
+    geometry:
+      location:
+        lat: 24.8075332
+        lng: 120.9649131
+      viewport:
+        northeast:
+          lat: 24.80889117989272
+          lng: 120.9662818298927
+        southwest:
+          lat: 24.80619152010728
+          lng: 120.9635821701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: HILA BASECAMP
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 2252
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/107414680474609050697">LU CB</a>
+      photo_reference: AcYSjRhWrSC8ESLDTAZQ0u7pY2CBiE-y0BZqqF_R6FNTTj50XlF1fRhF4sVktH1TbuZ0fJ4LZiDh1KkAqPYw0t3m09bubqKqNEA7PLNTqgrcKFE6vdtumQV6KkV7CD00FpKvQuXIcT1ClpZvX_Zocq2ma4EYzZBXNASbkoGW5MPdtykmfy5M
+      width: 4000
+    place_id: ChIJTUUsnMA1aDQRiTH5lcM94RA
+    plus_code:
+      compound_code: RX57+2X 北區 新竹市
+      global_code: 7QP2RX57+2X
+    price_level: 1
+    rating: 4.7
+    reference: ChIJTUUsnMA1aDQRiTH5lcM94RA
+    types:
+    - cafe
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 110
+  status: OK
+StaybyCoffee:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市東區東門街27號
+    geometry:
+      location:
+        lat: 24.8039846
+        lng: 120.9736313
+      viewport:
+        northeast:
+          lat: 24.80541157989272
+          lng: 120.9749842798928
+        southwest:
+          lat: 24.80271192010728
+          lng: 120.9722846201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 一天咖啡
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/107414680474609050697">LU CB</a>
+      photo_reference: AcYSjRjPK_hQFJFPAEpvHYiaZdYVmdG4lYfiJS_-R0Q4YH5Z4riFX-Mi-AnpD3UwBuNSLyS5HQZ8Yp58penEo0Ki7AQKqhGFTP0sFYCQKdagtQFjPitETopPl140uvmveO0isgN_2FQWtV4sL985sZqdKYcGh_Q20pD1TV-YM6VTok8JDZ8Q
+      width: 4032
+    place_id: ChIJK6xv-cI1aDQRQ-Wo9cpNPyQ
+    plus_code:
+      compound_code: RX3F+HF 東區 新竹市
+      global_code: 7QP2RX3F+HF
+    price_level: 2
+    rating: 4.4
+    reference: ChIJK6xv-cI1aDQRQ-Wo9cpNPyQ
+    types:
+    - cafe
+    - restaurant
+    - point_of_interest
+    - store
+    - food
+    - establishment
+    user_ratings_total: 317
+  status: OK
+四隻貓:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市文信路222號
+    geometry:
+      location:
+        lat: 24.8317632
+        lng: 121.0158934
+      viewport:
+        northeast:
+          lat: 24.83305577989272
+          lng: 121.0172388798927
+        southwest:
+          lat: 24.83035612010728
+          lng: 121.0145392201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: 大漁炒泡麵寵物友善餐廳（竹北必吃美食）寵物火鍋、新竹宵夜、竹北宵夜、私房料理、烤生蠔、獨門去殼洋蔥蝦、霸氣天王粥、鮭魚生魚片（內有六隻店狗兩隻貓）
+    opening_hours:
+      open_now: true
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/117437053279955197452">謝采凌</a>
+      photo_reference: AcYSjRiyyTPV7OMJtLaZMWDwLgUbFbhiVHXpginWeilgQMM-D8QXV4a-AFAMO1YtgzvBZKRnoYzV1tam6OCh5-71g7SpSYQige0iPRj7yySoXDEuptEoRf6M-AEqGHciAeJWHyh59HSY3QyME0Dr4jp_SPOoIiG9Fi-qA38xFls62oaAzSsf
+      width: 4032
+    place_id: ChIJmfvDJNo3aDQRlIGHBSMv83w
+    plus_code:
+      compound_code: R2J8+P9 竹北市 新竹縣
+      global_code: 7QP3R2J8+P9
+    rating: 4.8
+    reference: ChIJmfvDJNo3aDQRlIGHBSMv83w
+    types:
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 2503
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市北區平和街29號
+    geometry:
+      location:
+        lat: 24.8050907
+        lng: 120.9667518
+      viewport:
+        northeast:
+          lat: 24.80646957989272
+          lng: 120.9681489798927
+        southwest:
+          lat: 24.80376992010728
+          lng: 120.9654493201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: 三隻貓
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 750
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/108227347971692486630">A Google
+        User</a>
+      photo_reference: AcYSjRjqEhdlsU_i1d9hQ_sUIZNcvWUYd7TFgXaUVT6UAMng4MbicF07_sR6hLwv47MJqm9auS5j0c31VlmAE-uUlfAOkLY7GqFeDszK6EAjWQ07SQx81Loc3gLQebRVJCMUwwPNds6N9nDNS_-ndftfzosRVaDlZGNqYvb9dXPYhUnn5jsN
+      width: 869
+    place_id: ChIJmzZfixc1aDQRthBExvabpGs
+    plus_code:
+      compound_code: RX48+2P 北區 新竹市
+      global_code: 7QP2RX48+2P
+    rating: 4.2
+    reference: ChIJmzZfixc1aDQRthBExvabpGs
+    types:
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 281
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市六家五路一段101號
+    geometry:
+      location:
+        lat: 24.810125
+        lng: 121.0248831
+      viewport:
+        northeast:
+          lat: 24.81137707989272
+          lng: 121.0261632298927
+        southwest:
+          lat: 24.80867742010728
+          lng: 121.0234635701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 貓角落 CAT Corner【貓咪友善餐廳】
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 4032
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/114492062069017973869">陳兆楨</a>
+      photo_reference: AcYSjRg4o0twRqO0hlhYJQUmBqil5kB7MEZAX608yAeH0Q6EdHFvwnpr_fMz0XR1sVqIA5gmuWduLo0lxKyF8BlLINOYCpZoLqyculOYs-RgUJUkcLqzchQbE4KisFXupLUeGDRAd58OyFZR1KdlRKnscJ8DJUpLZcgMel7X7coI8-UKpURQ
+      width: 3024
+    place_id: ChIJc6sXtVc2aDQR62vPKhvLq5Y
+    plus_code:
+      compound_code: R26F+2X 竹北市 新竹縣
+      global_code: 7QP3R26F+2X
+    price_level: 2
+    rating: 4.7
+    reference: ChIJc6sXtVc2aDQR62vPKhvLq5Y
+    types:
+    - cafe
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 1160
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市吳濁流路86號
+    geometry:
+      location:
+        lat: 24.8315256
+        lng: 121.014212
+      viewport:
+        northeast:
+          lat: 24.83289672989272
+          lng: 121.0155073798927
+        southwest:
+          lat: 24.83019707010727
+          lng: 121.0128077201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: 有隻貓咖啡
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/105686929950519879600">SHOOTA
+        CHEN</a>
+      photo_reference: AcYSjRgvXyUgr2fNU9z014bKsUbyUHeWs4IBE8L-5FUlkuLn3gAX4f01uX4ODwXGwFnk5AR_xWIzAq9Vj9KISjxBy5FsASt0aDECISvR4PNsvZqfVkIMzutvOzP2N35taqRPBlB9o0lZ4gtpraGYBZ_rQkkjjvJzZsIyAufIJiQHXvnomDhX
+      width: 4032
+    place_id: ChIJuUN50Ro3aDQR2yyuhfbfKfw
+    plus_code:
+      compound_code: R2J7+JM 竹北市 新竹縣
+      global_code: 7QP3R2J7+JM
+    rating: 5
+    reference: ChIJuUN50Ro3aDQR2yyuhfbfKfw
+    types:
+    - restaurant
+    - store
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 210
+  - business_status: CLOSED_PERMANENTLY
+    formatted_address: 300台灣新竹市北區德成街68號
+    geometry:
+      location:
+        lat: 24.7997297
+        lng: 120.9632113
+      viewport:
+        northeast:
+          lat: 24.80108242989272
+          lng: 120.9645594298927
+        southwest:
+          lat: 24.79838277010728
+          lng: 120.9618597701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 四隻貓
+    permanently_closed: true
+    photos:
+    - height: 3456
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/102442545482904842293">徐宇昊</a>
+      photo_reference: AcYSjRiriAJ7QzEItvVWtEo81fhNNKzTRO97bkFuGJPN6v9oEalkEewdXf-kR9P8I3tWrfiZiMxX7XSIIz29871YMfJuBMN5E-wsLskKv0fkEfgZSFLAGQMvyl2hzIK3y8A0Tb6BPkaH7-xc7zg5F0zwS3tSjtLroyO94DelE5IOjnkRKTXn
+      width: 4608
+    place_id: ChIJXUtSlpQ1aDQROalp9Zo31r0
+    plus_code:
+      compound_code: QXX7+W7 北區 新竹市
+      global_code: 7QP2QXX7+W7
+    price_level: 2
+    rating: 4.3
+    reference: ChIJXUtSlpQ1aDQROalp9Zo31r0
+    types:
+    - cafe
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 297
+  status: OK
+風起咖啡二店(南大店):
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市東區關東路141號
+    geometry:
+      location:
+        lat: 24.7874015
+        lng: 121.0206253
+      viewport:
+        northeast:
+          lat: 24.78876462989272
+          lng: 121.0220256298927
+        southwest:
+          lat: 24.78606497010728
+          lng: 121.0193259701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 風起咖啡（關新店）
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/111605617554736648055">A Google
+        User</a>
+      photo_reference: AcYSjRhhiWPsocQeORegJWI9syBBMm-86U1kruwQsi3wpD1l8w3fGd9x9AMokVG8AmCHiyE_R5Ru7D8uUjpzoPV69DzvoYY7iljL7wNkuJ7ZN6_Xxv8K8SpeXnwfNfEPjQbEe6Awdhs_BOpzJSnsyFQXSXYbFGeJ-Dmova1JcvtM4KOVv7w
+      width: 4032
+    place_id: ChIJSXOdRqU3aDQRFRzgd6BCuJ4
+    plus_code:
+      compound_code: Q2PC+X7 東區 新竹市
+      global_code: 7QP3Q2PC+X7
+    rating: 4.4
+    reference: ChIJSXOdRqU3aDQRFRzgd6BCuJ4
+    types:
+    - cafe
+    - food
+    - point_of_interest
+    - store
+    - establishment
+    user_ratings_total: 117
+  - business_status: CLOSED_PERMANENTLY
+    formatted_address: 300台灣新竹市東區南大路157號
+    geometry:
+      location:
+        lat: 24.8000782
+        lng: 120.9738697
+      viewport:
+        northeast:
+          lat: 24.80145737989272
+          lng: 120.9751963798928
+        southwest:
+          lat: 24.79875772010728
+          lng: 120.9724967201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 風起咖啡二店(南大店)
+    permanently_closed: true
+    photos:
+    - height: 2269
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/103415284772843398274">A Google
+        User</a>
+      photo_reference: AcYSjRh7TrVHtWfqGx_1lW_ICjN-lknM8-z73toGOOd7H0QhZZVRxQFD25x2DoTayJmR5bn2OmvjKoqI2yT6c0B9nbvFuJwezp4gFAd2TaQA2mYFQT5i-6bUiXxD8kHDCo2u9AQodsPuFdfAVqM9rEOb9k_yknmolgK_a_5cy32B-_yPSF_h
+      width: 4032
+    place_id: ChIJH48PT-g1aDQRVVJdJAcvXoY
+    plus_code:
+      compound_code: RX2F+2G 東區 新竹市
+      global_code: 7QP2RX2F+2G
+    rating: 4.4
+    reference: ChIJH48PT-g1aDQRVVJdJAcvXoY
+    types:
+    - cafe
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 161
+  status: OK

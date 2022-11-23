@@ -1,0 +1,199 @@
+---
+WHO'S喜象CAFE:
+  html_attributions: []
+  results:
+  - business_status: CLOSED_PERMANENTLY
+    formatted_address: 300台灣新竹市東區寶山路438號300
+    geometry:
+      location:
+        lat: 24.7847091
+        lng: 120.9901702
+      viewport:
+        northeast:
+          lat: 24.78616667989272
+          lng: 120.9915314798927
+        southwest:
+          lat: 24.78346702010727
+          lng: 120.9888318201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: WHO'S CAFE
+    permanently_closed: true
+    photos:
+    - height: 3468
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/101154546347312496566">芸漀吳</a>
+      photo_reference: AW30NDyMSPh0wey7zIX6FqhztTEu-lSbVpNyMoLhwt6cgM5tsyxKnVZ3UrkTG1Ieiqz3iVPmVG_6jH-rIpy5PCIF0uqhKvamWoT7-SJ2H1CTi0caa5Si-mlAMUvWNvxzoogp1ZGz1qrfld642kPG8qCgapL159-3y5rhqTITdilBdLWV-KDK
+      width: 4624
+    place_id: ChIJnyawAAc2aDQRsweZWTh80d8
+    plus_code:
+      compound_code: QXMR+W3 東區 新竹市
+      global_code: 7QP2QXMR+W3
+    rating: 4.3
+    reference: ChIJnyawAAc2aDQRsweZWTh80d8
+    types:
+    - cafe
+    - point_of_interest
+    - food
+    - establishment
+    user_ratings_total: 52
+  status: OK
+ARTROOM14藝室:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 300台灣新竹市北區勝利路300號
+    geometry:
+      location:
+        lat: 24.8020889
+        lng: 120.9637683
+      viewport:
+        northeast:
+          lat: 24.80342682989272
+          lng: 120.9650957298928
+        southwest:
+          lat: 24.80072717010728
+          lng: 120.9623960701073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/generic_business-71.png
+    icon_background_color: "#7B9EB0"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet
+    name: ARTROOM14 藝室
+    photos:
+    - height: 3900
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/105668604756257969526">陳承志</a>
+      photo_reference: AW30NDwQzHNyhZdX07t2CGIPJoDOz4JEZHWyms1OvJV_ZRhS8XcGpPiYTSlX-DeGFS4PWrT70wfGG9tDF0y-_097S3rjVyo9oIEbIoEa9bTaox7GLTSA9lBVkW-aGsrkNk6bcS5scGsrf_AKIGzt832zl38gvCqHEJ9k6Lbiy4hkz_a1xGfS
+      width: 6298
+    place_id: ChIJC2c7HFc1aDQRdtptswP3kko
+    plus_code:
+      compound_code: RX27+RG 北區 新竹市
+      global_code: 7QP2RX27+RG
+    rating: 4.7
+    reference: ChIJC2c7HFc1aDQRdtptswP3kko
+    types:
+    - hair_care
+    - point_of_interest
+    - establishment
+    user_ratings_total: 42
+  status: OK
+有隻貓咖啡:
+  html_attributions: []
+  results:
+  - business_status: OPERATIONAL
+    formatted_address: 302台灣新竹縣竹北市吳濁流路86號
+    geometry:
+      location:
+        lat: 24.8315256
+        lng: 121.014212
+      viewport:
+        northeast:
+          lat: 24.83289672989272
+          lng: 121.0155073798927
+        southwest:
+          lat: 24.83019707010727
+          lng: 121.0128077201073
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: 有隻貓咖啡
+    opening_hours:
+      open_now: false
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/105686929950519879600">SHOOTA
+        CHEN</a>
+      photo_reference: AW30NDwU3Rip2fK_deWS6ajAXLBuPUmnUGFQQ0q6QBdzKQg5f_tE5S1pT9KP2xQJFkMP45ePhFAiPLMHCmnKUX6i4xmp2P1tPGkL5e_Fbc1y3WFi9PAO-BIzB59dkJzG1eJdfUYn0fMqmK-m_-RGum-A8nexXuJ46TKkNjeKzUT8qJoNe5it
+      width: 4032
+    place_id: ChIJuUN50Ro3aDQR2yyuhfbfKfw
+    plus_code:
+      compound_code: R2J7+JM 竹北市 新竹縣
+      global_code: 7QP3R2J7+JM
+    rating: 5
+    reference: ChIJuUN50Ro3aDQR2yyuhfbfKfw
+    types:
+    - restaurant
+    - store
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 246
+  - business_status: OPERATIONAL
+    formatted_address: 100050台灣台北市中正區汀州路三段69號
+    geometry:
+      location:
+        lat: 25.0179143
+        lng: 121.5284175
+      viewport:
+        northeast:
+          lat: 25.01920607989272
+          lng: 121.5297167798927
+        southwest:
+          lat: 25.01650642010727
+          lng: 121.5270171201072
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/cafe-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet
+    name: 有隻貓咖啡
+    opening_hours:
+      open_now: true
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/106079198152087547302">A Google
+        User</a>
+      photo_reference: AW30NDzAVQc64-_oN0zlrdm4iWS4BP3K6KQytQ6jxdIN4jH6hmed9Ahba1x7KYeXhpkGBYSL_w6cxF96vKIMufTxOe_2x0GlEmAhjF0XJwPUYz16vd8IX8bLle7xlL61CTU2SZKN3WJGleC-_7kf340wqwWFYxzVht11icv6wDAsv-nRGh-4
+      width: 4032
+    place_id: ChIJrXLxZd6pQjQRCGqYAj-ZWU0
+    plus_code:
+      compound_code: 2G9H+59 中正區 台北市
+      global_code: 7QQ32G9H+59
+    rating: 4.8
+    reference: ChIJrXLxZd6pQjQRCGqYAj-ZWU0
+    types:
+    - cafe
+    - bar
+    - store
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 36
+  - business_status: CLOSED_TEMPORARILY
+    formatted_address: 367台灣苗栗縣三義鄉36-9號
+    geometry:
+      location:
+        lat: 24.3876998
+        lng: 120.7816397
+      viewport:
+        northeast:
+          lat: 24.38913667989272
+          lng: 120.7832496298927
+        southwest:
+          lat: 24.38643702010728
+          lng: 120.7805499701072
+    icon: https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png
+    icon_background_color: "#FF9E67"
+    icon_mask_base_uri: https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet
+    name: 有隻喵
+    permanently_closed: true
+    photos:
+    - height: 3024
+      html_attributions:
+      - <a href="https://maps.google.com/maps/contrib/115636234835551221970">明漢</a>
+      photo_reference: AW30NDyCljxEwwAPm5mEWsQv2fOj7L86J6W9S9hqPdb8gxcoM1TripzCbjuVrK64SM3C8xpxVrAk8DT_HWCK_2ADDgcQ-grrdkQMBe2GV-xefhnD_o65o2UNgwJ4-IeTbp2AEIOPq9lP2iHdhBWteNhifK7icODWM2HjinAUSoK8eqJE-GxK
+      width: 4032
+    place_id: ChIJ68roDBgEaTQR7cEYOdDAv6A
+    plus_code:
+      compound_code: 9QQJ+3M 三義鄉 苗栗縣
+      global_code: 7QP29QQJ+3M
+    price_level: 2
+    rating: 4.1
+    reference: ChIJ68roDBgEaTQR7cEYOdDAv6A
+    types:
+    - restaurant
+    - food
+    - point_of_interest
+    - establishment
+    user_ratings_total: 456
+  status: OK
