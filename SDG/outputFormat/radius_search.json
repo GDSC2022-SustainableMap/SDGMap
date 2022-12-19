@@ -1,276 +1,4 @@
 {
-    "cafe'8":{
-        "html_attributions":[],
-        "result":{
-            "business_status":"OPERATIONAL",
-            "formatted_address":"No. 304號, Linsen Rd, North District, Hsinchu City, Taiwan 300",
-            "geometry":{
-                "location":{
-                    "lat":24.797414,
-                    "lng":120.9615066
-                },
-                "viewport":{
-                    "northeast":{
-                        "lat":24.7986971802915,
-                        "lng":120.9629090302915
-                    },
-                    "southwest":{
-                        "lat":24.7959992197085,
-                        "lng":120.9602110697085
-                    }
-                }
-            },
-            "name":"cafe'8",
-            "opening_hours":{
-                "open_now":true,
-                "periods":[
-                    {
-                        "open":{
-                            "day":0,
-                            "time":"0000"
-                        }
-                    }
-                ],
-                "weekday_text":[
-                    "Monday: Open 24 hours",
-                    "Tuesday: Open 24 hours",
-                    "Wednesday: Open 24 hours",
-                    "Thursday: Open 24 hours",
-                    "Friday: Open 24 hours",
-                    "Saturday: Open 24 hours",
-                    "Sunday: Open 24 hours"
-                ]
-            },
-            "price_level":2,
-            "rating":3.5,
-            "user_ratings_total":127
-        },
-        "status":"OK"
-    },
-    "THERE Café":{
-        "html_attributions":[],
-        "result":{
-            "business_status":"OPERATIONAL",
-            "formatted_address":"No. 465號, Xida Rd, North District, Hsinchu City, Taiwan 300",
-            "geometry":{
-                "location":{
-                    "lat":24.8047629,
-                    "lng":120.9632794
-                },
-                "viewport":{
-                    "northeast":{
-                        "lat":24.80615368029151,
-                        "lng":120.9646897302915
-                    },
-                    "southwest":{
-                        "lat":24.8034557197085,
-                        "lng":120.9619917697085
-                    }
-                }
-            },
-            "name":"THERE Café",
-            "opening_hours":{
-                "open_now":true,
-                "periods":[
-                    {
-                        "close":{
-                            "day":1,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":0,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":2,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":1,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":3,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":2,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":4,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":3,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":5,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":4,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":6,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":5,
-                            "time":"1000"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":0,
-                            "time":"0200"
-                        },
-                        "open":{
-                            "day":6,
-                            "time":"1000"
-                        }
-                    }
-                ],
-                "weekday_text":[
-                    "Monday: 10:00 AM – 2:00 AM",
-                    "Tuesday: 10:00 AM – 2:00 AM",
-                    "Wednesday: 10:00 AM – 2:00 AM",
-                    "Thursday: 10:00 AM – 2:00 AM",
-                    "Friday: 10:00 AM – 2:00 AM",
-                    "Saturday: 10:00 AM – 2:00 AM",
-                    "Sunday: 10:00 AM – 2:00 AM"
-                ]
-            },
-            "price_level":2,
-            "rating":4.9,
-            "user_ratings_total":1879
-        },
-        "status":"OK"
-    },
-    "一天咖啡ONEDAY":{
-        "html_attributions":[],
-        "result":{
-            "business_status":"OPERATIONAL",
-            "formatted_address":"No. 27號, Dongmen St, East District, Hsinchu City, Taiwan 300",
-            "geometry":{
-                "location":{
-                    "lat":24.8039846,
-                    "lng":120.9736313
-                },
-                "viewport":{
-                    "northeast":{
-                        "lat":24.8054107302915,
-                        "lng":120.9749834302915
-                    },
-                    "southwest":{
-                        "lat":24.8027127697085,
-                        "lng":120.9722854697085
-                    }
-                }
-            },
-            "name":"一天咖啡ONEDAY",
-            "opening_hours":{
-                "open_now":true,
-                "periods":[
-                    {
-                        "close":{
-                            "day":1,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":0,
-                            "time":"0900"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":1,
-                            "time":"1900"
-                        },
-                        "open":{
-                            "day":1,
-                            "time":"0800"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":3,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":2,
-                            "time":"0800"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":4,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":3,
-                            "time":"0800"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":5,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":4,
-                            "time":"0800"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":6,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":5,
-                            "time":"0800"
-                        }
-                    },
-                    {
-                        "close":{
-                            "day":0,
-                            "time":"0100"
-                        },
-                        "open":{
-                            "day":6,
-                            "time":"0900"
-                        }
-                    }
-                ],
-                "weekday_text":[
-                    "Monday: 8:00 AM – 7:00 PM",
-                    "Tuesday: 8:00 AM – 1:00 AM",
-                    "Wednesday: 8:00 AM – 1:00 AM",
-                    "Thursday: 8:00 AM – 1:00 AM",
-                    "Friday: 8:00 AM – 1:00 AM",
-                    "Saturday: 9:00 AM – 1:00 AM",
-                    "Sunday: 9:00 AM – 1:00 AM"
-                ]
-            },
-            "price_level":2,
-            "rating":4.4,
-            "user_ratings_total":339
-        },
-        "status":"OK"
-    },
     "日常咖啡 Le café quotidien":{
         "html_attributions":[],
         "result":{
@@ -294,7 +22,7 @@
             },
             "name":"日常咖啡 Le café quotidien",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -369,7 +97,7 @@
             },
             "price_level":2,
             "rating":4.3,
-            "user_ratings_total":166
+            "user_ratings_total":167
         },
         "status":"OK"
     },
@@ -573,7 +301,7 @@
             },
             "price_level":2,
             "rating":4.6,
-            "user_ratings_total":761
+            "user_ratings_total":762
         },
         "status":"OK"
     },
@@ -600,7 +328,7 @@
             },
             "name":"i381.cafe",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -702,7 +430,7 @@
             },
             "name":"H・Cafe",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -777,7 +505,7 @@
             },
             "price_level":2,
             "rating":4.6,
-            "user_ratings_total":446
+            "user_ratings_total":447
         },
         "status":"OK"
     },
@@ -804,7 +532,7 @@
             },
             "name":"Ink Coffee",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -889,7 +617,7 @@
             },
             "price_level":2,
             "rating":4.5,
-            "user_ratings_total":2187
+            "user_ratings_total":2189
         },
         "status":"OK"
     },
@@ -1005,6 +733,54 @@
         },
         "status":"OK"
     },
+    "cafe'8":{
+        "html_attributions":[],
+        "result":{
+            "business_status":"OPERATIONAL",
+            "formatted_address":"No. 304號, Linsen Rd, North District, Hsinchu City, Taiwan 300",
+            "geometry":{
+                "location":{
+                    "lat":24.797414,
+                    "lng":120.9615066
+                },
+                "viewport":{
+                    "northeast":{
+                        "lat":24.7986971802915,
+                        "lng":120.9629090302915
+                    },
+                    "southwest":{
+                        "lat":24.7959992197085,
+                        "lng":120.9602110697085
+                    }
+                }
+            },
+            "name":"cafe'8",
+            "opening_hours":{
+                "open_now":true,
+                "periods":[
+                    {
+                        "open":{
+                            "day":0,
+                            "time":"0000"
+                        }
+                    }
+                ],
+                "weekday_text":[
+                    "Monday: Open 24 hours",
+                    "Tuesday: Open 24 hours",
+                    "Wednesday: Open 24 hours",
+                    "Thursday: Open 24 hours",
+                    "Friday: Open 24 hours",
+                    "Saturday: Open 24 hours",
+                    "Sunday: Open 24 hours"
+                ]
+            },
+            "price_level":2,
+            "rating":3.5,
+            "user_ratings_total":127
+        },
+        "status":"OK"
+    },
     "AMOS bagel cafe 耶莫斯烘焙坊":{
         "html_attributions":[],
         "result":{
@@ -1028,7 +804,7 @@
             },
             "name":"AMOS bagel cafe 耶莫斯烘焙坊",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1106,6 +882,118 @@
         },
         "status":"OK"
     },
+    "THERE Café":{
+        "html_attributions":[],
+        "result":{
+            "business_status":"OPERATIONAL",
+            "formatted_address":"No. 465號, Xida Rd, North District, Hsinchu City, Taiwan 300",
+            "geometry":{
+                "location":{
+                    "lat":24.8047629,
+                    "lng":120.9632794
+                },
+                "viewport":{
+                    "northeast":{
+                        "lat":24.80615368029151,
+                        "lng":120.9646897302915
+                    },
+                    "southwest":{
+                        "lat":24.8034557197085,
+                        "lng":120.9619917697085
+                    }
+                }
+            },
+            "name":"THERE Café",
+            "opening_hours":{
+                "open_now":true,
+                "periods":[
+                    {
+                        "close":{
+                            "day":1,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":0,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":2,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":1,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":3,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":2,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":4,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":3,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":5,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":4,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":6,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":5,
+                            "time":"1000"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":0,
+                            "time":"0200"
+                        },
+                        "open":{
+                            "day":6,
+                            "time":"1000"
+                        }
+                    }
+                ],
+                "weekday_text":[
+                    "Monday: 10:00 AM – 2:00 AM",
+                    "Tuesday: 10:00 AM – 2:00 AM",
+                    "Wednesday: 10:00 AM – 2:00 AM",
+                    "Thursday: 10:00 AM – 2:00 AM",
+                    "Friday: 10:00 AM – 2:00 AM",
+                    "Saturday: 10:00 AM – 2:00 AM",
+                    "Sunday: 10:00 AM – 2:00 AM"
+                ]
+            },
+            "price_level":2,
+            "rating":4.9,
+            "user_ratings_total":1919
+        },
+        "status":"OK"
+    },
     "小稻甜 Cafe":{
         "html_attributions":[],
         "result":{
@@ -1129,7 +1017,7 @@
             },
             "name":"小稻甜 Cafe",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1214,7 +1102,7 @@
             },
             "price_level":2,
             "rating":4.3,
-            "user_ratings_total":903
+            "user_ratings_total":902
         },
         "status":"OK"
     },
@@ -1241,7 +1129,7 @@
             },
             "name":"續日cafe",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1326,7 +1214,7 @@
             },
             "price_level":2,
             "rating":4.3,
-            "user_ratings_total":1034
+            "user_ratings_total":1037
         },
         "status":"OK"
     },
@@ -1353,7 +1241,7 @@
             },
             "name":"OR Coffee",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1545,7 +1433,7 @@
             },
             "name":"Absolut Klassik",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1656,7 +1544,7 @@
             },
             "name":"鹿可咖啡",
             "opening_hours":{
-                "open_now":false,
+                "open_now":true,
                 "periods":[
                     {
                         "close":{
@@ -1869,7 +1757,7 @@
             },
             "name":"陳宅CAFE",
             "rating":5,
-            "user_ratings_total":3
+            "user_ratings_total":4
         },
         "status":"OK"
     },
@@ -1971,6 +1859,118 @@
             },
             "rating":4.6,
             "user_ratings_total":174
+        },
+        "status":"OK"
+    },
+    "COFFEE LOVER's PLANET":{
+        "html_attributions":[],
+        "result":{
+            "business_status":"OPERATIONAL",
+            "formatted_address":"No. 239號, Zhongyang Rd, East District, Hsinchu City, Taiwan 300",
+            "geometry":{
+                "location":{
+                    "lat":24.8102397,
+                    "lng":120.9747789
+                },
+                "viewport":{
+                    "northeast":{
+                        "lat":24.8117715302915,
+                        "lng":120.9760014302915
+                    },
+                    "southwest":{
+                        "lat":24.8090735697085,
+                        "lng":120.9733034697085
+                    }
+                }
+            },
+            "name":"COFFEE LOVER's PLANET",
+            "opening_hours":{
+                "open_now":true,
+                "periods":[
+                    {
+                        "close":{
+                            "day":0,
+                            "time":"2130"
+                        },
+                        "open":{
+                            "day":0,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":1,
+                            "time":"2130"
+                        },
+                        "open":{
+                            "day":1,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":2,
+                            "time":"2130"
+                        },
+                        "open":{
+                            "day":2,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":3,
+                            "time":"2130"
+                        },
+                        "open":{
+                            "day":3,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":4,
+                            "time":"2130"
+                        },
+                        "open":{
+                            "day":4,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":5,
+                            "time":"2200"
+                        },
+                        "open":{
+                            "day":5,
+                            "time":"0900"
+                        }
+                    },
+                    {
+                        "close":{
+                            "day":6,
+                            "time":"2200"
+                        },
+                        "open":{
+                            "day":6,
+                            "time":"0900"
+                        }
+                    }
+                ],
+                "weekday_text":[
+                    "Monday: 9:00 AM – 9:30 PM",
+                    "Tuesday: 9:00 AM – 9:30 PM",
+                    "Wednesday: 9:00 AM – 9:30 PM",
+                    "Thursday: 9:00 AM – 9:30 PM",
+                    "Friday: 9:00 AM – 10:00 PM",
+                    "Saturday: 9:00 AM – 10:00 PM",
+                    "Sunday: 9:00 AM – 9:30 PM"
+                ]
+            },
+            "price_level":2,
+            "rating":4.2,
+            "user_ratings_total":325
         },
         "status":"OK"
     }

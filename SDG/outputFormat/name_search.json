@@ -1,0 +1,32 @@
+{
+    "candidates":[
+        {
+            "business_status":"OPERATIONAL",
+            "formatted_address":"300台灣新竹市東區林森路180號",
+            "geometry":{
+                "location":{
+                    "lat":24.7992529,
+                    "lng":120.9643203
+                },
+                "viewport":{
+                    "northeast":{
+                        "lat":24.80052977989272,
+                        "lng":120.9657224798928
+                    },
+                    "southwest":{
+                        "lat":24.79783012010728,
+                        "lng":120.9630228201073
+                    }
+                }
+            },
+            "name":"墨咖啡 INK COFFEE",
+            "opening_hours":{
+                "open_now":true
+            },
+            "price_level":2,
+            "rating":4.5,
+            "user_ratings_total":2189
+        }
+    ],
+    "status":"OK"
+}

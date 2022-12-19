@@ -1,5 +1,7 @@
 from flask import Flask, flash, redirect, render_template, request, session
 import os
+import json
+import geocoder
 from os.path import join, dirname
 from dotenv import load_dotenv
 from helpers import apology
@@ -28,8 +30,8 @@ def index():
         if request.form.get("arbitrary_search"):
             place_arbitrary_query = request.form.get("radius_search")
             pas = place_arbitrary_search(place_arbitrary_query)
-            info = pas
-        return render_template("layout.html", info=info)
+            info = pas     
+        return render_template("layout.html", info=json.dumps(info, ensure_ascii=False, indent=4, separators=("," ,":")))
     if request.method == "GET":
         return render_template("layout.html")
 
