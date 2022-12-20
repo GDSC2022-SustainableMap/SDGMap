@@ -17,7 +17,7 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -26,6 +26,28 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.location_name {
+  /* style={{width: '50px', textAlign: 'center', backgroundColor:'#FFFFFF', border:'solid 1px #288BA8'}} */
+  font-size: 3px;
+  overflow: hidden;
+  width: 100px;
+  max-height: 50px;
+  background-color: #FFFFFF;
+  opacity: 0.8;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #288BA8;
+  border-width: thin;
+  padding: 3px;
+}
+
+.location_icon {
+  max-height: 20px !important;
+  max-width: 20px !important;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes App-logo-spin {
