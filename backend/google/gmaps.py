@@ -2,11 +2,11 @@ import googlemaps
 import os
 import json
 from os.path import join, dirname
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 from flask import Blueprint, request
 
 gmap = Blueprint('gmap', __name__)
-dotenv_path = join(dirname(__file__), ".env")
+dotenv_path = join(dirname(__file__), "../.env")
 cassette_path = join(dirname(__file__), "/vcr.yaml")
 load_dotenv(dotenv_path, override=True)
 

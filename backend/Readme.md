@@ -1,26 +1,21 @@
 # Getting Started
 
-## Prerequisites
-1. Install Python.
-2. Install dependencies.
-    * For app.py: <br>
-        1. Install Anaconda https://docs.anaconda.com/anaconda/install/
-        2. install dependencies
-             ```bash
-            $ pip install -U googlemaps
-            $ pip install geocoder
-## Run
-1. change to the repo directory: `cd SDG`
-2. run flask server
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+1. Install [Python](https://www.python.org/).
+2. Install depenencies for backend.
+
+    For backend:
+
     ```bash
-    $ flask run
+        pip install -r requirements.txt
+    ```
+### Run Client Server
 
-## Usage
-1. search by radius: input a longitude and latitude coordinate to search box.<br>(ex. `24.801798905507397, 120.97159605610153`)
-2. search by name: input a name of the target in search box.<br>(ex. `墨咖啡`)
-3. search by anything: input anything you would like to search for.<br>
-(ex. `義大利麵`)<br>
-
-`Searching language supports Traditional Chinese(Taiwan) and English.`
-
-`"outoutFormat" directory records the formatted output object for each search method.`
+1. Change into the repo directory: `cd backend`
+2. Run the flask server (will start on port 5000 by default):
+    ```bash
+        ./app.py
+    ```

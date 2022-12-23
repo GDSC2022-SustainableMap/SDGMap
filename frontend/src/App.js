@@ -43,7 +43,7 @@ const SimpleMap = (props) => {
     <div>
       {/* <img style={{ height: '30px', width: '30px' }} src={icon} />
       <div>{text}</div> */}
-      <img className="location_icon" src={icon} />
+      <img className="location_icon" src={icon} alt="location_icon"/>
       <div className="location_name">{text}</div>
     </div>
   );
