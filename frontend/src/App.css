@@ -59,13 +59,34 @@
     }
   }
 
-  .container{
+  .container2{
     display: flex;
-    flex-direction: column;
-    justify-content: center;   
-    align-items: center; 
+    /* 排版方向 */
+    flex-direction: row; 
+    /* 水平方向對齊模式 */
+    /* justify-content: center;   */
+    /* 垂直方向對齊模式  */
+    /* align-items: center;  */
+  }
+
+  .map{
+    height: 95vh;
+    width: 100%;
   }
 
   .searchbar{
     display: flex;
+  }
+
+  .info_sidebar{
+    display: none;
+  }
+
+  .BoxText1 {
+    border:3px orange solid;
+    /* boarder內和內容之間 */
+    padding:5px;
+    width:auto;
+    /* boarder外面 */
+    margin:15px 0px;
   }

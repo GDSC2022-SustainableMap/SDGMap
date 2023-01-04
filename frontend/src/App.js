@@ -6,6 +6,7 @@ import { Key } from "./key"; // 引入 API key
 import GoogleMapReact from "google-map-react";
 import "./App.css";
 import axios from "axios";
+import FakeData from "./fakedata/search.json";
 
 
 // Map
@@ -23,10 +24,8 @@ const SimpleMap = (props) => {
   const [inputText, setInputText] = useState("");
   const [searchType, setSearchType] = useState("Name");
   // 建立 state，供地圖本身做參考，以改變地圖視角
-  const [currentCenter, setCurrentCenter] = useState({
-    lat: 24.7876434209,
-    lng: 120.9973572689,
-  });
+  
+  const [currentCenter, setCurrentCenter] = useState( props.center );
 
   const handleCenterChange = () => {
     if (mapApiLoaded) {
@@ -102,8 +101,33 @@ const SimpleMap = (props) => {
       findByLocation();
     }
   }
+
+  const InfoBlock = ({name, addr, price}) => {
+    let p = "";
+    for(let i=0;i<price;i++){
+      p = p+"$";
+    }
+    return( 
+      <div className="BoxText1">
+        店名: <b>{name}</b>
+        <hr/>
+        地址: {addr}<br/>
+        電話: 沒有這個資訊:(<br/>
+        價格: {p}
+      </div>
+    );
+  }
+
+  const RenderIcon = () => {
+    console.log(FakeData);
+    setPlaces(FakeData.results);
+    // show the info sidebar
+    let info_sidebar = document.querySelector('.info_sidebar');
+    info_sidebar.style.display = "block";
+  }
+
   return (
-    <div className="container" style={{ height: "100vh", width: "100%" }}>
+    <div className="container">
       <div className="searchbar">
         <div>
           搜尋: <input ref={inputRef} type="text" onChange={handleInput} />
@@ -113,36 +137,52 @@ const SimpleMap = (props) => {
           <option>Location</option>
         </select>
         <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
+        <input type="button" value="Render Icon"  onClick={RenderIcon}/>
       </div>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: Key, libraries: ["places"] }}
-        center={currentCenter} // 傳入 currentCenter
-        onBoundsChange={handleCenterChange}
-        // defaultCenter={props.center}
-        defaultZoom={props.zoom}
-        yesIWantToUseGoogleMapApiInternals
-      >
-        {places.map((item,id) => (
-          <CafeMarker
-            icon={item.icon}
-            key={id}
-            lat={item.geometry.location.lat}
-            lng={item.geometry.location.lng}
-            text={item.name}
-            placeId={item.place_id}
-          />
-        ))}
-      </GoogleMapReact>
+      <div className="container2">
+        <div className="info_sidebar" style={{display: "none"}}>
+          <p>Here will be a list of store_info class.</p>
+          <div className="infos" style={{textAlign: "left"}}>
+            {places.map((item) => (
+              <InfoBlock
+                name={item.name}
+                addr={item.formatted_address}
+                price={item.price_level}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="map">
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: Key, libraries: ["places"] }}
+            center={currentCenter} // 傳入 currentCenter
+            onChange={handleCenterChange}
+            // defaultCenter={props.center}
+            defaultZoom={props.zoom}
+            yesIWantToUseGoogleMapApiInternals
+          >
+            {places.map((item, id) => (
+              <CafeMarker
+                icon={item.icon}
+                key={id}
+                lat={item.geometry.location.lat}
+                lng={item.geometry.location.lng}
+                text={item.name}
+                placeId={item.place_id}
+              />
+            ))}
+          </GoogleMapReact>
+        </div>
+      </div>  
     </div>
   );
 };
 
+// 預設位置 新竹火車站lat: 24.802464231278087, lng: 120.97158830040144
+// 交大lat: 24.7876434209, lng: 120.9973572689,
 // 由於改寫成 functional component，故另外設定 defaultProps
 SimpleMap.defaultProps = {
-  center: {
-    lat: 24.7876434209,
-    lng: 120.9973572689,
-  },
+  center: { lat: 24.802464231278087, lng: 120.97158830040144 },
   zoom: 17,
 };
 
