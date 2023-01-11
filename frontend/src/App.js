@@ -38,14 +38,12 @@ const SimpleMap = (props) => {
   };
 
   // Cafe Marker
-  const CafeMarker = ({ icon, text }) => (
-    <div>
-      {/* <img style={{ height: '30px', width: '30px' }} src={icon} />
-      <div>{text}</div> */}
-      <img className="location_icon" src={icon} alt="location_icon"/>
-      <div className="location_name">{text}</div>
-    </div>
-  );
+  const Marker = ({ icon, text }) => {
+      <div>
+        <img className="location_icon" src={icon} alt="location_icon"/>
+        <div className="location_name">{text}</div>
+      </div>
+  }
 
   // 建立參考點
   let inputRef = useRef(null);
@@ -100,6 +98,8 @@ const SimpleMap = (props) => {
     else{
       findByLocation();
     }
+    RenderResult();
+    //RenderIcon();
   }
 
   const InfoBlock = ({name, addr, price}) => {
@@ -112,19 +112,23 @@ const SimpleMap = (props) => {
         店名: <b>{name}</b>
         <hr/>
         地址: {addr}<br/>
-        電話: 沒有這個資訊:(<br/>
+        電話: 沒有這個資訊:( <br/>
         價格: {p}
       </div>
     );
   }
-
-  const RenderIcon = () => {
+  const RenderResult = () => {
     console.log(FakeData);
     setPlaces(FakeData.results);
     // show the info sidebar
-    let info_sidebar = document.querySelector('.info_sidebar');
+    let info_sidebar = document.querySelector('.info_sidebar'); //Q
     info_sidebar.style.display = "block";
   }
+  // const RenderIcon = () => {
+  //   return (
+
+  //   );
+  // }
 
   return (
     <div className="container">
@@ -137,11 +141,11 @@ const SimpleMap = (props) => {
           <option>Location</option>
         </select>
         <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
-        <input type="button" value="Render Icon"  onClick={RenderIcon}/>
+        {/* <input id="spot" type="button" value="顯示店家"  onClick={RenderIcon}/> */}
       </div>
       <div className="container2">
         <div className="info_sidebar" style={{display: "none"}}>
-          <p>Here will be a list of store_info class.</p>
+          {/* <p>Here will be a list of store_info class.</p> */}
           <div className="infos" style={{textAlign: "left"}}>
             {places.map((item) => (
               <InfoBlock
@@ -162,7 +166,7 @@ const SimpleMap = (props) => {
             yesIWantToUseGoogleMapApiInternals
           >
             {places.map((item, id) => (
-              <CafeMarker
+              <Marker
                 icon={item.icon}
                 key={id}
                 lat={item.geometry.location.lat}
@@ -171,10 +175,10 @@ const SimpleMap = (props) => {
                 placeId={item.place_id}
               />
             ))}
-          </GoogleMapReact>
+          </GoogleMapReact> 
         </div>
-      </div>  
-    </div>
+      </div>
+    </div>  
   );
 };
 
