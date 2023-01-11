@@ -114,6 +114,14 @@ const SimpleMap = (props) => {
         <hr/>
         地址: {addr}<br/>
         評分: {rate}<br/>
+        {/* <div class="star-ratings">
+          <div class="fill-ratings" style="width: 0%;">
+            <span>★★★★★</span>
+          </div>
+          <div class="empty-ratings">
+            <span>★★★★★</span>
+          </div>
+        </div> */}
         電話: 沒有這個資訊:(<br/>
         價格: {p}
       </div>
