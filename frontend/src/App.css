@@ -101,3 +101,23 @@
   /* boarder外面 */
   margin:10px 0px;
 }
+
+/* .other_tag input[type=checkbox] {
+  outline: 2px solid #c00;
+  margin-left: 5%;
+}
+
+.other_tag label {
+  outline: 2px solid rgb(95, 0, 204);
+  margin-left: 5%;
+  width: 50px;
+} */
+
+input[type=button] {
+  border-radius: 10px;
+  border: 2 px;
+  border-color: darkgray;
+  background-color: #FFFFFF;
+  padding: 0 4px 0 4px;
+  margin-left: 10px;
+}

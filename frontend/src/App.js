@@ -103,16 +103,17 @@ const SimpleMap = (props) => {
     }
   }
 
-  const InfoBlock = ({name, addr, price}) => {
+  const InfoBlock = ({name, addr, price, rate}) => {
     let p = "";
     for(let i=0;i<price;i++){
       p = p+"$";
     }
     return( 
       <div className="BoxText1">
-        店名: <b>{name}</b>
+        <b>{name}</b>
         <hr/>
         地址: {addr}<br/>
+        評分: {rate}<br/>
         電話: 沒有這個資訊:(<br/>
         價格: {p}
       </div>
@@ -127,6 +128,33 @@ const SimpleMap = (props) => {
     info_sidebar.style.display = "block";
   }
 
+  /* To get user position */  
+  const showLocation = (position) => {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    alert("Latitude: " + position.coords.latitude + 
+    "\nLongitude: " + position.coords.longitude);
+    setCurrentCenter([latitude, longitude]);
+  }
+
+  const errorHandler = (err) => {
+    if(err.code == 1) {
+        alert("Error: Access is denied!");
+    } else if( err.code == 2) {
+        alert("Error: Position is unavailable!");
+    }
+  }
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      var options = {timeout:60000};
+      navigator.geolocation.getCurrentPosition(showLocation,errorHandler,options);
+    } 
+    else {
+      alert("Geolocation not supported by this browser.") 
+    }
+  }
+
   return (
     <div className="container">
       <div className="searchbar">
@@ -137,7 +165,26 @@ const SimpleMap = (props) => {
           <option>Name</option>
           <option>Location</option>
         </select>
+        <div class="other_tag" >
+          <input name="other_tags" type="checkbox" id="wifi" value="wifi"/>
+          <label for="wifi">WiFi</label>
+        </div>
+        
+        <div>
+          <input class="other_tag" name="other_tags" type="checkbox" id="plug" value="plug"/>
+          <label for="plug">插座</label>
+        </div>
+        <div>
+          <input class="other_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit"/>
+          <label for="no-time-limit">不限時</label>
+        </div>
+        <div>
+          <input class="other_tag" name="other_tags" type="checkbox" id="open" value="open"/>
+          <label for="open">營業中</label>
+        </div>
         <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
+        <input id="pos" type="button" value="Get Position" onClick={getLocation}/>
+        
       </div>
       <div className="container2">
         <div className="info_sidebar" style={{display: "none"}}>
@@ -147,6 +194,7 @@ const SimpleMap = (props) => {
                 name={item.name}
                 addr={item.formatted_address}
                 price={item.price_level}
+                rate={item.rating}
               />
             ))}
           </div>
