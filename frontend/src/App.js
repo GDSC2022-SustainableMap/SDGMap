@@ -142,6 +142,24 @@ const SimpleMap = (props) => {
         </select>
         <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
         {/* <input id="spot" type="button" value="顯示店家"  onClick={RenderIcon}/> */}
+        <div>
+          <input class="def_tag" name="other_tags" type="checkbox" id="wifi" value="wifi"/>
+          <label for="wifi">WiFi</label>
+        </div>
+        <div>
+          <input class="def_tag" name="other_tags" type="checkbox" id="plug" value="plug"/>
+          <label for="plug">插座</label>
+        </div>
+        <div>
+          <input class="def_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit"/>
+          <label for="no-time-limit">不限時</label>
+        </div>
+        <div>
+          <input class="def_tag" name="other_tags" type="checkbox" id="open" value="open"/>
+          <label for="open">營業中</label>
+        </div>
+        
+        
       </div>
       <div className="container2">
         <div className="info_sidebar" style={{display: "none"}}>
