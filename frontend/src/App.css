@@ -1,106 +1,103 @@
 .App {
-    text-align: center;
-  }
-  
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    height: 40vmin;
-    pointer-events: none;
+    animation: App-logo-spin infinite 20s linear;
   }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
-  
-  .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  .App-link {
-    color: #61dafb;
-  }
-  
-  .location_name {
-    /* style={{width: '50px', textAlign: 'center', backgroundColor:'#FFFFFF', border:'solid 1px #288BA8'}} */
-    font-size: 3px;
-    overflow: hidden;
-    width: 100px;
-    max-height: 50px;
-    background-color: #FFFFFF;
-    opacity: 0.8;
-    border-radius: 10px;
-    border-style: solid;
-    border-color: #288BA8;
-    border-width: thin;
-    padding: 3px;
-  }
-  
-  .location_icon {
-    max-height: 20px !important;
-    max-width: 20px !important;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .container2{
-    display: flex;
-    /* 排版方向 */
-    flex-direction: row; 
-    /* 水平方向對齊模式 */
-    /* justify-content: center;   */
-    /* 垂直方向對齊模式  */
-    /* align-items: center;  */
-  }
+}
 
-  .map{
-    /* display: flex;
-    flex: 3; */
-    height: 95vh;
-    width: 100%;
-  }
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
 
-  .searchbar{
-    display: flex;
-    flex-direction: row; 
-    margin: 10px;
-    border-radius: 10px;
-    box-shadow: 18px;
-  }
+.App-link {
+  color: #61dafb;
+}
 
-  .info_sidebar{
-    display: block;
-    margin-right: 5px;
-    padding: 8px;
-    overflow: auto;
-    width: 600px;
-    height: 700px;
-  }
+.location_name {
+  /* style={{width: '50px', textAlign: 'center', backgroundColor:'#FFFFFF', border:'solid 1px #288BA8'}} */
+  font-size: 3px;
+  overflow: hidden;
+  width: 100px;
+  max-height: 50px;
+  background-color: #FFFFFF;
+  opacity: 0.8;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #288BA8;
+  border-width: thin;
+  padding: 3px;
+}
 
-  .BoxText1 {
-    border: 1.5px solid rgb(210, 207, 207);
-    box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    /* boarder內和內容之間 */
-    padding:5px;
-    width:auto;
-    /* boarder外面 */
-    margin:10px 0px;
-    
+.location_icon {
+  max-height: 20px !important;
+  max-width: 20px !important;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container2{
+  display: flex;
+  /* 排版方向 */
+  flex-direction: row; 
+  /* 水平方向對齊模式 */
+  /* justify-content: center;   */
+  /* 垂直方向對齊模式  */
+  /* align-items: center;  */
+}
+
+.map{
+  height: 95vh;
+  width: 100%;
+}
+
+.searchbar{
+  display: flex;
+  flex-direction: row; 
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 18px;
+}
+
+.info_sidebar{
+  display: block;
+  margin-right: 5px;
+  padding: 8px;
+  overflow: auto;
+  width: 600px;
+  height: 700px;
+}
+
+.BoxText1 {
+  border: 1.5px solid rgb(210, 207, 207);
+  box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  /* boarder內和內容之間 */
+  padding:5px;
+  width:auto;
+  /* boarder外面 */
+  margin:10px 0px;
+}
