@@ -11,7 +11,7 @@ To get a local copy up and running follow these simple steps.
     For frontend:
 
     ```bash
-        npm install
+        npm install --save react-router-dom
     ```
 ### Run Client Server
 
