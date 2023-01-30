@@ -3,6 +3,8 @@ import os
 import json
 from os.path import join, dirname
 from dotenv import load_dotenv
+from PIL import Image
+import requests
 
 dotenv_path = join(dirname(__file__), "../.env")
 cassette_path = join(dirname(__file__), "/vcr.yaml")
@@ -63,5 +65,24 @@ def place_arbitrary_search(params):
             del obj[drop]
     return place_search["results"]
 
+def display_photo(photo_reference, photo_height=400, photo_width=400):
+    img_data = gmaps.places_photo(photo_reference = photo_reference, max_height=photo_height, max_width=photo_width)
+    with open("myImg.jpg", "wb") as f:
+        for chunk in img_data:
+            if chunk:
+                f.write(chunk)
+    im = Image.open("myImg.jpg")
+    im.show()
+
+def find_place_detail(place_id):
+    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Cphoto%2Cformatted_phone_number&key={GOOGLE_PLACES_API_KEY}"
+    response = requests.post(url).json()
+    with open("place_detail.json", "w") as fh:
+        json.dump(response, fh, ensure_ascii=False, indent=4, separators=("," ,":"))
+    return response
+
 if __name__ == "__main__":
-    print(place_name_search("Ink Coffee"),end = '\n\n\n')
+    #display_photo(place_name_search("Ink Coffee")["candidates"][0]["photos"][0]["photo_reference"])
+    #print(place_arbitrary_search("義大利麵"))
+    place_radius_search({"lat": 24.801798,"lng": 120.971596})
+    #find_place_detail("ChIJPchoZFkxaDQRPwXJV2-pp10")
