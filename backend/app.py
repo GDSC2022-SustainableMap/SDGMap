@@ -1,15 +1,100 @@
-from flask import Flask, request
+from flask import Flask, redirect, request, session, flash
 from flask_cors import CORS
 from google.gmaps import place_name_search, place_radius_search, place_arbitrary_search
 from cafenomad.cafenomad import get_cafe, drop
 from config import DevConfig
 from utils import getDistanceBetweenPointsNew
+from flask_session import Session
+from functools import wraps
+import pyrebase
+
+def login_required(f):
+    """ Decorate routes to require login. """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
 app = Flask(__name__)
 app.config.from_object(DevConfig)
 
+config = {
+  "apiKey": "??",
+  "authDomain": "??",
+  "databaseURL": "??",
+  "storageBucket": "??"
+}
+
+#initialize firebase
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+db = firebase.database()
+
+# user info
+person = {"name": "", "email":"","birthday":"", "user_id":""}
 
 # Allow 
 CORS(app)
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """ Login to webpage. """
+    # forget any user using
+    session.clear()
+    if request.method == "POST":
+        receive = request.form
+        user_email = receive["user_email"]
+        user_birthday = receive["user_birthday"]
+    try:
+        #Try signing in the user with the given information
+        user = auth.sign_in_with_email_and_password(user_email, user_birthday)
+        #Insert the user data in the global person
+        global person
+        person["email"] = user["email"]
+        person["user_id"] = user["localId"]
+
+        # Remember which user has logged in
+        session["user_id"] = user["localId"]
+
+        #Get the name of the user
+        data = db.child("users").get()
+        person["name"] = data.val()[person["user_id"]]["name"]
+        # Redirect to home page
+        # needs further confirmation
+        return redirect("/home")
+    except:
+        #If there is any error, redirect back to login
+        return redirect("/login")
+    
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        submit = request.form
+        new_email = submit["email"]
+        new_birthday = submit["pass"] #password
+        new_name = submit["name"]
+        try:
+            auth.create_user_with_email_and_passowrd(new_email, new_birthday)
+            #Append data to the firebase db
+            data = {"name": new_name, "email": new_email, "birthday": new_birthday}
+            db.child("users").child(person["uid"]).set(data)
+
+            # Redirect to home page
+            # needs further confirmation
+            return redirect("/home")
+        except:
+            #If there is any error, redirect back to register
+            return redirect("/register")
+    else:
+        if session.get("user_id"): 
+            # Redirect to home page
+            # needs further confirmation
+            return redirect("/home")
+        else:
+            return redirect("/register")
+
+
 
 @app.route("/")
 def hello():
