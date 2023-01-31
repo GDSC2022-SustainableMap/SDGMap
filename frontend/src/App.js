@@ -6,7 +6,8 @@ import About from './components/About';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import NavBar from './NavBar';
-import Map from './components/SimpleMap'
+import Map from './components/SimpleMap';
+import User from './components/User';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route exact path="/" element={<Map />} />
             <Route exact path="/about" element={<About />} />
             <Route exact path="/projects" element={<Projects />} />
+            <Route exact path="/user" element={<User />} />
         </Routes>
     </div>
   );
