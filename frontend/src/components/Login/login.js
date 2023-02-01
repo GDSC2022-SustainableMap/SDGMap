@@ -81,7 +81,7 @@ export default function (props) {
                             className="form-control mt-1"
                             placeholder="Password"
                         />
-                        <a href="/password_reset">Forgot password?</a>
+                        {/* <a href="/password_reset">Forgot password?</a> */}
                     </div>
                     <div className="form-group mt-3">
                         <label className="login-label">Birth</label>

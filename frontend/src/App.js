@@ -7,7 +7,7 @@ import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
 import NavBar from './NavBar';
-import Map from './components/SimpleMap';
+import Map from './components/Map/map';
 import Login from './components/Login/login';
 
 function App() {
