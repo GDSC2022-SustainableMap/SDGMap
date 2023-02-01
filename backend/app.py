@@ -81,7 +81,7 @@ def register():
         new_birthday = submit["birthday"] 
         new_name = submit["name"]
         try:
-            auth.create_user_with_email_and_passowrd(new_email, new_password)
+            auth.create_user_with_email_and_password(new_email, new_password)
             #Append data to the firebase db
             data = {"name": new_name, "email": new_email, "birthday": new_birthday, "change_name_chance": 1}
             db.child("users").child(person["uid"]).set(data)
