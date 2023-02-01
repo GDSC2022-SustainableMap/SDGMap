@@ -13,7 +13,7 @@ function NavBar(){
                 <div className="main_list" id="mainListDiv">
                 <ul>
                     <li><Link to="/"><AiOutlineHome/>home</Link></li>
-                    <li><Link to="/about">login</Link></li>
+                    <li><Link to="/login">login</Link></li>
                     <li><Link to="/projects">signup</Link></li>
                     <li><Link to="/user"><AiOutlineUser/></Link></li>
                 </ul>
