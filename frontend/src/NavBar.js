@@ -14,7 +14,7 @@ function NavBar(){
                 <ul>
                     <li><Link to="/"><AiOutlineHome/>home</Link></li>
                     <li><Link to="/login">login</Link></li>
-                    <li><Link to="/projects">signup</Link></li>
+                    <li><Link to="/signup">signup</Link></li>
                     <li><Link to="/user"><AiOutlineUser/></Link></li>
                 </ul>
                 </div>
