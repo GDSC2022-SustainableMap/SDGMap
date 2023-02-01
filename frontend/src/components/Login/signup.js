@@ -51,14 +51,14 @@ function Signup(){
                             />
                         </div>
                         <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn">
                                 Submit
                             </button>
                         </div>
                         <div className="text-center mt-2">
                             Already registered?{" "}
                             <span className="link-primary">
-                            <Link to="/login">Sign In</Link>
+                            <Link to="/login" className="login-link">Sign In</Link>
                             </span>
                         </div>
                     </div>

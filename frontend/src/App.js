@@ -6,7 +6,7 @@ import "./App.css";
 import Home from './components/Home';
 import Projects from './components/Projects';
 import About from './components/About';
-import NavBar from './NavBar';
+import NavBar from './components/Navbar/NavBar';
 import Map from './components/Map/map';
 import User from './components/User';
 import Login from './components/Login/login';
@@ -20,7 +20,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/map" element={<Map />} />
         <Route exact path="/user" element={<User />} />
-        <Route exact path="/login" element={<Login/>} />
+        <Route exact path="/signin" element={<Login/>} />
         <Route exact path="/signup" element={<Signup/>} />
       </Routes>
     </div>

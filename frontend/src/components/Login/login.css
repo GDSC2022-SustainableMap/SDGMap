@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 4%;
     width: 100vw;
     height: 50%; 
 }
@@ -36,6 +37,10 @@
     font-size: 16px;
     width: 100%;
 } 
+
+.login-link {
+    color: #379878e7;
+}
 
 .form-group {
     position: relative;

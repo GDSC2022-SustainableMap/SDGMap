@@ -170,8 +170,7 @@ const SimpleMap = (props) => {
                     </select>
                 </div>
                 <div>
-                    起點: <input ref={inputRef} type="text" onChange={handleInput} />
-                    終點: <input ref={inputRef} type="text" onChange={handleInput} />
+                    位置: <input ref={inputRef} type="text" onChange={handleInput} />
                 </div>
                 <div>
                     <input name="other_tags" type="checkbox" id="wifi" value="wifi" />

@@ -32,14 +32,14 @@ export default function (props) {
                         <a href="./password_reset">Forgot password?</a>
                     </div>
                     <div className="d-grid  mt-3">
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn">
                             Submit
                         </button>
                     </div>
                     <div className="text-center mt-2">
                         Not registered yet?{" "}
                         <span className="link-primary">
-                        <Link to="/signup">Sign Up</Link>
+                        <Link to="/signup" className="login-link">Sign Up</Link>
                         </span>
                     </div>
                     
