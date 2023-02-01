@@ -7,6 +7,11 @@ from utils import getDistanceBetweenPointsNew
 from flask_session import Session
 from functools import wraps
 import pyrebase
+import os
+import json
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 
 def login_required(f):
     """ Decorate routes to require login. """
@@ -20,20 +25,18 @@ def login_required(f):
 app = Flask(__name__)
 app.config.from_object(DevConfig)
 
-config = {
-  "apiKey": "??",
-  "authDomain": "??",
-  "databaseURL": "??",
-  "storageBucket": "??"
-}
+# read firebase configuration
+dotenv_path = join(dirname(__file__), ".env")
+load_dotenv(dotenv_path, override=True)
+config = json.loads(os.environ.get("USER_DB_CONFIG"))
 
-#initialize firebase
+# initialize firebase
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
 # user info
-person = {"name": "", "email":"","birthday":"", "user_id":""}
+person = {"name":"", "email":"","birthday":"", "user_id":"", "change_name_chance":0}
 
 # Allow 
 CORS(app)
@@ -44,15 +47,16 @@ def login():
     session.clear()
     if request.method == "POST":
         receive = request.form
-        user_email = receive["user_email"]
-        user_birthday = receive["user_birthday"]
+        user_email = receive["email"]
+        user_password = receive["password"]
     try:
         #Try signing in the user with the given information
-        user = auth.sign_in_with_email_and_password(user_email, user_birthday)
+        user = auth.sign_in_with_email_and_password(user_email, user_password)
         #Insert the user data in the global person
         global person
         person["email"] = user["email"]
         person["user_id"] = user["localId"]
+        person["change_name_chance"] = user["change_name_chance"]
 
         # Remember which user has logged in
         session["user_id"] = user["localId"]
@@ -60,40 +64,52 @@ def login():
         #Get the name of the user
         data = db.child("users").get()
         person["name"] = data.val()[person["user_id"]]["name"]
+
         # Redirect to home page
-        # needs further confirmation
-        return redirect("/home")
+        return redirect("/")
     except:
         #If there is any error, redirect back to login
         return redirect("/login")
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    """ Let user register account. """
     if request.method == "POST":
         submit = request.form
         new_email = submit["email"]
-        new_birthday = submit["pass"] #password
+        new_password = submit["password"] 
+        new_birthday = submit["birthday"] 
         new_name = submit["name"]
         try:
-            auth.create_user_with_email_and_passowrd(new_email, new_birthday)
+            auth.create_user_with_email_and_passowrd(new_email, new_password)
             #Append data to the firebase db
-            data = {"name": new_name, "email": new_email, "birthday": new_birthday}
+            data = {"name": new_name, "email": new_email, "birthday": new_birthday, "change_name_chance": 1}
             db.child("users").child(person["uid"]).set(data)
 
             # Redirect to home page
-            # needs further confirmation
-            return redirect("/home")
+            return redirect("/")
         except:
             #If there is any error, redirect back to register
             return redirect("/register")
     else:
         if session.get("user_id"): 
             # Redirect to home page
-            # needs further confirmation
-            return redirect("/home")
+            return redirect("/")
         else:
             return redirect("/register")
 
+@app.route("/edit_profile", methods=["GET", "POST"])
+@login_required
+def edit_profile():
+    """ allow user to change profile. """
+    global person
+    if person["change_name_chance"]:
+        person["change_name_chance"]-=1
+        submit = request.form
+        new_name = submit["name"]
+        db.child("users").child(person["uid"]).update({"name":new_name})
+    else:
+        flash("Cannot change profile anymore.")
 
 
 @app.route("/")
@@ -247,4 +263,6 @@ def get_values(dl, values_list):
 
 
 if __name__ == "__main__":
-    app.run()
+    # app.run()
+    print("test test: " + config['apiKey'])
+    print("test test: " + config['authDomain'])
