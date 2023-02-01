@@ -49,27 +49,33 @@ def login():
         receive = request.form
         user_email = receive["email"]
         user_password = receive["password"]
-    try:
-        #Try signing in the user with the given information
-        user = auth.sign_in_with_email_and_password(user_email, user_password)
-        #Insert the user data in the global person
-        global person
-        person["email"] = user["email"]
-        person["user_id"] = user["localId"]
-        person["change_name_chance"] = user["change_name_chance"]
+        try:
+            #Try signing in the user with the given information
+            user = auth.sign_in_with_email_and_password(user_email, user_password)
+            #Insert the user data in the global person
+            global person
+            person["email"] = user["email"]
+            person["user_id"] = user["localId"]
+            person["change_name_chance"] = user["change_name_chance"]
 
-        # Remember which user has logged in
-        session["user_id"] = user["localId"]
+            # Remember which user has logged in
+            session["user_id"] = user["localId"]
 
-        #Get the name of the user
-        data = db.child("users").get()
-        person["name"] = data.val()[person["user_id"]]["name"]
+            #Get the name of the user
+            data = db.child("users").get()
+            person["name"] = data.val()[person["user_id"]]["name"]
 
-        # Redirect to home page
-        return redirect("/")
-    except:
-        #If there is any error, redirect back to login
-        return redirect("/login")
+            # Redirect to home page
+            return redirect("/")
+        except:
+            #If there is any error, redirect back to login
+            return redirect("/login")
+    else:
+        if session.get("user_id"): 
+            # Redirect to home page
+            return redirect("/")
+        else:
+            return redirect("/login")
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -103,14 +109,24 @@ def register():
 def edit_profile():
     """ allow user to change profile. """
     global person
-    if person["change_name_chance"]:
-        person["change_name_chance"]-=1
+    if request.method == "POST":
         submit = request.form
-        new_name = submit["name"]
-        db.child("users").child(person["uid"]).update({"name":new_name})
+        if person["change_name_chance"]:
+            person["change_name_chance"]-=1
+            new_name = submit["name"]
+            db.child("users").child(person["uid"]).update({"name":new_name})
+        else:
+            flash("Cannot change profile anymore.")
     else:
-        flash("Cannot change profile anymore.")
+        return redirect("/")
 
+
+@app.route("/logout")
+@login_required
+def logout():
+    """Log user out"""
+    session.clear()
+    return redirect("/")
 
 @app.route("/")
 def hello():
