@@ -163,7 +163,7 @@ const SimpleMap = (props) => {
     return (
         <div className="container">
             <div className="searchbar">
-                <div className="select-box">
+                <div className="select-box">搜尋方式: 
                     <select value={searchType} onChange={handleType}>
                         <option>Name</option>
                         <option>Location</option>

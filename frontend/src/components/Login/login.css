@@ -1,7 +1,7 @@
 .login-container {
     display: flex;
     justify-content: center;
-    align-items: top;
+    align-items: center;
     width: 100vw;
     height: 50%; 
 }
@@ -12,28 +12,28 @@
     padding-top: 30px;
     padding-bottom: 20px;
     border-radius: 8px;
-    background-color: #ffffff;
+    background-color: #fffef9;
+    border-color: #ffffe8;
 }
 
 .form-content {
     padding-left: 12%;
     padding-right: 12%;
+    color: #379878e7;
+    font-weight: 600;
 }
 
 .form-title {
     text-align: center;
     margin-bottom: 1em;
     font-size: 24px;
-    color: #222222;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .login-label {
     display: inline-block;
     text-align: left;
     font-size: 16px;
-    font-weight: 600;
-    color: #222222;
     width: 100%;
 } 
 
@@ -43,11 +43,23 @@
 
 .form-group > input {
     font-size: 12px;
+    /* border-color: #379878e7; */
 }
 
 .form-group > a {
     position: absolute;
-    font-size: 14px;
     top: 0;
     right: 0;
+    font-size: 14px;
+    color: #A3BB98;
+}
+
+.btn{
+    background-color: #61C0BF;
+    border-color: #61C0BF;
+    color: #ffffff;
+}
+
+.link {
+    text-decoration: underline;
 }

@@ -42,15 +42,18 @@
   
   .map{
     height: 95vh;
-    width: 100%;
+    width: 100vw;
   }
   
   .searchbar{
     display: flex;
     flex-direction: row; 
-    margin: 10px;
+    margin: 10px 0;
     border-radius: 10px;
+    border-width: 1px;
     box-shadow: 18px;
+    color: #1f7357e7;
+    /* font-weight: 500; */
   }
   
   .info_sidebar{
@@ -93,13 +96,15 @@
   
   input[type=text] {
     margin-right: 8px;
-    border-radius: 10px;
-    border-width: 1.5px;
+    border: 6px;
+    /* border-radius: 10px; */
+    box-shadow: #00000029 1px 1px 5px;
+    /* border-width: 1.5px; */
   }
 
   .select-box {
-    margin-right: 8px;
-    border-width: 1.5px;
+    margin: 0 8px;
+    /* border-width: 1.5px; */
   }
 
   .star-ratings {
@@ -135,3 +140,7 @@
   /* .span1 {
     display: inline-block;
   } */
+
+  label{
+    margin: 3px 5px 0 1px;
+  }
