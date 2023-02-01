@@ -10,16 +10,18 @@ import NavBar from './NavBar';
 import Map from './components/Map/map';
 import User from './components/User';
 import Login from './components/Login/login';
+import Signup from "./components/Login/signup";
 
 function App() {
   return (
     <div className="App">
       <NavBar />
       <Routes>
-        <Route exact path="/" element={<Map />} />
-        <Route exact path="/about" element={<About />} />
-        <Route exact path="/projects" element={<Projects />} />
-        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/map" element={<Map />} />
+        <Route exact path="/user" element={<User />} />
+        <Route exact path="/login" element={<Login/>} />
+        <Route exact path="/signup" element={<Signup/>} />
       </Routes>
     </div>
   );
