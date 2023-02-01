@@ -179,15 +179,15 @@ const SimpleMap = (props) => {
                 </div>
 
                 <div>
-                    <input class="other_tag" name="other_tags" type="checkbox" id="plug" value="plug" />
+                    <input className="other_tag" name="other_tags" type="checkbox" id="plug" value="plug" />
                     <label for="plug">插座</label>
                 </div>
                 <div>
-                    <input class="other_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit" />
+                    <input className="other_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit" />
                     <label for="no-time-limit">不限時</label>
                 </div>
                 <div>
-                    <input class="other_tag" name="other_tags" type="checkbox" id="open" value="open" />
+                    <input className="other_tag" name="other_tags" type="checkbox" id="open" value="open" />
                     <label for="open">營業中</label>
                 </div>
                 <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
