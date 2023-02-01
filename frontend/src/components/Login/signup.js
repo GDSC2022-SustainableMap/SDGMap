@@ -58,7 +58,7 @@ function Signup(){
                         <div className="text-center mt-2">
                             Already registered?{" "}
                             <span className="link-primary">
-                            <Link to="/login" className="login-link">Sign In</Link>
+                            <Link to="/signin" className="login-link">Sign In</Link>
                             </span>
                         </div>
                     </div>
