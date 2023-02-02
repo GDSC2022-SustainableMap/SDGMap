@@ -107,40 +107,6 @@
     /* border-width: 1.5px; */
   }
 
-  .star-ratings {
-    unicode-bidi: bidi-override;
-    color: #ccc;
-    font-size: 20px;
-    position: relative;
-    display: inline-block;
-    margin: 0 4px;
-    padding: 0;
-  }
-  
-  .fill-ratings {
-    color: #e7711b;
-    padding: 0;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    
-    /* // Allows us to grab the width of the span elements
-    span {
-      display: inline-block;
-    } */
-  }
-  
-  .empty-ratings {
-    padding: 0;
-    z-index: 0;
-  }
-  
-  /* .span1 {
-    display: inline-block;
-  } */
-
   label{
     margin: 3px 5px 0 1px;
   }
