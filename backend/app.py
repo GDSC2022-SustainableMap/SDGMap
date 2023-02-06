@@ -1,6 +1,6 @@
-from flask import Flask, redirect, request, session, flash
+from flask import Flask, redirect, request, session, flash, send_file
 from flask_cors import CORS
-from google.gmaps import place_name_search, place_radius_search, place_arbitrary_search
+from google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference
 from cafenomad.cafenomad import get_cafe, drop
 from config import DevConfig
 from utils import getDistanceBetweenPointsNew
@@ -153,6 +153,7 @@ def get_spot_from_name():
             cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
             merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
             return merged_result
+        return gmap_result
     except:
         return {}
 
@@ -278,6 +279,56 @@ def get_values(dl, values_list):
         map(lambda x: get_values(x, values_list), dl)
 
 
+#check if the user is in the correct distance from the spot
+@app.route("/check_in", methods=['POST'])
+def check_in_spot():
+    receive = request.get_json()
+    params = {
+        "target_place": receive['target_place'],
+        "user_lat": receive["user_lat"],
+        "user_lng": receive["user_lng"],
+        "scope": receive["scope"]
+    }
+
+    try:
+        gmap_result = place_name_search(params)["candidates"][0]
+        cafenomad_raw = get_cafe()
+
+        cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
+        cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
+        if cafenomad_result:
+            cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
+            cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
+            merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
+            
+            spot_lat = merged_result["geometry"]["location"]["lat"]
+            spot_lng = merged_result["geometry"]["location"]["lng"]
+            distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
+            return str(distance < params["scope"])
+    except:
+        return {}
+
+#check if the user is in the correct distance from the spot
+@app.route("/get_references_from_spot", methods=['GET'])
+def get_references_from_spot():
+    receive = request.get_json()
+    params = {
+        "place_id": receive['place_id'],
+        "photo_num": receive["photo_num"]
+    }
+
+    photo_references = get_references_from_a_spot(params["place_id"],params["photo_num"])
+    return photo_references
+
+@app.route("/get_photo_from_reference", methods=['GET'])
+def get_photo_from_reference():
+    receive = request.get_json()
+    params = {
+        "reference": receive['reference'],
+        "maxwidth": receive["maxwidth"],
+        "maxheight": receive["maxheight"]
+    }
+    return get_photo_from_a_reference(params["reference"],params["maxwidth"],params["maxheight"])
 if __name__ == "__main__":
     # app.run()
     print("test test: " + config['apiKey'])

@@ -5,6 +5,8 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from PIL import Image
 import requests
+import io
+from flask import send_file
 
 dotenv_path = join(dirname(__file__), "../.env")
 cassette_path = join(dirname(__file__), "/vcr.yaml")
@@ -37,11 +39,11 @@ def place_name_search(params):
     place_search = gmaps.find_place(
             input = params["target_place"],
             input_type = "textquery",
-            fields=["business_status", "name", "formatted_address", "geometry", "opening_hours", "rating", "user_ratings_total", "price_level","photos"],
+            fields=["place_id", "business_status", "name", "formatted_address", "geometry", "opening_hours", "rating", "user_ratings_total", "price_level","photos"],
             location_bias = "circle:10000@24.801798905507397,120.97159605610153",
             language = "zh-TW"
         )
-
+    get_references_from_a_spot("ChIJb1dSFvo2aDQRVIbVaIC8rXc",10, 500, 500)
     return place_search
 
 def place_arbitrary_search(params):
@@ -77,12 +79,21 @@ def display_photo(photo_reference, photo_height=400, photo_width=400):
 def find_place_detail(place_id):
     url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Cphoto%2Cformatted_phone_number&key={GOOGLE_PLACES_API_KEY}"
     response = requests.post(url).json()
-    with open("place_detail.json", "w") as fh:
-        json.dump(response, fh, ensure_ascii=False, indent=4, separators=("," ,":"))
     return response
 
-if __name__ == "__main__":
-    #display_photo(place_name_search("Ink Coffee")["candidates"][0]["photos"][0]["photo_reference"])
-    #print(place_arbitrary_search("義大利麵"))
-    place_radius_search({"lat": 24.801798,"lng": 120.971596})
-    #find_place_detail("ChIJPchoZFkxaDQRPwXJV2-pp10")
+#Due to the security issue, we cannot directly pass photo urls to frontend (because the api key is in the url), so we should get reference first then use the reference solely to get the photo.
+def get_references_from_a_spot(place_id, photo_num):
+    place_detail = find_place_detail(place_id)
+    photo_references = []
+    for i in place_detail['result']['photos']:
+        photo_references.append(i['photo_reference'])
+
+    return photo_references[:photo_num]
+
+def get_photo_from_a_reference(reference,maxwidth,maxheight):
+    url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth={maxwidth}&maxheight={maxheight}&photo_reference={reference}&key={GOOGLE_PLACES_API_KEY}"
+
+    r = requests.get(url)
+    file_like_object = io.BytesIO(r.content)
+
+    return send_file(file_like_object, mimetype='image/png')
