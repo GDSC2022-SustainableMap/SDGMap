@@ -1,12 +1,46 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
+import { googleLogout, useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 import Psd_reset from './password_reset';
 import './login.css';
+import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 
 export default function (props) {
     let [authMode, setAuthMode] = useState("signin")
     const changeAuthMode = () => {
         setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
+
+    const [user, setUser] = useState(null);
+    const [profile, setProfile] = useState(null);
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => setUser(codeResponse),
+        onError: (error) => console.log('Login Failed' + error)
+    });
+    useEffect(
+        () => {
+            if (user) {
+                axios
+                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                        headers: {
+                            Authorization: `Bearer ${user.access_token}`,
+                            Accept: 'application/json'
+                        }
+                    })
+                    .then((res) => {
+                        setProfile(res.data);
+                    })
+                    .catch((err) => console.log(err));
+            }
+        },
+        [user]
+    );
+
+    // log out function to log the user out of google and set the profile array to null
+    const LogOut = () => {
+        googleLogout();
+        setProfile(null);
+    };
 
     if (authMode === "signin") {
         return (
@@ -45,8 +79,20 @@ export default function (props) {
                             <span className="login-link" onClick={changeAuthMode}>Sign Up</span>
                         </div>
                     </div>
-                </form>
-            </div>
+                </form >
+                <hr />
+                {profile ? (
+                    <div>
+                        <img src={profile.picture} alt="user image" />
+                        <h3>User Logged in</h3>
+                        <p>Name: {profile.name}</p>
+                        <p>Email Address: {profile.email}</p>
+                        <button id='logout-btn' onClick={LogOut}>Log out</button>
+                    </div>
+                ) : (
+                    <button id='google-btn' onClick={() => login()}><FcGoogle size={20} />  Sign in with Google</button>
+                )}
+            </div >
         )
     }
     return (

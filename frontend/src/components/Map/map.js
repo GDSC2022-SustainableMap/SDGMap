@@ -3,7 +3,10 @@ import { Key } from "../../key"; // 引入 API key
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
 import FakeData from "../../fakedata/search.json";
-import './map.css'
+import './map.css';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Stars from './Stars';
 
 // Map
 const SimpleMap = (props) => {
@@ -104,23 +107,41 @@ const SimpleMap = (props) => {
         for (let i = 0; i < price; i++) {
             p = p + "$";
         }
+        const [show, setShow] = useState(false);
 
+        const handleClose = () => setShow(false);
+        const handleShow = () => setShow(true);
         return (
             <div className="BoxText1">
                 <b>{name}</b>
-                <hr />
-                地址: {addr}<br />
-                評分: {rate}
-                <div className="star-ratings">
-                    <div className="fill-ratings" style={{ width: '20%' }}>
-                        <span className="span1">★★★★★</span>
-                    </div>
-                    <div className="empty-ratings">
-                        <span className="span1">★★★★★</span>
-                    </div>
-                </div> <br />
-                電話: 沒有這個資訊:(<br />
-                價格: {p}
+                <hr/>
+                地址: {addr}<br/>
+                評分: {rate}&emsp;
+                <Stars
+                    stars={rate}
+                    size={20} //optional
+                    fill='#e7711b' //optional
+                /><br/>
+                <div>
+                    電話: 沒有這個資訊:(<br/>
+                    <span>價格: {p}</span>
+                    {/* 待完成：將此button靠右對齊 */}
+                    <Button variant="primary" onClick={handleShow}>
+                        More info
+                    </Button>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>{name}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>wait for more information</Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            OK
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+                    
+                </div>
             </div>
         );
     }

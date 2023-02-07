@@ -1,0 +1,17 @@
+.Stars {
+  --percent: calc(var(--stars) / 5 * 100%);
+  display: inline-block;
+}
+
+.Stars::before {
+  content: '★★★★★';
+  font-size: var(--size);
+  letter-spacing: var(--spacing);
+  background: linear-gradient(
+    90deg,
+    var(--fill) var(--percent),
+    #e6e9ed var(--percent)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
