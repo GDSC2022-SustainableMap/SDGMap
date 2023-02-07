@@ -13,6 +13,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 
 
+
 def login_required(f):
     """ Decorate routes to require login. """
     @wraps(f)
@@ -23,7 +24,16 @@ def login_required(f):
     return decorated_function
 
 app = Flask(__name__)
+# CORS(app, resources={r'*': {'origins': '*'}})
+CORS(app)
 app.config.from_object(DevConfig)
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+# set application
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # read firebase configuration
 dotenv_path = join(dirname(__file__), ".env")
@@ -38,70 +48,65 @@ db = firebase.database()
 # user info
 person = {"name":"", "email":"","birthday":"", "user_id":"", "change_name_chance":0}
 
-# Allow 
-CORS(app)
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """ Login to webpage. """
     # forget any user using
     session.clear()
     if request.method == "POST":
-        receive = request.form
-        user_email = receive["email"]
-        user_password = receive["password"]
+        receive = request.get_json()
+        params = {
+            "user_email" : receive["email"],
+            "user_password" : receive["password"]
+        }
         try:
             #Try signing in the user with the given information
-            user = auth.sign_in_with_email_and_password(user_email, user_password)
-            #Insert the user data in the global person
-            global person
-            person["email"] = user["email"]
-            person["user_id"] = user["localId"]
-            person["change_name_chance"] = user["change_name_chance"]
+            user = auth.sign_in_with_email_and_password(params["user_email"], params["user_password"])
+           
 
             # Remember which user has logged in
             session["user_id"] = user["localId"]
 
-            #Get the name of the user
-            data = db.child("users").get()
-            person["name"] = data.val()[person["user_id"]]["name"]
-
-            # Redirect to home page
-            return redirect("/")
+            # #Get the name of the user
+            # data = db.child("users").get()
+            # person["name"] = data.val()[person["user_id"]]["name"]
+            return f"login successful, userid: {user['localId']}"
         except:
-            #If there is any error, redirect back to login
-            return redirect("/login")
+            raise "login info unreconizable"
     else:
         if session.get("user_id"): 
             # Redirect to home page
-            return redirect("/")
+            return {}
         else:
-            return redirect("/login")
+            # temporary
+            return {}
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """ Let user register account. """
     if request.method == "POST":
-        submit = request.form
-        new_email = submit["email"]
-        new_password = submit["password"] 
-        new_birthday = submit["birthday"] 
-        new_name = submit["name"]
+        submit = request.get_json()
+        params = {
+            "new_email" : submit["email"],
+            "new_password" : submit["password"],
+            "new_birthday" : submit["birthday"],
+            "new_name" : submit["name"]
+        }
         try:
-            auth.create_user_with_email_and_password(new_email, new_password)
+            newUser = auth.create_user_with_email_and_password(params["new_email"], params["new_password"])
             #Append data to the firebase db
-            data = {"name": new_name, "email": new_email, "birthday": new_birthday, "change_name_chance": 1}
-            db.child("users").child(person["uid"]).set(data)
-
-            # Redirect to home page
-            return redirect("/")
+            data = {"name": params["new_name"], "email": params["new_email"], "birthday": params["new_birthday"], "change_name_chance": 1}
+            db.child("users").child(newUser['localId']).set(data)
+            return "register successful"
         except:
-            #If there is any error, redirect back to register
-            return redirect("/register")
+            raise "not able to create account"
+            # return "not able to create account"
     else:
         if session.get("user_id"): 
             # Redirect to home page
             return redirect("/")
         else:
+            # temporary
             return redirect("/register")
 
 @app.route("/edit_profile", methods=["GET", "POST"])
@@ -110,15 +115,25 @@ def edit_profile():
     """ allow user to change profile. """
     global person
     if request.method == "POST":
-        submit = request.form
+        submit = request.get_json()
         if person["change_name_chance"]:
             person["change_name_chance"]-=1
             new_name = submit["name"]
-            db.child("users").child(person["uid"]).update({"name":new_name})
+            db.child("users").child(person["user_id"]).update({"name":new_name})
         else:
             flash("Cannot change profile anymore.")
     else:
         return redirect("/")
+
+@app.route("/reset_password", methods=["POST"])
+def reset_password():
+    """ allow user to reset password """
+    submit = request.get_json()
+    params = {
+        "email" : submit["email"],
+    }
+    auth.send_password_reset_email(params['email'])
+    return "reset password email successfully sent"
 
 
 @app.route("/logout")
@@ -330,6 +345,7 @@ def get_photo_from_reference():
     }
     return get_photo_from_a_reference(params["reference"],params["maxwidth"],params["maxheight"])
 if __name__ == "__main__":
-    # app.run()
-    print("test test: " + config['apiKey'])
-    print("test test: " + config['authDomain'])
+    app.run()
+    # auth.create_user_with_email_and_password("abc@gmail.com", "abcdefg")
+    # data = {"name": "aaa", "email": "abc@gmail.com", "birthday": "2023-1-1", "change_name_chance": 1}
+    # db.child("users").set(data)

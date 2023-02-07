@@ -87,6 +87,41 @@ Nothing special here.:)
         }
 }
 ```
+
+### 4. /login
+
+#### (a)Input:
+
+```yaml
+{
+    "email": "testuuid@gmail.com",
+    "password": "abcdefg"
+}
+```
+
+### 5. /register
+
+#### (a)Input:
+
+```yaml
+{
+
+    "email": "anything@gmail.com",
+    "password": "abcdefg",
+    "birthday": "1111-11-11",
+    "name": "NAME"
+}
+```
+
+### 5. /reset_password
+
+#### (a)Input:
+
+```yaml
+{
+    "email": yourEmail
+}
+```
 ### (b) Details:
 
 (1) If you don't want to use condition, just let it be empty.
