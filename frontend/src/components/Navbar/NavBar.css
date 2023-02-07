@@ -38,7 +38,7 @@
 }
 
 .nav div.main_list ul li{
-    width: 120px;
+    width: 180px;
     height: 65px;
 }
 
@@ -46,7 +46,7 @@
     text-decoration: none;
     color: #fff;
     line-height: 65px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .nav div.main_list ul li a:hover{
