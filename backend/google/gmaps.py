@@ -27,7 +27,7 @@ def place_radius_search(params):
     places = []
     for place in places_result["results"]:
         place_id = place['place_id']
-        my_fields = ["business_status", "name", "formatted_address", "geometry", "opening_hours", "rating", "user_ratings_total", "price_level"]
+        my_fields = ["place_id","business_status", "name", "formatted_address", "geometry", "opening_hours", "rating", "user_ratings_total", "price_level"]
         place_info = gmaps.place(place_id = place_id, fields = my_fields)
         places.append(place_info['result'])
         json.dumps(places)
@@ -61,7 +61,7 @@ def place_arbitrary_search(params):
             type = "cafe",
         )
 
-    drop_index = ["icon", "icon_background_color", "plus_code" ,"place_id", "reference","icon_mask_base_uri"]
+    drop_index = ["icon", "icon_background_color", "plus_code" , "reference","icon_mask_base_uri"]
     for obj in place_search["results"]:
         for drop in drop_index:
             del obj[drop]
@@ -77,7 +77,7 @@ def display_photo(photo_reference, photo_height=400, photo_width=400):
     im.show()
 
 def find_place_detail(place_id):
-    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Cphoto%2Cformatted_phone_number&key={GOOGLE_PLACES_API_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Cphoto%2Cformatted_phone_number%2Cgeometry&key={GOOGLE_PLACES_API_KEY}"
     response = requests.post(url).json()
     return response
 

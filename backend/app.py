@@ -1,6 +1,6 @@
 from flask import Flask, redirect, request, session, flash, send_file
 from flask_cors import CORS
-from google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference
+from google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference, find_place_detail
 from cafenomad.cafenomad import get_cafe, drop
 from config import DevConfig
 from utils import getDistanceBetweenPointsNew
@@ -90,12 +90,13 @@ def register():
             "new_email" : submit["email"],
             "new_password" : submit["password"],
             "new_birthday" : submit["birthday"],
-            "new_name" : submit["name"]
+            "new_name" : submit["userName"],
+            "new_region": submit["region"]
         }
         try:
             newUser = auth.create_user_with_email_and_password(params["new_email"], params["new_password"])
             #Append data to the firebase db
-            data = {"name": params["new_name"], "email": params["new_email"], "birthday": params["new_birthday"], "change_name_chance": 1}
+            data = {"name": params["new_name"], "email": params["new_email"], "birthday": params["new_birthday"], "region": params["new_region"],"change_name_chance": 1}
             db.child("users").child(newUser['localId']).set(data)
             return "register successful"
         except:
@@ -299,32 +300,27 @@ def get_values(dl, values_list):
 def check_in_spot():
     receive = request.get_json()
     params = {
-        "target_place": receive['target_place'],
+        "place_id": receive['place_id'],
         "user_lat": receive["user_lat"],
         "user_lng": receive["user_lng"],
         "scope": receive["scope"]
     }
 
     try:
-        gmap_result = place_name_search(params)["candidates"][0]
-        cafenomad_raw = get_cafe()
+        # gmap_result = place_name_search(params)["candidates"][0]
+        gmap_result = find_place_detail(params["place_id"])
+        if(gmap_result):
+            spot_lat = gmap_result["result"]["geometry"]["location"]["lat"]
+            spot_lng = gmap_result["result"]["geometry"]["location"]["lng"]
+        # return gmap_result
 
-        cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
-        cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
-        if cafenomad_result:
-            cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
-            cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
-            merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
-            
-            spot_lat = merged_result["geometry"]["location"]["lat"]
-            spot_lng = merged_result["geometry"]["location"]["lng"]
-            distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
-            return str(distance < params["scope"])
+
+        distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
+        return str(distance < params["scope"])
     except:
         return {}
 
-#check if the user is in the correct distance from the spot
-@app.route("/get_references_from_spot", methods=['GET'])
+@app.route("/get_references_from_spot", methods=['POST'])
 def get_references_from_spot():
     receive = request.get_json()
     params = {
@@ -335,7 +331,7 @@ def get_references_from_spot():
     photo_references = get_references_from_a_spot(params["place_id"],params["photo_num"])
     return photo_references
 
-@app.route("/get_photo_from_reference", methods=['GET'])
+@app.route("/get_photo_from_reference", methods=['POST'])
 def get_photo_from_reference():
     receive = request.get_json()
     params = {

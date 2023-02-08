@@ -87,6 +87,18 @@ Nothing special here.:)
         }
 }
 ```
+### (b) Details:
+
+(1) If you don't want to use condition, just let it be empty.
+
+(2) You should use either target_place or lat/lng, or it will return empty.
+
+(3) If you don't want to use lat/lng, let use_location be "no", or it will return objects according to the lat/lng.
+
+(4) The distance field is caculated by input's lat/lng and the object's lat/lng.
+
+(5) "target_place" should not be empty.
+
 
 ### 4. /login
 
@@ -113,7 +125,7 @@ Nothing special here.:)
 }
 ```
 
-### 5. /reset_password
+### 6. /reset_password
 
 #### (a)Input:
 
@@ -122,14 +134,50 @@ Nothing special here.:)
     "email": yourEmail
 }
 ```
+
+### 7. /get_references_from_spot    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/get_photo_from_reference
+
+
+#### (a-1)/get_references_from_spot Input:
+
+```yaml
+{
+    "place_id": "ChIJb1dSFvo2aDQRVIbVaIC8rXc",
+    "photo_num":999
+}
+```
+#### (b-1)/get_references_from_spot details:
+(1) place_id should obtain by 1/2/3 search.
+
+(2) You can choose how many photos reference you want by controlling photo_num.
+
+(3) After get the photo references array, you can use it in /get_photo_from_reference.
+
+(4) Due to the security issue, we cannot pass photo url dirrectly to frontend (google api key is in photo url). So you should use /get_photo_from_reference to get the photo.
+
+#### (a-2)/get_photo_from_reference Input:
+
+```yaml
+{
+    "reference": "AfLeUgMpttK0GqpyqKGyZImGHZBWnlbzGZfGWoTIdFJs-4J8ZJ5oyNKgYnOYvGcXc4f4Nb63x_YHh_n8L0ANDM_BJBWh05Go8iYUqjWUpXAHm9MXPql1FGP4DwTNwlD3SxS-mIj9nMWQxVLqk2dIzmNEnRSirM-VdeXzlrjTEJMaCWjRnaDo&key=AIzaSyDdYv7-xuoVVF-snwdTmo0e7sXng6gZ6eI",
+    "maxwidth": 500,
+    "maxheight": 500
+}
+```
+
+### 8. /check_in
+### (a) Inputs:
+```yaml
+{
+    "place_id":"ChIJb1dSFvo2aDQRVIbVaIC8rXc",
+    "user_lat":24.8017989055073971,
+    "user_lng":120.97159605610153,
+    "scope":1
+}
+```
 ### (b) Details:
+(1) place_id should obtain by 1/2/3 search.
 
-(1) If you don't want to use condition, just let it be empty.
+(2) Scope is scaled by KM.
 
-(2) You should use either target_place or lat/lng, or it will return empty.
-
-(3) If you don't want to use lat/lng, let use_location be "no", or it will return objects according to the lat/lng.
-
-(4) The distance field is caculated by input's lat/lng and the object's lat/lng.
-
-(5) "target_place" should not be empty.
+(3)If the distance between place_id's location and user's location is smaller than the scope(KM), it returns True, otherwise False. 
