@@ -12,7 +12,9 @@ To get a local copy up and running follow these simple steps.
 
     ```bash
         npm install --save react-router-dom
-        npm install react-icons --save
+        npm install --save react-icons 
+        npm install --save @react-icons/all-files 
+        npm install @react-oauth/google@latest
     ```
 ### Run Client Server
 
