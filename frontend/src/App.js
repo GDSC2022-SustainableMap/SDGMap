@@ -1,16 +1,13 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Home from './components/Home';
-import Projects from './components/Projects';
-import About from './components/About';
 import NavBar from './components/Navbar/NavBar';
 import Map from './components/Map/map';
-import User from './components/User';
+import User from './components/User/user';
 import Login from './components/Login/login';
-import Signup from "./components/Login/signup";
+import Book from "./components/Book/book";
 
 function App() {
   
@@ -20,9 +17,9 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/map" element={<Map />} />
+        <Route exact path="/sdgbook" element={<Book />} />
         <Route exact path="/user" element={<User />} />
         <Route exact path="/signin" element={<Login/>} />
-        <Route exact path="/signup" element={<Signup/>} />
       </Routes>
     </div>
   );
