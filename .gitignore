@@ -3,7 +3,6 @@
 # frontend
 */node_modules
 key.js
-
 # backend
 */__pycache__
 .env
