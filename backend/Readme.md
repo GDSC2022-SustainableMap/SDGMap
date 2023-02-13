@@ -12,7 +12,9 @@ To get a local copy up and running follow these simple steps.
     ```bash
         pip install -r requirements.txt
     ```
-### Run Client Server
+3. Go to Trello's 資源倉庫, download .env and put it in to this directory.
+
+### Run Backend Server
 
 1. Change into the repo directory: `cd backend`
 2. Run the flask server (will start on port 5000 by default):
