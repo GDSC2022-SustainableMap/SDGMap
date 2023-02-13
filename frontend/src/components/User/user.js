@@ -64,7 +64,9 @@ function User() {
                                     </div>
                                     <div className='user-form-group'>
                                         <label className='user-form-label'>Photo</label>
-                                        <input className='value' type='file'></input>
+                                        {/* <label id='photo_vle_btn'>user photo */}
+                                            <input className='value' type='file'></input>
+                                        {/* </label> */}
                                     </div>
                                     <div className='user-form-group'>
                                         <label className='user-form-label'>Email Address</label>
@@ -92,7 +94,7 @@ function User() {
                         )}
                         <label id='imagebtn'><IoMdAddCircle size='30' />
                             {/* <img src='user-icon.png' border-radius='50%' width='150px'></img> */}
-                            <input type='file' display='none'
+                            <input type='file' display='none' id='imgouterbtn'
                                 onChange={(event) => {
                                     // console.log(event.target.files[0]);
                                     setSelectImage(event.target.files[0]);
@@ -111,7 +113,9 @@ function User() {
                                 </button>
                             </h2>
                             <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div className="accordion-body"></div>
+                                <div className="accordion-body">
+                                    
+                                </div>
                             </div>
                         </div>
                         <div className="accordion-item">

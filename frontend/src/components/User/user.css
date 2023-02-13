@@ -36,13 +36,14 @@
     margin-bottom: 2vh;
 }
 
+/* Modal */
 .user-form-label {
     font-size: large;
     color: #379878e7;
 }
 
 .value {
-    color: #ba8d33;
+    color: #807f7f;
     font-size: 1rem;
     font-weight: 400;
     box-shadow: none;
@@ -50,6 +51,16 @@
     border: none;
     padding: 1vh 2vw;
     margin: 0;
+}
+
+#photo_vle_btn {
+    border: 1.2px solid  #ba8d33;
+    width: fit-content;
+    border-radius: 16%;
+    background-color: #f8f6ed;
+    /* color: #ba8d33; */
+    padding: 0 1vw;
+    margin: 0 1.2vw
 }
 
 #closebtn {
@@ -66,6 +77,10 @@
     right: 18%;
     background-color: #fffef9;
     color: #ba8d33;
+}
+
+#imgouterbtn {
+    display: none;
 }
 
 .user-rtb {
@@ -136,10 +151,6 @@ p {
 
 .num {
     width: 7.2vw;
-}
-
-input[type=file] {
-    display: none;
 }
 
 textarea {
