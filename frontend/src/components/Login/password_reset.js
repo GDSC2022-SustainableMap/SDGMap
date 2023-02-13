@@ -8,11 +8,12 @@ function PasswordReset(){
                 <div className="form-content">
                     <h3 className="title">Reset your password</h3>
                     <div className="form-group mt-3">
-                    <label className="login-label">Enter your user account's email address and we will send you a password reset link.</label>
+                    <label className="login-label" for='email'>Enter your user account's email address and we will send you a password reset link.</label>
                     <input
                         type="email"
                         className="form-control mt-1"
                         placeholder="Email Address"
+                        id="email"
                     />
                     </div>
                     

@@ -5,6 +5,7 @@ import "./login.css";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 import { useNavigate } from "react-router-dom";
 import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 // import Psd_reset from "./password_reset";
 
 export default function Login (props) {

@@ -7,6 +7,8 @@ import './map.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Stars from './Stars';
+import { RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { BsFillPinMapFill } from 'react-icons/bs';
 
 // Map
 const SimpleMap = (props) => {
@@ -114,33 +116,47 @@ const SimpleMap = (props) => {
         return (
             <div className="BoxText1">
                 <b>{name}</b>
-                <hr/>
-                地址: {addr}<br/>
+                <hr />
+                地址: {addr}<br />
                 評分: {rate}&emsp;
                 <Stars
                     stars={rate}
                     size={20} //optional
                     fill='#e7711b' //optional
-                /><br/>
+                /><br />
                 <div>
-                    電話: 沒有這個資訊:(<br/>
-                    <span>價格: {p}</span>
+                    電話: 沒有這個資訊:(<br />
+                    價格: {p}<br/>
                     {/* 待完成：將此button靠右對齊 */}
                     <Button variant="primary" onClick={handleShow}>
                         More info
                     </Button>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>{name}</Modal.Title>
+                            <Modal.Title>{name}</Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>wait for more information</Modal.Body>
+                        <Modal.Body>
+                            地址: {addr}<br />
+                            評分: {rate}&emsp;
+                            <Stars
+                                stars={rate}
+                                size={20} //optional
+                                fill='#e7711b' //optional
+                            /><br/>
+                            電話: 沒有這個資訊:(<br />
+                            價格: {p}
+                            <RiMoneyDollarCircleLine size={22} color='#61a0f8'/><RiMoneyDollarCircleLine/>
+                        </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            OK
-                        </Button>
+                            <Button variant="secondary">
+                                <BsFillPinMapFill/> Check In
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                OK
+                            </Button>
                         </Modal.Footer>
                     </Modal>
-                    
+
                 </div>
             </div>
         );
@@ -184,14 +200,14 @@ const SimpleMap = (props) => {
     return (
         <div className="container">
             <div className="searchbar">
-                <div className="select-box">搜尋方式: 
+                <div className="select-box">搜尋方式:
                     <select value={searchType} onChange={handleType}>
                         <option>Name</option>
                         <option>Location</option>
                     </select>
                 </div>
                 <div>
-                    位置: <input ref={inputRef} type="text" onChange={handleInput} />
+                    位置: <input id='location' ref={inputRef} type="text" onChange={handleInput} />
                 </div>
                 <div>
                     <input name="other_tags" type="checkbox" id="wifi" value="wifi" />
