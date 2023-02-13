@@ -4,8 +4,9 @@
 */node_modules
 key.js
 # backend
-*/__pycache__
+**/__pycache__/
 .env
+**/flask_session/
 # testing
 /coverage
 

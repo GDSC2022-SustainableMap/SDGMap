@@ -1,20 +1,13 @@
 import googlemaps
-import os
 import json
-from os.path import join, dirname
-from dotenv import load_dotenv
 from PIL import Image
 import requests
 import io
 from flask import send_file
+from instance.config import Config
 
-dotenv_path = join(dirname(__file__), "../.env")
-cassette_path = join(dirname(__file__), "/vcr.yaml")
-load_dotenv(dotenv_path, override=True)
-
-GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
-GOOGLE_GEOLOCATION_API_KEY = os.environ.get("GOOGLE_GEOLOCATION_API_KEY")
-
+GOOGLE_PLACES_API_KEY = Config.GOOGLE_PLACES_API_KEY
+GOOGLE_GEOLOCATION_API_KEY = Config.GOOGLE_GEOLOCATION_API_KEY
 
 #Client
 gmaps = googlemaps.Client(key=GOOGLE_PLACES_API_KEY)

@@ -23,3 +23,10 @@ def getDistanceBetweenPointsNew(latitude1, longitude1, latitude2, longitude2, un
         return round(distance, 2)
     if unit == 'kilometers':
         return round(distance * 1.609344, 2)
+    
+def get_values(dl, values_list):
+    if isinstance(dl, dict):
+        values_list += dl.values()
+        map(lambda x: get_values(x, values_list), dl.values())
+    elif isinstance(dl, list):
+        map(lambda x: get_values(x, values_list), dl)
