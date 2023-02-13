@@ -114,33 +114,33 @@ const SimpleMap = (props) => {
         return (
             <div className="BoxText1">
                 <b>{name}</b>
-                <hr/>
-                地址: {addr}<br/>
+                <hr />
+                地址: {addr}<br />
                 評分: {rate}&emsp;
                 <Stars
                     stars={rate}
                     size={20} //optional
                     fill='#e7711b' //optional
-                /><br/>
+                /><br />
                 <div>
-                    電話: 沒有這個資訊:(<br/>
+                    電話: 沒有這個資訊:(<br />
                     <span>價格: {p}</span>
                     {/* 待完成：將此button靠右對齊 */}
-                    <Button variant="primary" onClick={handleShow}>
+                    <button variant="primary" onClick={handleShow}>
                         More info
-                    </Button>
+                    </button>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>{name}</Modal.Title>
+                            <Modal.Title>{name}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>wait for more information</Modal.Body>
                         <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            OK
-                        </Button>
+                            <button variant="secondary" onClick={handleClose}>
+                                OK
+                            </button>
                         </Modal.Footer>
                     </Modal>
-                    
+
                 </div>
             </div>
         );
@@ -184,14 +184,14 @@ const SimpleMap = (props) => {
     return (
         <div className="container">
             <div className="searchbar">
-                <div className="select-box">搜尋方式: 
+                <div className="select-box">搜尋方式:
                     <select value={searchType} onChange={handleType}>
                         <option>Name</option>
                         <option>Location</option>
                     </select>
                 </div>
                 <div>
-                    位置: <input ref={inputRef} type="text" onChange={handleInput} />
+                    位置: <input id='location' ref={inputRef} type="text" onChange={handleInput} />
                 </div>
                 <div>
                     <input name="other_tags" type="checkbox" id="wifi" value="wifi" />

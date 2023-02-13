@@ -4,7 +4,7 @@ import axios from 'axios';
 import Psd_reset from './password_reset';
 import './login.css';
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
-
+import Modal from 'react-bootstrap/Modal';
 export default function (props) {
     let [authMode, setAuthMode] = useState("signin")
     const changeAuthMode = () => {
@@ -80,7 +80,7 @@ export default function (props) {
                         </div>
                     </div>
                 </form >
-                <hr />
+                <hr className='hline'/>
                 {profile ? (
                     <div>
                         <img src={profile.picture} alt="user image" />
@@ -134,14 +134,14 @@ export default function (props) {
                                 placeholder="YYYY/MM/DD"
                             />
                         </div>
-                        <div className="form-group mt-3">
+                        {/* <div className="form-group mt-3">
                             <label className="login-label">Region</label>
                             <input
                                 type="text"
                                 className="form-control mt-1"
                                 placeholder=""
                             />
-                        </div>
+                        </div> */}
                         <div className="d-grid gap-2 mt-3">
                             <button type="submit" className="btn">
                                 Submit
