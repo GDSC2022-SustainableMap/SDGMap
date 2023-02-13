@@ -1,17 +1,16 @@
-from flask import Blueprint
 import requests
 
-cafenomad = Blueprint('cafenomad', __name__)
-
-@cafenomad.route('/', defaults={'name': ''},strict_slashes=False)
-@cafenomad.route("/<name>", methods=["GET"])
-def get_cafe(name):
+def get_cafe():
 	url = "https://cafenomad.tw/api/v1.2/cafes"
 	r = requests.get(url)
-	dict = r.json()
+	dict = r.json()		
+	return dict
 
-	if(name == ''):
-		return dict
 
-	#回傳包含搜尋字串的餐館
-	return list(filter(lambda x:name in x["name"],dict))
+
+def drop(obj):
+	drop_index = ["address", "city", "id" , "latitude", "mrt", "name", "longitude", "open_time"]
+	for drop in drop_index:
+		del obj[drop]
+
+	return obj

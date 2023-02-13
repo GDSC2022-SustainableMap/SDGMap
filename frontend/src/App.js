@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Home from './components/Home';
@@ -11,6 +10,7 @@ import Login from './components/Login/login';
 import Book from "./components/Book/book";
 
 function App() {
+  
   return (
     <div className="App">
       <NavBar />
