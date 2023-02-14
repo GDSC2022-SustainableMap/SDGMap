@@ -14,10 +14,11 @@ function User() {
     const changeSelectImage = () => {
 
     }
-
+    //Modal
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    //Badge Collection
 
     return (
         <div className='user-container'>
@@ -114,7 +115,18 @@ function User() {
                             </h2>
                             <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div className="accordion-body">
-                                    
+                                    <img className='badge1' src={require('../../Badge/n_careweak.png')} title='關懷弱勢' alt="關懷弱勢" />
+                                    <img className='badge1' src={require('../../Badge/n_envfriend.png')} title='友善環境' alt="友善環境" />
+                                    <img className='badge1' src={require('../../Badge/n_foodeduc.png')} title='食育教育' alt="食育教育" />
+                                    <img className='badge1' src={require('../../Badge/n_freetrade.png')} title='公平交易' alt="公平交易" />
+                                    <img className='badge1' src={require('../../Badge/n_localgred.png')} title='在地食材' alt="在地食材" />
+                                    <img className='badge1' src={require('../../Badge/n_organic.png')} title='有機小農' alt="有機小農" />
+                                    <img className='badge2' src={require('../../Badge/n_ovolacto.png')} title='蛋奶素' alt="蛋奶素" />
+                                    <img className='badge2' src={require('../../Badge/n_petfriend.png')} title='寵物友善' alt="寵物友善" />
+                                    <img className='badge2' src={require('../../Badge/n_noplastic.png')} title='減塑' alt="減塑" />
+                                    <img className='badge2' src={require('../../Badge/n_publicissue.png')} title='公共議題分享' alt="公共議題分享" />
+                                    <img className='badge2' src={require('../../Badge/n_stray.png')} title='流浪動物' alt="流浪動物" />
+                                    <img className='badge2' src={require('../../Badge/n_vegetarianism.png')} title='純素' alt="純素" />
                                 </div>
                             </div>
                         </div>
@@ -128,7 +140,7 @@ function User() {
                                 <div className="accordion-body"></div>
                             </div>
                         </div>
-                        <div className="accordion-item">
+                        {/* <div className="accordion-item">
                             <h2 className="accordion-header" id="flush-headingThree">
                                 <button className="accordion-button collapsed" id='btn3' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                                     Comments
@@ -137,7 +149,7 @@ function User() {
                             <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                 <div className="accordion-body"></div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
