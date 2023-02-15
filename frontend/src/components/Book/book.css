@@ -7,18 +7,23 @@ ul{
     margin: 0 auto;
     display: flex;
     padding: 15px;
-    background-color: #61a0f8;
+    background-color: white;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
 }
 .mark {
     flex: 0 0 30%;
-    background-color: #f08bc3;
+    background-color: #f8f6ed;
     margin: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
     border: 1px solid white;
+    color: #379878e7;
+}
+
+p{
+    background-color: rgba(170, 89, 64, 0.169);
+    color: #807f7f;
 }

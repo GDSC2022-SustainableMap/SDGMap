@@ -145,7 +145,6 @@ const SimpleMap = (props) => {
                             /><br/>
                             電話: 沒有這個資訊:(<br />
                             價格: {p}
-                            <RiMoneyDollarCircleLine size={22} color='#61a0f8'/><RiMoneyDollarCircleLine/>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary">
@@ -203,6 +202,20 @@ const SimpleMap = (props) => {
         // image.src=require(tmpsrc);
     }
 
+    const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
+        const imageRef = useRef(null);
+        return (
+          <img 
+            onMouseOver={() => {imageRef.current.src = secondaryImg;}}
+            onMouseOut={() => {imageRef.current.src= primaryImg;}}
+            src={primaryImg} 
+            alt={t}
+            title={t}
+            ref={imageRef}
+          />
+        )
+    }
+
     return (
         <div className="container">
             <div className="searchbar">
@@ -233,18 +246,18 @@ const SimpleMap = (props) => {
                     <label for="open">營業中</label>
                 </div>
                 <div className="badges">
-                    <button><img src={require('../../Badge/n_careweak.png')} title='關懷弱勢' alt="關懷弱勢" /></button>
-                    <button><img src={require('../../Badge/n_envfriend.png')} title='友善環境' alt="友善環境" /></button>
-                    <button><img src={require('../../Badge/n_foodeduc.png')} title='食育教育' alt="食育教育" /></button>
-                    <button><img src={require('../../Badge/n_freetrade.png')} title='公平交易' alt="公平交易" /></button>
-                    <button><img src={require('../../Badge/n_localgred.png')} title='在地食材' alt="在地食材" /></button>
-                    <button><img src={require('../../Badge/n_organic.png')} title='有機小農' alt="有機小農" /></button>
-                    <button><img src={require('../../Badge/n_ovolacto.png')} title='蛋奶素' alt="蛋奶素" /></button>
-                    <button><img src={require('../../Badge/n_petfriend.png')} title='寵物友善' alt="寵物友善" /></button>
-                    <button><img src={require('../../Badge/n_noplastic.png')} title='減塑' alt="減塑" /></button>
-                    <button><img src={require('../../Badge/n_publicissue.png')} title='公共議題分享' alt="公共議題分享" /></button>
-                    <button><img src={require('../../Badge/n_stray.png')} title='流浪動物' alt="流浪動物" /></button>
-                    <button><img src={require('../../Badge/n_vegetarianism.png')} title='純素' alt="純素" /></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_careweak.png')} secondaryImg={require('../../Badge/t_careweak.png')} t='關懷弱勢'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_envfriend.png')} secondaryImg={require('../../Badge/t_envfriend.png')} t='友善環境'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_foodeduc.png')} secondaryImg={require('../../Badge/t_foodeduc.png')} t='食育教育'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_freetrade.png')} secondaryImg={require('../../Badge/t_freetrade.png')} t='公平交易'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_localgred.png')} secondaryImg={require('../../Badge/t_localgred.png')} t='在地食材'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_organic.png')} secondaryImg={require('../../Badge/t_organic.png')} t='有機小農'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_ovolacto.png')} secondaryImg={require('../../Badge/t_ovolacto.png')} t='蛋奶素'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_petfriend.png')} secondaryImg={require('../../Badge/t_petfriend.png')} t='寵物友善'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_noplastic.png')} secondaryImg={require('../../Badge/t_noplastic.png')} t='減塑'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_publicissue.png')} secondaryImg={require('../../Badge/t_publicissue.png')} t='公共議題分享'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_stray.png')} secondaryImg={require('../../Badge/t_stray.png')} t='流浪動物'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_vegetarianism.png')} secondaryImg={require('../../Badge/t_vegetarianism.png')} t='純素'/></button>
                 </div>
                 <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
                 <input id="pos" type="button" value="Get Position" onClick={getLocation} />
