@@ -195,3 +195,15 @@ textarea {
 .accordion-body {
     background-color: #fcf7e2;
 }
+
+.accordion-body > img {
+    width: 12%;
+    /* margin: 0.4vh 0.5vw; */
+}
+
+.badge1{
+    margin: 0.4vh 1.2vw 0.4vh 0vw; 
+}
+.badge2{
+    margin: 0.4vh 0vw 0.4vh 1.2vw; 
+}

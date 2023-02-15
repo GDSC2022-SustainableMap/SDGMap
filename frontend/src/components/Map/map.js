@@ -197,34 +197,54 @@ const SimpleMap = (props) => {
         }
     }
 
+    const tag_Onoff = (image) => {
+        let tmpsrc = image.src;
+        // tmpsrc=tmpsrc.replace("n_", "t_");
+        // image.src=require(tmpsrc);
+    }
+
     return (
         <div className="container">
             <div className="searchbar">
-                <div className="select-box">搜尋方式:
+                <div className="select-box box">搜尋方式:
                     <select value={searchType} onChange={handleType}>
                         <option>Name</option>
                         <option>Location</option>
                     </select>
                 </div>
-                <div>
+                <div className="box">
                     位置: <input id='location' ref={inputRef} type="text" onChange={handleInput} />
                 </div>
-                <div>
-                    <input name="other_tags" type="checkbox" id="wifi" value="wifi" />
+                <div className="other_tag">
+                    <input type="checkbox" id="wifi" value="wifi" />
                     <label for="wifi">WiFi</label>
                 </div>
 
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="plug" value="plug" />
+                <div className="other_tag">
+                    <input type="checkbox" id="plug" value="plug" />
                     <label for="plug">插座</label>
                 </div>
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit" />
+                <div className="other_tag">
+                    <input type="checkbox" id="no-time-limit" value="no-time-limit" />
                     <label for="no-time-limit">不限時</label>
                 </div>
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="open" value="open" />
+                <div className="other_tag">
+                    <input type="checkbox" id="open" value="open" />
                     <label for="open">營業中</label>
+                </div>
+                <div className="badges">
+                    <button><img src={require('../../Badge/n_careweak.png')} title='關懷弱勢' alt="關懷弱勢" /></button>
+                    <button><img src={require('../../Badge/n_envfriend.png')} title='友善環境' alt="友善環境" /></button>
+                    <button><img src={require('../../Badge/n_foodeduc.png')} title='食育教育' alt="食育教育" /></button>
+                    <button><img src={require('../../Badge/n_freetrade.png')} title='公平交易' alt="公平交易" /></button>
+                    <button><img src={require('../../Badge/n_localgred.png')} title='在地食材' alt="在地食材" /></button>
+                    <button><img src={require('../../Badge/n_organic.png')} title='有機小農' alt="有機小農" /></button>
+                    <button><img src={require('../../Badge/n_ovolacto.png')} title='蛋奶素' alt="蛋奶素" /></button>
+                    <button><img src={require('../../Badge/n_petfriend.png')} title='寵物友善' alt="寵物友善" /></button>
+                    <button><img src={require('../../Badge/n_noplastic.png')} title='減塑' alt="減塑" /></button>
+                    <button><img src={require('../../Badge/n_publicissue.png')} title='公共議題分享' alt="公共議題分享" /></button>
+                    <button><img src={require('../../Badge/n_stray.png')} title='流浪動物' alt="流浪動物" /></button>
+                    <button><img src={require('../../Badge/n_vegetarianism.png')} title='純素' alt="純素" /></button>
                 </div>
                 <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
                 <input id="pos" type="button" value="Get Position" onClick={getLocation} />
