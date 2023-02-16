@@ -3,8 +3,9 @@ import { googleLogout, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import "./login.css";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
-import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 // import Psd_reset from "./password_reset";
 
 export default function Login(props) {
@@ -91,109 +92,98 @@ export default function Login(props) {
                         <Routes>
                             <Route exact path="/password_reset" element={<Psd_reset/>} />
                         </Routes> */}
-                            <a href="./password_reset">Forgot password?</a>
-                        </div>
-                        <div className="d-grid  mt-3">
-                            <button type="submit" className="btn" onClick={handleSubmit}>
-                                Submit
-                            </button>
-                        </div>
-                        <div className="text-center mt-2">
-                            Not registered yet?{" "}
-                            <span className="login-link" onClick={changeAuthMode}>
-                                Sign Up
-                            </span>
-                        </div>
-                    </div>
-                </form>
-                <hr />
-                {profile ? (
-                    <div>
-                        <img src={profile.picture} alt="user image" />
-                        <h3>User Logged in</h3>
-                        <p>Name: {profile.name}</p>
-                        <p>Email Address: {profile.email}</p>
-                        <button id="logout-btn" onClick={LogOut}>
-                            Log out
-                        </button>
-                    </div>
-                ) : (
-                    <button id="google-btn" onClick={() => login()}>
-                        <FcGoogle size={20} /> Sign in with Google
-                    </button>
-                )}
+              <Link to="/password_reset">Forgot password?</Link>
+              <a href="./password_reset">Forgot password?</a>
             </div>
-        );
-    }
-    return (
-        <div>
-            <div className="login-container">
-                <form className="login-form">
-                    <div className="form-content">
-                        <h3 className="title">Sign Up</h3>
-                        <div className="form-group mt-3">
-                            <label className="login-label">Username</label>
-                            <input
-                                type="text"
-                                className="form-control mt-1"
-                                placeholder="Username"
-                            />
-                        </div>
-                        <div className="form-group mt-3">
-                            <label className="login-label">Email address</label>
-                            <input
-                                type="email"
-                                className="form-control mt-1"
-                                placeholder="Email Address"
-                            />
-                        </div>
-                        <div className="form-group mt-3 text-left">
-                            <label className="login-label">Password</label>
-                            <input
-                                type="password"
-                                className="form-control mt-1"
-                                placeholder="Password"
-                            />
-                            {/* <a href="/password_reset">Forgot password?</a> */}
-                        </div>
-                        <div className="form-group mt-3">
-                            <label className="login-label">Birth</label>
-                            <input
-                                type="text"
-                                className="form-control mt-1"
-                                placeholder="YYYY/MM/DD"
-                            />
-                        </div>
-                        <div className="d-grid gap-2 mt-3">
-                            <button type="submit" className="btn">
-                                Submit
-                            </button>
-                        </div>
-                        <div className="text-center mt-2">
-                            Already registered?{" "}
-                            <span className="login-link" onClick={changeAuthMode}>
-                                Sign In
-                            </span>
-                        </div>
-
-                    </div>
-                </form>
-                {profile ? (
-                    <div>
-                        <img src={profile.picture} alt="user image" />
-                        <h3>User Logged in</h3>
-                        <p>Name: {profile.name}</p>
-                        <p>Email Address: {profile.email}</p>
-                        <button id="logout-btn" onClick={LogOut}>
-                            Log out
-                        </button>
-                    </div>
-                ) : (
-                    <button id="google-btn" onClick={() => login()}>
-                        <FcGoogle size={20} /> Sign Up with Google
-                    </button>
-                )}
+            <div className="d-grid  mt-3">
+              <button type="submit" className="btn" onClick={handleSubmit}>
+                Submit
+              </button>
             </div>
-        </div>
+            <div className="text-center mt-2">
+              Not registered yet?{" "}
+              <span className="login-link" onClick={changeAuthMode}>
+                Sign Up
+              </span>
+            </div>
+          </div>
+        </form>
+        <hr />
+        {profile ? (
+          <div>
+            <img src={profile.picture} alt="user image" />
+            <h3>User Logged in</h3>
+            <p>Name: {profile.name}</p>
+            <p>Email Address: {profile.email}</p>
+            <button id="logout-btn" onClick={LogOut}>
+              Log out
+            </button>
+          </div>
+        ) : (
+          <button id="google-btn" onClick={() => login()}>
+            <FcGoogle size={20} /> Sign in with Google
+          </button>
+        )}
+      </div>
     );
+  }
+  return (
+    <div>
+      <div className="login-container">
+        <form className="login-form">
+          <div className="form-content">
+            <h3 className="title">Sign Up</h3>
+            <div className="form-group mt-3">
+              <label className="login-label">Username</label>
+              <input
+                type="text"
+                className="form-control mt-1"
+                placeholder="Username"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="login-label">Email address</label>
+              <input
+                type="email"
+                className="form-control mt-1"
+                placeholder="Email Address"
+              />
+            </div>
+            <div className="form-group mt-3 text-left">
+              <label className="login-label">Password</label>
+              <input
+                type="password"
+                className="form-control mt-1"
+                placeholder="Password"
+              />
+              {/* <a href="/password_reset">Forgot password?</a> */}
+            </div>
+            <div className="form-group mt-3">
+              <label className="login-label">Birth</label>
+              <input
+                type="text"
+                className="form-control mt-1"
+                placeholder="YYYY/MM/DD"
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label className="login-label">Region</label>
+              <input type="text" className="form-control mt-1" placeholder="" />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn">
+                Submit
+              </button>
+            </div>
+            <div className="text-center mt-2">
+              Already registered?{" "}
+              <span className="login-link" onClick={changeAuthMode}>
+                Sign In
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }

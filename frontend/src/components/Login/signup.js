@@ -30,9 +30,6 @@ function Signup() {
     catch(error){
         console.log(error)
     }
-
-
-
     return rawResponse;
   };
 
