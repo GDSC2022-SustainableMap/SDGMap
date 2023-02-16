@@ -182,8 +182,9 @@ const SimpleMap = (props) => {
     }
 
     const tag_Onoff = (image) => {
-        let tmpsrc = image.src;
-        // tmpsrc=tmpsrc.replace("n_", "t_");
+        var tmpsrc = image.src;
+        tmpsrc=tmpsrc.replace("n_", "t_");
+        console.log(tmpsrc);
         // image.src=require(tmpsrc);
     }
 

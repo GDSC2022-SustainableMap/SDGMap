@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 4%;
+    margin: 2% 0;
     width: 100vw;
     height: 50%; 
 }
@@ -11,10 +11,9 @@
 .login-form {
     width: 420px;
     box-shadow: #00000029 1px 1px 10px;
-    padding-top: 30px;
-    padding-bottom: 20px;
+    padding: 2vh 0;
     border-radius: 8px;
-    margin: 3vh 0;
+    margin: 4vh 0;
     background-color: #fffef9;
     border-color: #ffffe8;
 }
