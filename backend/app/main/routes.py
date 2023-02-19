@@ -12,22 +12,22 @@ def get_spot_from_name():
         "target_place": receive['target_place'],
     }
 
-    try:
-        gmap_result = place_name_search(params)["candidates"][0]
-        cafenomad_raw = get_cafe()
+    # try:
+    gmap_result = place_name_search(params)["candidates"][0]
+    cafenomad_raw = get_cafe()
 
 
 
-        cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
-        cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
-        if cafenomad_result:
-            cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
-            cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
-            merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
-            return merged_result
-        return gmap_result
-    except:
-        return {}
+    cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
+    cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
+    if cafenomad_result:
+        cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
+        cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
+        merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
+        return merged_result
+    return gmap_result
+    # except:
+    #     return {}
 
 #if you don't want to use condition in this api, just let condition be {}.
 @bp.route("/radius_search", methods=['POST'])
@@ -35,8 +35,8 @@ def get_spot_from_radius():
 
     receive = request.get_json()
     params = {
-        "lat": receive["lat"],
-        "lng": receive["lng"],
+        "lat": float(receive["lat"]),
+        "lng": float(receive["lng"]),
         "condition": receive["condition"]
     }
 

@@ -36,7 +36,7 @@ def place_name_search(params):
             location_bias = "circle:10000@24.801798905507397,120.97159605610153",
             language = "zh-TW"
         )
-    get_references_from_a_spot("ChIJb1dSFvo2aDQRVIbVaIC8rXc",10, 500, 500)
+    get_references_from_a_spot("ChIJb1dSFvo2aDQRVIbVaIC8rXc",10)
     return place_search
 
 def place_arbitrary_search(params):
