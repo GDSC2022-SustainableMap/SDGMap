@@ -19,7 +19,7 @@
     border-color: #ffffe8;
 }
 
-hr { 
+.hline { 
     display: block; 
     margin: 5vh 0; 
     width: 36%;
@@ -73,7 +73,7 @@ hr {
 
 .btn{
     background-color: #61C0BF;
-    border-color: #61C0BF;
+    border: none;
     color: #ffffff;
 }
 

@@ -8,6 +8,7 @@ import Map from './components/Map/map';
 import User from './components/User/user';
 import Login from './components/Login/login';
 import Book from "./components/Book/book";
+import PasswordReset from './components/Login/password_reset';
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/sdgbook" element={<Book />} />
         <Route exact path="/user" element={<User />} />
         <Route exact path="/signin" element={<Login/>} />
+        <Route exact path="/password_reset"  element={<PasswordReset/>}/>
       </Routes>
     </div>
   );

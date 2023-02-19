@@ -4,6 +4,8 @@ import axios from "axios";
 import "./login.css";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 import { useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 // import Psd_reset from "./password_reset";
 
 export default function Login (props) {
@@ -90,6 +92,7 @@ export default function Login (props) {
                         <Routes>
                             <Route exact path="/password_reset" element={<Psd_reset/>} />
                         </Routes> */}
+              <Link to="/password_reset">Forgot password?</Link>
               <a href="./password_reset">Forgot password?</a>
             </div>
             <div className="d-grid  mt-3">

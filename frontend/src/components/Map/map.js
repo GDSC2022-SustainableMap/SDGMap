@@ -7,6 +7,8 @@ import './map.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Stars from './Stars';
+import { RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { BsFillPinMapFill } from 'react-icons/bs';
 
 // Map
 const SimpleMap = (props) => {
@@ -114,33 +116,46 @@ const SimpleMap = (props) => {
         return (
             <div className="BoxText1">
                 <b>{name}</b>
-                <hr/>
-                地址: {addr}<br/>
+                <hr />
+                地址: {addr}<br />
                 評分: {rate}&emsp;
                 <Stars
                     stars={rate}
                     size={20} //optional
                     fill='#e7711b' //optional
-                /><br/>
+                /><br />
                 <div>
-                    電話: 沒有這個資訊:(<br/>
-                    <span>價格: {p}</span>
+                    電話: 沒有這個資訊:(<br />
+                    價格: {p}<br/>
                     {/* 待完成：將此button靠右對齊 */}
                     <Button variant="primary" onClick={handleShow}>
                         More info
                     </Button>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>{name}</Modal.Title>
+                            <Modal.Title>{name}</Modal.Title>
                         </Modal.Header>
-                        <Modal.Body>wait for more information</Modal.Body>
+                        <Modal.Body>
+                            地址: {addr}<br />
+                            評分: {rate}&emsp;
+                            <Stars
+                                stars={rate}
+                                size={20} //optional
+                                fill='#e7711b' //optional
+                            /><br/>
+                            電話: 沒有這個資訊:(<br />
+                            價格: {p}
+                        </Modal.Body>
                         <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            OK
-                        </Button>
+                            <Button variant="secondary">
+                                <BsFillPinMapFill/> Check In
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                OK
+                            </Button>
                         </Modal.Footer>
                     </Modal>
-                    
+
                 </div>
             </div>
         );
@@ -181,34 +196,68 @@ const SimpleMap = (props) => {
         }
     }
 
+    const tag_Onoff = (image) => {
+        let tmpsrc = image.src;
+        // tmpsrc=tmpsrc.replace("n_", "t_");
+        // image.src=require(tmpsrc);
+    }
+
+    const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
+        const imageRef = useRef(null);
+        return (
+          <img 
+            onMouseOver={() => {imageRef.current.src = secondaryImg;}}
+            onMouseOut={() => {imageRef.current.src= primaryImg;}}
+            src={primaryImg} 
+            alt={t}
+            title={t}
+            ref={imageRef}
+          />
+        )
+    }
+
     return (
         <div className="container">
             <div className="searchbar">
-                <div className="select-box">搜尋方式: 
+                <div className="select-box box">搜尋方式:
                     <select value={searchType} onChange={handleType}>
                         <option>Name</option>
                         <option>Location</option>
                     </select>
                 </div>
-                <div>
-                    位置: <input ref={inputRef} type="text" onChange={handleInput} />
+                <div className="box">
+                    位置: <input id='location' ref={inputRef} type="text" onChange={handleInput} />
                 </div>
-                <div>
-                    <input name="other_tags" type="checkbox" id="wifi" value="wifi" />
+                <div className="other_tag">
+                    <input type="checkbox" id="wifi" value="wifi" />
                     <label for="wifi">WiFi</label>
                 </div>
 
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="plug" value="plug" />
+                <div className="other_tag">
+                    <input type="checkbox" id="plug" value="plug" />
                     <label for="plug">插座</label>
                 </div>
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="no-time-limit" value="no-time-limit" />
+                <div className="other_tag">
+                    <input type="checkbox" id="no-time-limit" value="no-time-limit" />
                     <label for="no-time-limit">不限時</label>
                 </div>
-                <div>
-                    <input className="other_tag" name="other_tags" type="checkbox" id="open" value="open" />
+                <div className="other_tag">
+                    <input type="checkbox" id="open" value="open" />
                     <label for="open">營業中</label>
+                </div>
+                <div className="badges">
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_careweak.png')} secondaryImg={require('../../Badge/t_careweak.png')} t='關懷弱勢'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_envfriend.png')} secondaryImg={require('../../Badge/t_envfriend.png')} t='友善環境'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_foodeduc.png')} secondaryImg={require('../../Badge/t_foodeduc.png')} t='食育教育'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_freetrade.png')} secondaryImg={require('../../Badge/t_freetrade.png')} t='公平交易'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_localgred.png')} secondaryImg={require('../../Badge/t_localgred.png')} t='在地食材'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_organic.png')} secondaryImg={require('../../Badge/t_organic.png')} t='有機小農'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_ovolacto.png')} secondaryImg={require('../../Badge/t_ovolacto.png')} t='蛋奶素'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_petfriend.png')} secondaryImg={require('../../Badge/t_petfriend.png')} t='寵物友善'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_noplastic.png')} secondaryImg={require('../../Badge/t_noplastic.png')} t='減塑'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_publicissue.png')} secondaryImg={require('../../Badge/t_publicissue.png')} t='公共議題分享'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_stray.png')} secondaryImg={require('../../Badge/t_stray.png')} t='流浪動物'/></button>
+                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_vegetarianism.png')} secondaryImg={require('../../Badge/t_vegetarianism.png')} t='純素'/></button>
                 </div>
                 <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
                 <input id="pos" type="button" value="Get Position" onClick={getLocation} />

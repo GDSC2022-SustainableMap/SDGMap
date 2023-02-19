@@ -11,7 +11,7 @@ function NavBar(){
     return(
         <nav className="nav">
             <div className="logo">
-            <Link to="/">SDGMap</Link>
+            <Link to="/map">SDGMap</Link>
             </div>
             <div className="container">
                 <div className="main_list" id="mainListDiv">
