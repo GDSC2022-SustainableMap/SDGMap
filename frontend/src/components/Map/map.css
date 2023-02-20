@@ -142,3 +142,12 @@
     margin: 0;
     /* margin-left: 0.4vw; */
   }
+
+  .ant-layout .ant-layout-sider-trigger{
+    background-color: #BBDED6;
+  }
+  .ant-layout-sider-children{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

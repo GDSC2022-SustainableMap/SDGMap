@@ -1,43 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Key } from "../../key"; // 引入 API key
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
 import "./map.css";
 import Modal from "react-bootstrap/Modal";
 import Stars from "./Stars";
-import { BsFillGeoAltFill } from "react-icons/bs";
-import {
-  Layout,
-  theme,
-  Input,
-  Select,
-  Table,
-  Checkbox,
+import { BsFillGeoAltFill, BsSearch } from "react-icons/bs";
+import { Layout, theme, Input, Select, Table, Checkbox, Drawer } from "antd";
 
-  Drawer,
-
-} from "antd";
-
-const { Content, Sider } = Layout;
-const { Option } = Select;
-const SearchType = ["Name", "Location"];
-
-const options = [
-  { label: "WI-FI", value: "wi-fi" },
-  { label: "插座", value: "socket" },
-  { label: "不限時", value: "time_unlimited" },
-  { label: "營業中", value: "operation" },
-];
-const columns = [
-  {
-    title: "地點名稱",
-    dataIndex: "name",
-  },
-  {
-    title: "評分",
-    dataIndex: "rating",
-  },
-];
 // Map
 const SimpleMap = (props) => {
   const [places, setPlaces] = useState([]);
@@ -45,7 +15,10 @@ const SimpleMap = (props) => {
   const [searchType, setSearchType] = useState("Name");
   // 建立 state，供地圖本身做參考，以改變地圖視角
   const [currentCenter, setCurrentCenter] = useState(props.center);
-
+  //table loading
+  const [loading, setLoading] = useState(false);
+  //sider collapse or not
+  const [collapsed, setCollapsed] = useState(false);
   // Cafe Marker
   const Marker = ({ text, addr, price, rate }) => {
     const [open, setOpen] = useState(false);
@@ -59,7 +32,7 @@ const SimpleMap = (props) => {
     };
 
     return (
-      <div>
+      <div style={{ cursor: "pointer" }}>
         <Drawer
           title={`地點資訊`}
           placement="right"
@@ -81,6 +54,7 @@ const SimpleMap = (props) => {
   //search by 名字, ex: 墨咖啡
   const findByName = async () => {
     try {
+      setLoading(true);
       rawResponse = (
         await axios.post("http://127.0.0.1:5000/name_search", {
           target_place: inputText,
@@ -92,7 +66,7 @@ const SimpleMap = (props) => {
     }
 
     setPlaces([rawResponse]);
-    console.log(rawResponse);
+    setLoading(false);
     setCurrentCenter([
       rawResponse.geometry.location.lat,
       rawResponse.geometry.location.lng,
@@ -103,8 +77,7 @@ const SimpleMap = (props) => {
   //search by location, ex: 24.801798905507397,120.97159605610153
   const findByLocation = async () => {
     try {
-      console.log(inputText.split(",")[0]);
-      console.log(inputText.split(",")[1]);
+      setLoading(true);
       rawResponse = (
         await axios.post("http://127.0.0.1:5000/radius_search", {
           lat: parseFloat(inputText.split(",")[0]),
@@ -129,7 +102,7 @@ const SimpleMap = (props) => {
     }
 
     setPlaces(rawResponse);
-    console.log(rawResponse);
+    setLoading(false);
     setCurrentCenter([
       rawResponse[0].geometry.location.lat,
       rawResponse[0].geometry.location.lng,
@@ -208,14 +181,6 @@ const SimpleMap = (props) => {
     );
   };
 
-  //   const RenderResult = () => {
-  //     // console.log(FakeData);
-  //     // setPlaces(FakeData.results);
-  //     // show the info sidebar
-  //     let info_sidebar = document.querySelector(".info_sidebar");
-  //     info_sidebar.style.display = "block";
-  //   };
-
   /* To get user position */
   const showLocation = (position) => {
     var latitude = position.coords.latitude;
@@ -278,6 +243,27 @@ const SimpleMap = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const { Content, Sider } = Layout;
+  const { Option } = Select;
+  const SearchType = ["Name", "Location"];
+
+  const options = [
+    { label: "WI-FI", value: "wi-fi" },
+    { label: "插座", value: "socket" },
+    { label: "不限時", value: "time_unlimited" },
+    { label: "營業中", value: "operation" },
+  ];
+  const columns = [
+    {
+      title: "地點名稱",
+      dataIndex: "name",
+    },
+    {
+      title: "評分",
+      sorter: (a, b) => a.rating - b.rating,
+      dataIndex: "rating",
+    },
+  ];
   return (
     <Layout className="layout">
       <Content style={{ height: "92.5vh" }}>
@@ -290,193 +276,218 @@ const SimpleMap = (props) => {
           hasSider
         >
           <Sider
-            style={{
-              background: colorBgContainer,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              // overflow: 'auto',
-              // height: '100vh',
-              // position: 'fixed',
-              // left: 0,
-              // top: '7.5%',
-              // bottom: 0,
-            }}
+            style={
+              collapsed
+                ? {
+                    background: colorBgContainer,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    transition: "0.25s",
+                    cursor: "pointer",
+                  }
+                : {
+                    background: colorBgContainer,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    transition: "0.25s",
+                  }
+            }
             width={400}
+            collapsible
+            collapsed={collapsed}
+            onCollapse={(value) => {
+              setCollapsed(value);
+            }}
+            onClick={() => {
+              if (collapsed) {
+                setCollapsed(!collapsed);
+              }
+            }}
           >
-            <div style={{ paddingTop: "10px" }}>
-              搜尋方式
+            {collapsed ? (
               <div>
-                <Select
-                  defaultValue="Name"
-                  value={searchType}
-                  onChange={(e) => {
-                    setSearchType(e);
+                <BsSearch />
+              </div>
+            ) : (
+              <div>
+                <div style={{ paddingTop: "10px" }}>
+                  搜尋方式
+                  <div>
+                    <Select
+                      defaultValue="Name"
+                      value={searchType}
+                      onChange={(e) => {
+                        setSearchType(e);
+                      }}
+                    >
+                      {SearchType.map((item, id) => (
+                        <Option key={id} value={item}>
+                          {item}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+                <Input.Group compact style={{ paddingTop: "10px" }}>
+                  <div style={{ paddingTop: "10px" }}>
+                    Name / Location
+                    <div>
+                      <Input
+                        style={{ width: "90%" }}
+                        onChange={(e) => {
+                          setInputText(e.target.value);
+                        }}
+                        placeholder="墨咖啡/24.801,120.971"
+                      />
+                    </div>
+                  </div>
+                </Input.Group>
+                <div style={{ paddingTop: "10px" }}>店家條件:</div>
+                <Checkbox.Group
+                  style={{ paddingTop: "10px" }}
+                  options={options}
+                />
+                <div style={{ paddingTop: "10px" }}>
+                  永續指標:
+                  <div className="badges">
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_careweak.png")}
+                        secondaryImg={require("../../Badge/t_careweak.png")}
+                        t="關懷弱勢"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_envfriend.png")}
+                        secondaryImg={require("../../Badge/t_envfriend.png")}
+                        t="友善環境"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_foodeduc.png")}
+                        secondaryImg={require("../../Badge/t_foodeduc.png")}
+                        t="食育教育"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_freetrade.png")}
+                        secondaryImg={require("../../Badge/t_freetrade.png")}
+                        t="公平交易"
+                      />
+                    </button>
+                  </div>
+                  <div className="badges">
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_localgred.png")}
+                        secondaryImg={require("../../Badge/t_localgred.png")}
+                        t="在地食材"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_organic.png")}
+                        secondaryImg={require("../../Badge/t_organic.png")}
+                        t="有機小農"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_ovolacto.png")}
+                        secondaryImg={require("../../Badge/t_ovolacto.png")}
+                        t="蛋奶素"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_petfriend.png")}
+                        secondaryImg={require("../../Badge/t_petfriend.png")}
+                        t="寵物友善"
+                      />
+                    </button>
+                  </div>
+                  <div className="badges">
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_noplastic.png")}
+                        secondaryImg={require("../../Badge/t_noplastic.png")}
+                        t="減塑"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_publicissue.png")}
+                        secondaryImg={require("../../Badge/t_publicissue.png")}
+                        t="公共議題分享"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_stray.png")}
+                        secondaryImg={require("../../Badge/t_stray.png")}
+                        t="流浪動物"
+                      />
+                    </button>
+                    <button>
+                      <ImageToggleOnMouseOver
+                        primaryImg={require("../../Badge/n_vegetarianism.png")}
+                        secondaryImg={require("../../Badge/t_vegetarianism.png")}
+                        t="純素"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    paddingTop: "10px",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                 >
-                  {SearchType.map((item, id) => (
-                    <Option key={id} value={item}>
-                      {item}
-                    </Option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-            <Input.Group compact style={{ paddingTop: "10px" }}>
-              <div style={{ paddingTop: "10px" }}>
-                Name / Location
-                <div>
-                  <Input
-                    style={{ width: "90%" }}
-                    onChange={(e) => {
-                      setInputText(e.target.value);
+                  <input
+                    id="name"
+                    type="button"
+                    value="開始搜尋"
+                    onClick={startSearch}
+                  />
+                  <input
+                    id="pos"
+                    type="button"
+                    value="Get Position"
+                    onClick={getLocation}
+                  />
+                </div>
+                <div style={{ paddingTop: "20px" }}>
+                  <Table
+                    loading={loading}
+                    style={{ cursor: "pointer" }}
+                    size="small"
+                    rowKey={(_, index) => index}
+                    columns={columns}
+                    dataSource={places}
+                    pagination={{ pageSize: 5 }}
+                    scroll={{ y: 170 }}
+                    onRow={(record, rowIndex) => {
+                      return {
+                        onClick: (e) => {
+                          setCurrentCenter([
+                            record.geometry.location.lat,
+                            record.geometry.location.lng,
+                          ]);
+                        }, // click row
+                      };
                     }}
-                    placeholder="墨咖啡/24.801,120.971"
                   />
                 </div>
               </div>
-            </Input.Group>
-            <div style={{ paddingTop: "10px" }}>店家條件:</div>
-            <Checkbox.Group style={{ paddingTop: "10px" }} options={options} />
-            <div style={{ paddingTop: "10px" }}>
-              永續指標:
-              <div className="badges">
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_careweak.png")}
-                    secondaryImg={require("../../Badge/t_careweak.png")}
-                    t="關懷弱勢"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_envfriend.png")}
-                    secondaryImg={require("../../Badge/t_envfriend.png")}
-                    t="友善環境"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_foodeduc.png")}
-                    secondaryImg={require("../../Badge/t_foodeduc.png")}
-                    t="食育教育"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_freetrade.png")}
-                    secondaryImg={require("../../Badge/t_freetrade.png")}
-                    t="公平交易"
-                  />
-                </button>
-              </div>
-              <div className="badges">
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_localgred.png")}
-                    secondaryImg={require("../../Badge/t_localgred.png")}
-                    t="在地食材"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_organic.png")}
-                    secondaryImg={require("../../Badge/t_organic.png")}
-                    t="有機小農"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_ovolacto.png")}
-                    secondaryImg={require("../../Badge/t_ovolacto.png")}
-                    t="蛋奶素"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_petfriend.png")}
-                    secondaryImg={require("../../Badge/t_petfriend.png")}
-                    t="寵物友善"
-                  />
-                </button>
-              </div>
-              <div className="badges">
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_noplastic.png")}
-                    secondaryImg={require("../../Badge/t_noplastic.png")}
-                    t="減塑"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_publicissue.png")}
-                    secondaryImg={require("../../Badge/t_publicissue.png")}
-                    t="公共議題分享"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_stray.png")}
-                    secondaryImg={require("../../Badge/t_stray.png")}
-                    t="流浪動物"
-                  />
-                </button>
-                <button>
-                  <ImageToggleOnMouseOver
-                    primaryImg={require("../../Badge/n_vegetarianism.png")}
-                    secondaryImg={require("../../Badge/t_vegetarianism.png")}
-                    t="純素"
-                  />
-                </button>
-              </div>
-            </div>
-            <div
-              style={{
-                paddingTop: "10px",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <input
-                id="name"
-                type="button"
-                value="開始搜尋"
-                onClick={startSearch}
-              />
-              <input
-                id="pos"
-                type="button"
-                value="Get Position"
-                onClick={getLocation}
-              />
-            </div>
-            {/* <Divider/> */}
-            <div style={{ paddingTop: "20px" }}>
-              <Table
-                size="small"
-                rowKey={(_, index) => index}
-                columns={columns}
-                dataSource={places}
-                pagination={{ pageSize: 5 }}
-                scroll={{ y: 170 }}
-                onRow={(record, rowIndex) => {
-                  return {
-                    onClick: (e) => {
-                      setCurrentCenter([0, 0]);
-
-                      setCurrentCenter([
-                        record.geometry.location.lat,
-                        record.geometry.location.lng,
-                      ]);
-
-                      console.log(currentCenter);
-                    }, // click row
-                  };
-                }}
-              />
-            </div>
-            {/* <Divider /> */}
+            )}
           </Sider>
           <Content>
             <GoogleMapReact
