@@ -9,6 +9,8 @@ import Modal from 'react-bootstrap/Modal';
 import Stars from './Stars';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { BsFillPinMapFill } from 'react-icons/bs';
+import Badges from "../Badge/badge";
+import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 
 // Map
 const SimpleMap = (props) => {
@@ -104,38 +106,48 @@ const SimpleMap = (props) => {
         }
     }
 
+
     const InfoBlock = ({ name, addr, price, rate }) => {
         let p = "";
         for (let i = 0; i < price; i++) {
             p = p + "$";
         }
+        // for modal
         const [show, setShow] = useState(false);
-
         const handleClose = () => setShow(false);
         const handleShow = () => setShow(true);
-        return (
-            <div className="BoxText1">
-                <b>{name}</b>
-                <hr />
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                <Stars
-                    stars={rate}
-                    size={20} //optional
-                    fill='#e7711b' //optional
-                /><br />
-                <div>
-                    電話: 沒有這個資訊:(<br />
-                    價格: {p}<br/>
-                    {/* 待完成：將此button靠右對齊 */}
-                    <Button variant="primary" onClick={handleShow}>
+        const [liked, setIsLiked] = useState(false);
+        return ( 
+            <div className="card">
+                <h6 className="card-header">
+                    <b>{name}</b>
+                    {liked?
+                    <MDBBtn size="sm" className='ms-1' tag='a' color='danger' floating style={{float:'right'}} onClick={() => setIsLiked(!liked)}>
+                        <MDBIcon far icon="star"/>
+                    </MDBBtn>:
+                    <MDBBtn size="sm" className='ms-1' tag='a' color='danger' outline floating style={{float:'right'}} onClick={() => setIsLiked(!liked)}>
+                        <MDBIcon far icon="star"/>
+                    </MDBBtn>}
+                </h6>
+                <div className="card-body">
+                    <Badges/>
+                    {addr}<br/>
+                    {rate}&nbsp;
+                    <Stars
+                        stars={rate}
+                        size={20} //optional
+                        fill='#e7711b' //optional
+                    />&emsp;{p}
+                    <span style={{float:'right'}}>
+                    <Button variant="primary" size='sm' onClick={handleShow}>
                         More info
-                    </Button>
+                    </Button></span>
                     <Modal show={show} onHide={handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>{name}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
+                            <Badges/>
                             地址: {addr}<br />
                             評分: {rate}&emsp;
                             <Stars
@@ -155,18 +167,17 @@ const SimpleMap = (props) => {
                             </Button>
                         </Modal.Footer>
                     </Modal>
-
                 </div>
-            </div>
+            </div> 
         );
     }
-
+    // state for showing search result
+    const [searchBtnClicked, setSearchBtn] = useState(false);
     const RenderResult = () => {
         console.log(FakeData);
         setPlaces(FakeData.results);
         // show the info sidebar
-        let info_sidebar = document.querySelector('.info_sidebar');
-        info_sidebar.style.display = "block";
+        setSearchBtn(true);
     }
 
     /* To get user position */
@@ -179,10 +190,10 @@ const SimpleMap = (props) => {
     }
 
     const errorHandler = (err) => {
-        if (err.code == 1) {
+        if (err.code === 1) {
             alert("Error: Access is denied!");
-        } else if (err.code == 2) {
-            alert("Error: Position is unavailable!");
+        } else if (err.code === 2) {
+            alert("Error: We need your position to finish the search!");
         }
     }
 
@@ -196,11 +207,6 @@ const SimpleMap = (props) => {
         }
     }
 
-    const tag_Onoff = (image) => {
-        let tmpsrc = image.src;
-        // tmpsrc=tmpsrc.replace("n_", "t_");
-        // image.src=require(tmpsrc);
-    }
 
     const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
         const imageRef = useRef(null);
@@ -264,7 +270,8 @@ const SimpleMap = (props) => {
 
             </div>
             <div className="container2">
-                <div className="info_sidebar" style={{ display: "none" }}>
+                {searchBtnClicked?
+                <div className="info_sidebar">
                     <div className="infos" style={{ textAlign: "left" }}>
                         {places.map((item) => (
                             <InfoBlock
@@ -275,7 +282,7 @@ const SimpleMap = (props) => {
                             />
                         ))}
                     </div>
-                </div>
+                </div>:<></>}
                 <div className="map">
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: Key, libraries: ["places"] }}

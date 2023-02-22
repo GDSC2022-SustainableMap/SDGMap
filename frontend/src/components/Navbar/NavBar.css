@@ -1,4 +1,4 @@
-.nav{
+.nav-header{
     width: 100%;
     height: 65px;
     position: relative;
@@ -7,48 +7,52 @@
     background-color: #61C0BF;
 }
 
-.nav div.logo{
+.nav-header div.logo{
     width: 180px;
     height: 10px;
     position: absolute;
 }
 
-.nav div.logo a{
+.nav-header div.logo a{
     text-decoration: none;
     color: #fff;
     font-size: 1.8em;
     /* text-transform: uppercase; */
 }
 
-.nav div.logo a:hover {
+.nav-header div.logo a:hover {
     color: #c0c0c0;
 }
 
-.nav div.main_list{
-    width: 500px;
+.nav-header div.main_list{
+    width: auto;
     height: 65px;
     float: right;
 }
 
-.nav div.main_list ul{
+.nav-header div.main_list ul{
     width:100%;
     height: 65px;
     display: flex;
     list-style: none;
+    justify-content: flex-end;
+    
 }
 
-.nav div.main_list ul li{
-    width: 180px;
-    height: 65px;
+.nav-header div.main_list ul li{
+    width: auto;
+    height: auto;
+    margin: 3px;
+    border: 1.5px;
 }
 
-.nav div.main_list ul li a{
+.nav-header div.main_list ul li a{
     text-decoration: none;
     color: #fff;
     line-height: 65px;
     /* text-transform: uppercase; */
 }
 
-.nav div.main_list ul li a:hover{
+.nav-header div.main_list ul li a:hover{
     color: #c0c0c0;
 }
