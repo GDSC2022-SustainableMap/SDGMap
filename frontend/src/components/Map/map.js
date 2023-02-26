@@ -13,15 +13,10 @@ import { BsFillPinMapFill } from 'react-icons/bs';
 // Map
 const SimpleMap = (props) => {
     // 預設位置
-    const [myPosition, setMyPosition] = useState({
-        lat: 24.7876434209,
-        lng: 120.9973572689,
-    });
-
+    const [myPosition, setMyPosition] = useState({ lat: 24.7876434209, lng: 120.9973572689 });
     const [mapApiLoaded, setMapApiLoaded] = useState(false);
     const [mapInstance, setMapInstance] = useState(null);
     const [places, setPlaces] = useState([]);
-
     const [inputText, setInputText] = useState("");
     const [searchType, setSearchType] = useState("Name");
     // 建立 state，供地圖本身做參考，以改變地圖視角
@@ -41,8 +36,6 @@ const SimpleMap = (props) => {
     // Cafe Marker
     const Marker = ({ icon, text }) => (
         <div>
-            {/* <img style={{ height: '30px', width: '30px' }} src={icon} />
-    <div>{text}</div> */}
             <img className="location_icon" src={icon} alt="location_icon" />
             <div className="location_name">{text}</div>
         </div>
@@ -95,70 +88,16 @@ const SimpleMap = (props) => {
     };
 
     const startSearch = () => {
-        RenderResult();
-        if (searchType === "Name") {
-            findByName();
+        if (navigator.geolocation) {
+            var options = { timeout: 60000 };
+            navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
         }
         else {
-            findByLocation();
+            alert("Geolocation not supported by this browser.")
         }
-    }
 
-    const InfoBlock = ({ name, addr, price, rate }) => {
-        let p = "";
-        for (let i = 0; i < price; i++) {
-            p = p + "$";
-        }
-        const [show, setShow] = useState(false);
-
-        const handleClose = () => setShow(false);
-        const handleShow = () => setShow(true);
-        return (
-            <div className="BoxText1">
-                <b>{name}</b>
-                <hr />
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                <Stars
-                    stars={rate}
-                    size={20} //optional
-                    fill='#e7711b' //optional
-                /><br />
-                <div>
-                    電話: 沒有這個資訊:(<br />
-                    價格: {p}<br/>
-                    {/* 待完成：將此button靠右對齊 */}
-                    <Button variant="primary" onClick={handleShow}>
-                        More info
-                    </Button>
-                    <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{name}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            地址: {addr}<br />
-                            評分: {rate}&emsp;
-                            <Stars
-                                stars={rate}
-                                size={20} //optional
-                                fill='#e7711b' //optional
-                            /><br/>
-                            電話: 沒有這個資訊:(<br />
-                            價格: {p}
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary">
-                                <BsFillPinMapFill/> Check In
-                            </Button>
-                            <Button variant="secondary" onClick={handleClose}>
-                                OK
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                </div>
-            </div>
-        );
+        if (searchType === "Name") findByName();
+        else findByLocation();
     }
 
     const RenderResult = () => {
@@ -176,6 +115,7 @@ const SimpleMap = (props) => {
         alert("Latitude: " + position.coords.latitude +
             "\nLongitude: " + position.coords.longitude);
         setCurrentCenter([latitude, longitude]);
+        RenderResult();
     }
 
     const errorHandler = (err) => {
@@ -186,36 +126,85 @@ const SimpleMap = (props) => {
         }
     }
 
-    const getLocation = () => {
-        if (navigator.geolocation) {
-            var options = { timeout: 60000 };
-            navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+    // merge in start search
+    // const getLocation = () => {
+    //     if (navigator.geolocation) {
+    //         var options = { timeout: 60000 };
+    //         navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+    //     }
+    //     else {
+    //         alert("Geolocation not supported by this browser.")
+    //     }
+    // }
+    // Store Info Sidebar
+    const InfoBlock = ({ name, addr, price, rate }) => {
+        let p = "";
+        for (let i = 0; i < price; i++) {
+            p = p + "$";
         }
-        else {
-            alert("Geolocation not supported by this browser.")
-        }
-    }
-
-    const tag_Onoff = (image) => {
-        var tmpsrc = image.src;
-        tmpsrc=tmpsrc.replace("n_", "t_");
-        console.log(tmpsrc);
-        // image.src=require(tmpsrc);
-    }
-
-    const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
-        const imageRef = useRef(null);
+        const [show, setShow] = useState(false);
+        const handleClose = () => setShow(false);
+        const handleShow = () => setShow(true);
         return (
-          <img 
-            onMouseOver={() => {imageRef.current.src = secondaryImg;}}
-            onMouseOut={() => {imageRef.current.src= primaryImg;}}
-            src={primaryImg} 
-            alt={t}
-            title={t}
-            ref={imageRef}
-          />
-        )
+            <div className="BoxText1">
+                <b>{name}</b>
+                <hr />
+                地址: {addr}<br />
+                評分: {rate}&emsp;
+                <Stars
+                    stars={rate}
+                    size={20} //optional
+                    fill='#e7711b' //optional
+                /><br />
+                <div>
+                    電話: 沒有這個資訊:(<br />
+                    價格: {p}<br />
+                    {/* 待完成：將此button靠右對齊 */}
+                    <Button variant="primary" onClick={handleShow}>
+                        More info
+                    </Button>
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{name}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            地址: {addr}<br />
+                            評分: {rate}&emsp;
+                            <Stars
+                                stars={rate}
+                                size={20} //optional
+                                fill='#e7711b' //optional
+                            /><br />
+                            電話: 沒有這個資訊:(<br />
+                            價格: {p}
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary">
+                                <BsFillPinMapFill /> Check In
+                            </Button>
+                            <Button variant="secondary" onClick={handleClose}>
+                                OK
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                </div>
+            </div>
+        );
     }
+    // Badge Image button on/off
+    const [badge1, setBadge1] = useState(false);
+    const [badge2, setBadge2] = useState(false);
+    const [badge3, setBadge3] = useState(false);
+    const [badge4, setBadge4] = useState(false);
+    const [badge5, setBadge5] = useState(false);
+    const [badge6, setBadge6] = useState(false);
+    const [badge7, setBadge7] = useState(false);
+    const [badge8, setBadge8] = useState(false);
+    const [badge9, setBadge9] = useState(false);
+    const [badge10, setBadge10] = useState(false);
+    const [badge11, setBadge11] = useState(false);
+    const [badge12, setBadge12] = useState(false);
 
     return (
         <div className="container">
@@ -247,22 +236,55 @@ const SimpleMap = (props) => {
                     <label for="open">營業中</label>
                 </div>
                 <div className="badges">
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_careweak.png')} secondaryImg={require('../../Badge/t_careweak.png')} t='關懷弱勢'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_envfriend.png')} secondaryImg={require('../../Badge/t_envfriend.png')} t='友善環境'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_foodeduc.png')} secondaryImg={require('../../Badge/t_foodeduc.png')} t='食育教育'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_freetrade.png')} secondaryImg={require('../../Badge/t_freetrade.png')} t='公平交易'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_localgred.png')} secondaryImg={require('../../Badge/t_localgred.png')} t='在地食材'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_organic.png')} secondaryImg={require('../../Badge/t_organic.png')} t='有機小農'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_ovolacto.png')} secondaryImg={require('../../Badge/t_ovolacto.png')} t='蛋奶素'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_petfriend.png')} secondaryImg={require('../../Badge/t_petfriend.png')} t='寵物友善'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_noplastic.png')} secondaryImg={require('../../Badge/t_noplastic.png')} t='減塑'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_publicissue.png')} secondaryImg={require('../../Badge/t_publicissue.png')} t='公共議題分享'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_stray.png')} secondaryImg={require('../../Badge/t_stray.png')} t='流浪動物'/></button>
-                    <button><ImageToggleOnMouseOver primaryImg={require('../../Badge/n_vegetarianism.png')} secondaryImg={require('../../Badge/t_vegetarianism.png')} t='純素'/></button>
+                    <button>
+                        <img id="badge1" title='關懷弱勢' alt="關懷弱勢" onClick={() => setBadge1(prevMode => !prevMode)}
+                            src={badge1 ? require('../../Badge/t_careweak.png') : require('../../Badge/n_careweak.png')} />
+                    </button>
+                    <button>
+                        <img id="badge2" title='友善環境' alt="友善環境" onClick={() => setBadge2(prevMode => !prevMode)}
+                            src={badge2 ? require('../../Badge/t_envfriend.png') : require('../../Badge/n_envfriend.png')} />
+                    </button>
+                    <button>
+                        <img id="badge3" title='食育教育' alt="食育教育" onClick={() => setBadge3(prevMode => !prevMode)}
+                            src={badge3 ? require('../../Badge/t_foodeduc.png') : require('../../Badge/n_foodeduc.png')} />
+                    </button>
+                    <button>
+                        <img id="badge4" title='公平交易' alt="公平交易" onClick={() => setBadge4(prevMode => !prevMode)}
+                            src={badge4 ? require('../../Badge/t_freetrade.png') : require('../../Badge/n_freetrade.png')} />
+                    </button>
+                    <button>
+                        <img id="badge5" title='在地食材' alt="在地食材" onClick={() => setBadge5(prevMode => !prevMode)}
+                            src={badge5 ? require('../../Badge/t_localgred.png') : require('../../Badge/n_localgred.png')} />
+                    </button>
+                    <button>
+                        <img id="badge6" title='有機小農' alt="有機小農" onClick={() => setBadge6(prevMode => !prevMode)}
+                            src={badge6 ? require('../../Badge/t_organic.png') : require('../../Badge/n_organic.png')} />
+                    </button>
+                    <button>
+                        <img id="badge7" title='蛋奶素' alt="蛋奶素" onClick={() => setBadge7(prevMode => !prevMode)}
+                            src={badge7 ? require('../../Badge/t_ovolacto.png') : require('../../Badge/n_ovolacto.png')} />
+                    </button>
+                    <button>
+                        <img id="badge8" title='寵物友善' alt="寵物友善" onClick={() => setBadge8(prevMode => !prevMode)}
+                             src={badge8 ? require('../../Badge/t_petfriend.png') : require('../../Badge/n_petfriend.png')} />
+                    </button>
+                    <button>
+                        <img id="badge9" title='減塑' alt="減塑" onClick={() => setBadge9(prevMode => !prevMode)}
+                            src={badge9 ? require('../../Badge/t_noplastic.png') : require('../../Badge/n_noplastic.png')} />
+                    </button>
+                    <button>
+                        <img id="badge10" title='公共議題分享' alt="公共議題分享" onClick={() => setBadge10(prevMode => !prevMode)}
+                            src={badge10 ? require('../../Badge/t_publicissue.png') : require('../../Badge/n_publicissue.png')} /></button>
+                    <button>
+                        <img id="badge11" title='流浪動物' alt="流浪動物" onClick={() => setBadge11(prevMode => !prevMode)}
+                            src={badge11 ? require('../../Badge/t_stray.png') : require('../../Badge/n_stray.png')} />
+                    </button>
+                    <button>
+                        <img id="badge12" title='純素' alt="純素" onClick={() => setBadge12(prevMode => !prevMode)}
+                            src={badge12 ? require('../../Badge/t_vegetarianism.png') : require('../../Badge/n_vegetarianism.png')} />
+                    </button>
                 </div>
                 <input id="name" type="button" value="開始搜尋" onClick={startSearch} />
-                <input id="pos" type="button" value="Get Position" onClick={getLocation} />
-
             </div>
             <div className="container2">
                 <div className="info_sidebar" style={{ display: "none" }}>
@@ -284,7 +306,6 @@ const SimpleMap = (props) => {
                         onChange={handleCenterChange}
                         // defaultCenter={props.center}
                         defaultZoom={props.zoom}
-                        yesIWantToUseGoogleMapApiInternals
                     >
                         {places.map((item, id) => (
                             <Marker

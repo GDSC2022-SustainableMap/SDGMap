@@ -9,9 +9,9 @@
 .user-rb {
     position: relative;
     flex: 1;
-    margin: 10vh 8vw;
+    margin: 5vh 8vw;
     padding: 5vh 3vw;
-    height: 70vh;
+    height: 80vh;
     width: 90%;
     background-color: #fffef9;
     box-shadow: #00000029 1px 1px 10px;
@@ -26,7 +26,7 @@
     border: none;
     background-color: #fffef9;
     color: #ba8d33;
-    
+
 }
 
 .user-form-group {
@@ -54,7 +54,7 @@
 }
 
 #photo_vle_btn {
-    border: 1.2px solid  #ba8d33;
+    border: 1.2px solid #ba8d33;
     width: fit-content;
     border-radius: 16%;
     background-color: #f8f6ed;
@@ -69,7 +69,7 @@
     border: none;
     color: #ffffff;
     padding: 0.5vh 0.8vw;
-} 
+}
 
 #imagebtn {
     position: absolute;
@@ -89,14 +89,7 @@
     margin: 2vh 0;
 }
 
-.user-photo {
-    position: relative;
-    display: flex;
-    width: 40%;
-    
-}
-
-.user-info {
+.user-rtlb {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -116,7 +109,7 @@
     background-color: #fcf7e2;
     border: none;
     border-radius: 12%;
-    z-index: 1;
+    width: 100%;
 }
 
 .user-label {
@@ -127,13 +120,9 @@
     box-shadow: #00000029 1px 1px 2px;
     border-radius: 12%;
     padding: 0 3%;
-    
-    /* z-index: 2; */
-    /* display: flex;
-    flex-grow: 1; */
 }
 
-p {
+.pack>p {
     color: #ba8d33;
     font-size: 20px;
     font-weight: 400;
@@ -143,26 +132,40 @@ p {
     border-radius: 12%;
     padding: 0 1vw;
     margin: 0;
+    width: 100%;
 }
 
-.txt {
+/* .txt {
     width: 16vw;
 }
-
 .num {
     width: 7.2vw;
-}
+} */
 
-textarea {
+.biograph {
     font-size: 20px;
     font-weight: 400;
     color: #ba8d33;
     overflow: hidden;
-    height: 60%;
+    height: 100%;
     resize: none;
     background-color: #fcf7e2;
     border: none;
     padding: 1vh 1vw;
+    margin: 0;
+}
+
+.user-rtrb {
+    position: relative;
+    display: flex;
+    width: 40%;
+}
+
+#user-photo {
+    border-radius: 50%;
+    margin: 2vh 2.4vw 2vh 1.6vw;
+    width: 88%;
+    height: 90%;
 }
 
 .accordion-button {
@@ -175,35 +178,77 @@ textarea {
     transform: rotate(180deg);
 }
 
-/* .accordion-button.collapsed::after {
-    
-}
-.accordion-button:not(.collapsed) {
-     
-} */
-
 #btn1, #btn3 {
     color: #ba8d33;
     background-color: #f9e79d;
 }
-
 #btn2 {
     color: #fcf4e4;
     background-color: #61C0BF;
 }
 
 .accordion-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
     background-color: #fcf7e2;
 }
 
-.accordion-body > img {
-    width: 12%;
-    /* margin: 0.4vh 0.5vw; */
+#accordion-body3 {
+    padding: 0.4vh 0;
+    margin: 0;
+    background-color: #fffef9;
 }
 
-.badge1{
-    margin: 0.4vh 1.2vw 0.4vh 0vw; 
+.com {
+    position: relative;
+    width: 15%;
+    margin: 0 0.2vw;
 }
-.badge2{
-    margin: 0.4vh 0vw 0.4vh 1.2vw; 
+
+.com > span {
+    position: absolute;
+    bottom: 5%;
+    width: 30%;
+    border-radius: 48%;
+    background-color: #ffffff;
+    /* border: 0.5px solid #878787; */
+    box-shadow: 1px 3px #00000029;
+    color: #1d751c;
+    font-weight: 600;
+    box-shadow: 3px;
+    z-index: 2;
+}
+.amount1 { right: 5%;}
+.amount2 { left: 15%;}
+
+.badge_left { 
+    margin: 0.4vh 1.5vw 0.4vh 0vw; 
+    width: 80%;
+    z-index: 0;
+}
+
+.badge_right { 
+    margin: 0.4vh 0vw 0.4vh 1.5vw; 
+    width: 80%;
+    z-index: 0;
+}
+
+.equip {
+    margin: 0.4vh 1.6vw 0.4vh 0vw;
+    width: 80%;
+}
+
+/* ----- visited store collection ----- */
+.card {
+    /* position: absolute; */
+    background-color: #fcf7e2;
+    width: 18vw;
+    height: 50%;
+}
+
+.carousel-hline {
+    width:100%;
+    margin:0;
 }

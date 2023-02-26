@@ -166,10 +166,6 @@ export default function Login(props) {
                 placeholder="YYYY/MM/DD"
               />
             </div>
-            <div className="form-group mt-3">
-              <label className="login-label">Region</label>
-              <input type="text" className="form-control mt-1" placeholder="" />
-            </div>
             <div className="d-grid gap-2 mt-3">
               <button type="submit" className="btn">
                 Submit
@@ -183,6 +179,9 @@ export default function Login(props) {
             </div>
           </div>
         </form>
+        <button id="google-btn" onClick={() => login()}>
+            <FcGoogle size={20} /> Sign up with Google
+          </button>
       </div>
     </div>
   );
