@@ -45,37 +45,72 @@ function User() {
     //Carousel
     function CarouselOfVisitedStore() {
         const [index, setIndex] = useState(0);
+        const [current, setCurrent] = useState(0);
         const handleSelect = (selectedIndex, e) => {
             setIndex(selectedIndex);
         };
-        const reviews = [
-            { _id: 1, text: "abc" },
-            { _id: 2, text: "def" },
-            { _id: 3, text: "ghi" },
-            { _id: 4, text: "jkl" },
-            { _id: 5, text: "mno" },
-            { _id: 6, text: "pqr" },
-            { _id: 7, text: "stu" },
-            { _id: 8, text: "vwx" },
-            { _id: 9, text: "yza" }
+        const VisitedStoreList = [
+            { _id: 1, name: "xxx" },
+            { _id: 1, name: "abc" },
+            { _id: 2, name: "def" },
+            { _id: 3, name: "ghi" },
+            { _id: 4, name: "jkl" },
+            { _id: 5, name: "mno" },
+            { _id: 6, name: "pqr" },
+            { _id: 7, name: "stu" },
+            { _id: 8, name: "vwx" },
+            { _id: 9, name: "yza" }
         ];
 
+        const InfoCard = ({ name, addr, price, rate}) => {
+            let p = "";
+            for (let i = 0; i < price; i++) {
+                p = p + "$";
+            }
+            const [show, setShow] = useState(false);
+            const handleClose = () => setShow(false);
+            const handleShow = () => setShow(true);
+            return (
+                <div className="card">
+                    <b>{name}</b>
+                    <hr />
+                    地址: {addr}<br />
+                    評分: {rate}&emsp;
+                    <div>
+                        電話: 沒有這個資訊<br />
+                        價格: {p}<br />
+                        <button className="card-button-orange" variant="primary" onClick={handleShow}>More info</button>
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>{name}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                地址: {addr}<br />
+                                評分: {rate}&emsp;
+                                電話: 沒有這個資訊<br />
+                                價格: {p}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <button variant="secondary">Check In</button>
+                                <button variant="secondary" onClick={handleClose}>OK</button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+                </div>
+            );
+        }
         return (
-            <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" indicators="false">
-                {reviews.map((store) => (
-                    <Carousel.Item >
-                        <Stack direction="horizontal" className="h-100 justify-content-center align-items-center" gap={3}>
-                            {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div>
-                            <div className='card'>
+            <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
+                {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
+                    if (currentIndex % 2 === 0) {
+                        accumulator.push(array.slice(currentIndex, currentIndex + 2));
+                    }
+                    return accumulator;
+                }, [])
+                    .map((store) => (
+                        <Carousel.Item >
+                            <Stack direction="horizontal" className=" stack" gap={3}>
+                                {/* <div className='card'>
                                 <div className='card-body'>
                                     <h5 className='card-title'>{store._id}</h5>
                                     <hr className='carousel-hline'/>
@@ -85,55 +120,118 @@ function User() {
                                     <button variant="primary">Go somewhere</button>
                                 </div>
                             </div> */}
-
-                            <InfoCard 
-                                name={store.name} 
-                                addr={store.formatted_address}
-                                price={store.price_level}
-                                rate={store.rating} />
-                        </Stack>
-                    </Carousel.Item>
-                ))}
+                                <InfoCard className="card-orange card"
+                                    name={store[0].name}
+                                    addr={store[0].formatted_address}
+                                    price={store[0].price_level}
+                                    rate={store[0].rating}
+                                />
+                                <InfoCard className="card-orange card"
+                                    name={store[1].name}
+                                    addr={store[1].formatted_address}
+                                    price={store[1].price_level}
+                                    rate={store[1].rating}
+                                />
+                            </Stack>
+                        </Carousel.Item>
+                    ))}
             </Carousel>
         );
     }
-    const InfoCard = ({ name, addr, price, rate }) => {
-        let p = "";
-        for (let i = 0; i < price; i++) {
-            p = p + "$";
-        }
-        const [show, setShow] = useState(false);
-        const handleClose = () => setShow(false);
-        const handleShow = () => setShow(true);
-        return (
-            <div className="BoxText1">
-                <b>{name}</b>
-                <hr />
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                <div>
-                    電話: 沒有這個資訊<br />
-                    價格: {p}<br />
-                    {/* 待完成：將此button靠右對齊 */}
-                    <button variant="primary" onClick={handleShow}>More info</button>
-                    <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{name}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            地址: {addr}<br />
-                            評分: {rate}&emsp;
-                            電話: 沒有這個資訊:(<br />
-                            價格: {p}
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <button variant="secondary">Check In</button>
-                            <button variant="secondary" onClick={handleClose}>OK</button>
-                        </Modal.Footer>
-                    </Modal>
 
+    function CarouselOfStoredStore() {
+        const [index, setIndex] = useState(0);
+        const [current, setCurrent] = useState(0);
+        const handleSelect = (selectedIndex, e) => {
+            setIndex(selectedIndex);
+        };
+        const VisitedStoreList = [
+            { _id: 1, name: "xxx" },
+            { _id: 1, name: "abc" },
+            { _id: 2, name: "def" },
+            { _id: 3, name: "ghi" },
+            { _id: 4, name: "jkl" },
+            { _id: 5, name: "mno" },
+            { _id: 6, name: "pqr" },
+            { _id: 7, name: "stu" },
+            { _id: 8, name: "vwx" },
+            { _id: 9, name: "yza" }
+        ];
+
+        const InfoCard = ({ name, addr, price, rate}) => {
+            let p = "";
+            for (let i = 0; i < price; i++) {
+                p = p + "$";
+            }
+            const [show, setShow] = useState(false);
+            const handleClose = () => setShow(false);
+            const handleShow = () => setShow(true);
+            return (
+                <div className="card">
+                    <b>{name}</b>
+                    <hr />
+                    地址: {addr}<br />
+                    評分: {rate}&emsp;
+                    <div>
+                        電話: 沒有這個資訊<br />
+                        價格: {p}<br />
+                        <button className="card-button-green" variant="primary" onClick={handleShow}>More info</button>
+                        <Modal show={show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>{name}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                地址: {addr}<br />
+                                評分: {rate}&emsp;
+                                電話: 沒有這個資訊<br />
+                                價格: {p}
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <button variant="secondary">Check In</button>
+                                <button variant="secondary" onClick={handleClose}>OK</button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
                 </div>
-            </div>
+            );
+        }
+        return (
+            <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
+                {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
+                    if (currentIndex % 2 === 0) {
+                        accumulator.push(array.slice(currentIndex, currentIndex + 2));
+                    }
+                    return accumulator;
+                }, [])
+                    .map((store) => (
+                        <Carousel.Item >
+                            <Stack direction="horizontal" className=" stack" gap={3}>
+                                {/* <div className='card'>
+                                <div className='card-body'>
+                                    <h5 className='card-title'>{store._id}</h5>
+                                    <hr className='carousel-hline'/>
+                                    <div className='card-text'>
+                                        {store.text}!
+                                    </div>
+                                    <button variant="primary">Go somewhere</button>
+                                </div>
+                            </div> */}
+                                <InfoCard className="card-green card"
+                                    name={store[0].name}
+                                    addr={store[0].formatted_address}
+                                    price={store[0].price_level}
+                                    rate={store[0].rating}
+                                />
+                                <InfoCard className="card-green card"
+                                    name={store[1].name}
+                                    addr={store[1].formatted_address}
+                                    price={store[1].price_level}
+                                    rate={store[1].rating}
+                                />
+                            </Stack>
+                        </Carousel.Item>
+                    ))}
+            </Carousel>
         );
     }
     return (
@@ -349,13 +447,25 @@ function User() {
                         </div>
                         <div className="accordion-item">
                             <h2 className="accordion-header" id="flush-headingThree">
-                                <button className="accordion-button collapsed" id='btn3' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                <button className="accordion-button collapsed " id='btn3'  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                                     Visited Store Collection
                                 </button>
                             </h2>
                             <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                 <div className="accordion-body" id="accordion-body3">
                                     <CarouselOfVisitedStore />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="accordion-item">
+                            <h2 className="accordion-header" id="flush-headingFour">
+                                <button className="accordion-button collapsed" id='btn4'  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                    Stored Store Collection
+                                </button>
+                            </h2>
+                            <div id="flush-collapseFour" className="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+                                <div className="accordion-body" id="accordion-body3">
+                                    <CarouselOfStoredStore />
                                 </div>
                             </div>
                         </div>

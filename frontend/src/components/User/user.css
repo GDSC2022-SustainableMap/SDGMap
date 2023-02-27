@@ -182,7 +182,8 @@
     color: #ba8d33;
     background-color: #f9e79d;
 }
-#btn2 {
+
+#btn2, #btn4 {
     color: #fcf4e4;
     background-color: #61C0BF;
 }
@@ -207,7 +208,7 @@
     margin: 0 0.2vw;
 }
 
-.com > span {
+.com>span {
     position: absolute;
     bottom: 5%;
     width: 30%;
@@ -220,17 +221,23 @@
     box-shadow: 3px;
     z-index: 2;
 }
-.amount1 { right: 5%;}
-.amount2 { left: 15%;}
 
-.badge_left { 
-    margin: 0.4vh 1.5vw 0.4vh 0vw; 
+.amount1 {
+    right: 5%;
+}
+
+.amount2 {
+    left: 15%;
+}
+
+.badge_left {
+    margin: 0.4vh 1.5vw 0.4vh 0vw;
     width: 80%;
     z-index: 0;
 }
 
-.badge_right { 
-    margin: 0.4vh 0vw 0.4vh 1.5vw; 
+.badge_right {
+    margin: 0.4vh 0vw 0.4vh 1.5vw;
     width: 80%;
     z-index: 0;
 }
@@ -241,14 +248,64 @@
 }
 
 /* ----- visited store collection ----- */
+.stack {
+    padding: 0 1.4vw;
+    justify-content: center;
+    align-items: center;
+}
+
 .card {
     /* position: absolute; */
-    background-color: #fcf7e2;
-    width: 18vw;
+    /* background-color: #fcf7e2; */
+    width: 16.8vw;
     height: 50%;
+    padding: 3% 4%;
+    border-radius: 8%;
+    text-align: left;
+}
+
+.card-orange {
+    background-color: #fcf7e2;
+}
+.card-green {
+    background-color: #f5fff5;
+}
+.card-button-orange {
+    background-color: #f9e79d;
+    border: none;
+    box-shadow: 1px 1.2px #ba8d33;
+    border-radius: 20%;
+    color: #ba8d33;
+}
+
+.card-button-green {
+    background-color: #b5d0b5ee;
+    border: none;
+    box-shadow: 1px 1.2px #4d764c;
+    border-radius: 20%;
+    color: #fdfffd;
 }
 
 .carousel-hline {
-    width:100%;
-    margin:0;
+    width: 100%;
+    margin: 0;
 }
+
+.carousel-indicators [data-bs-target] {
+    display: none;
+}
+
+.carousel-control-prev-icon {
+    /* transform: scaleX(-1); */
+    position: absolute;
+    left: 0;
+    margin: 0;
+    width: 20%;
+} 
+
+.carousel-control-next-icon {
+    position: absolute;
+    right: 0;
+    margin: 0;
+    width: 25%;
+} 
