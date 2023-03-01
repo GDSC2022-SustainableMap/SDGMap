@@ -123,7 +123,7 @@ const SimpleMap = (props) => {
         if (err.code == 1) {
             alert("Error: Access is denied!");
         } else if (err.code == 2) {
-            alert("Error: Position is unavailable!");
+            alert("Error: We need your position to finish the search!");
         }
     }
 
@@ -193,30 +193,7 @@ const SimpleMap = (props) => {
     }
     // state for showing search result
     const [searchBtnClicked, setSearchBtn] = useState(false);
-    const RenderResult = () => {
-        console.log(FakeData);
-        setPlaces(FakeData.results);
-        // show the info sidebar
-        setSearchBtn(true);
-    }
-
-    /* To get user position */
-    const showLocation = (position) => {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        alert("Latitude: " + position.coords.latitude +
-            "\nLongitude: " + position.coords.longitude);
-        setCurrentCenter([latitude, longitude]);
-    }
-
-    const errorHandler = (err) => {
-        if (err.code === 1) {
-            alert("Error: Access is denied!");
-        } else if (err.code === 2) {
-            alert("Error: We need your position to finish the search!");
-        }
-    }
-
+   
     const getLocation = () => {
         if (navigator.geolocation) {
             var options = { timeout: 60000 };
@@ -228,20 +205,19 @@ const SimpleMap = (props) => {
     }
 
 
-    const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
-        const imageRef = useRef(null);
-        return (
-          <img 
-            onMouseOver={() => {imageRef.current.src = secondaryImg;}}
-            onMouseOut={() => {imageRef.current.src= primaryImg;}}
-            src={primaryImg} 
-            alt={t}
-            title={t}
-            ref={imageRef}
-          />
-        )
-    }
-
+    const [badge1, setBadge1] = useState(false);
+    const [badge2, setBadge2] = useState(false);
+    const [badge3, setBadge3] = useState(false);
+    const [badge4, setBadge4] = useState(false);
+    const [badge5, setBadge5] = useState(false);
+    const [badge6, setBadge6] = useState(false);
+    const [badge7, setBadge7] = useState(false);
+    const [badge8, setBadge8] = useState(false);
+    const [badge9, setBadge9] = useState(false);
+    const [badge10, setBadge10] = useState(false);
+    const [badge11, setBadge11] = useState(false);
+    const [badge12, setBadge12] = useState(false);
+    
     return (
         <div className="container">
             <div className="searchbar">
