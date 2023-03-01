@@ -3,6 +3,28 @@ from app.main import bp
 from app.main.google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference, find_place_detail
 from app.main.cafenomad.cafenomad import get_cafe, drop
 from app.main.utils import getDistanceBetweenPointsNew, get_values
+import datetime
+from os import path
+
+import pyrebase
+from instance.config import Config
+
+import sys
+basedir = path.abspath(path.dirname(path.abspath(path.dirname(path.abspath(path.dirname(__file__))))))
+basedir+="/database"
+sys.path.append(basedir)
+import database
+
+# read firebase configuration
+config = Config.USER_DB_CONFIG
+
+# initialize firebase
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+db = firebase.database()
+
+# def place_detail(place_id):
+    
 
 @bp.route("/name_search", methods=['POST'])
 def get_spot_from_name():
@@ -12,22 +34,20 @@ def get_spot_from_name():
         "target_place": receive['target_place'],
     }
 
-    # try:
-    gmap_result = place_name_search(params)["candidates"][0]
-    cafenomad_raw = get_cafe()
+    try:
+        gmap_result = place_name_search(params)["candidates"][0]
+        cafenomad_raw = get_cafe()
 
-
-
-    cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
-    cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
-    if cafenomad_result:
-        cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
-        cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
-        merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
-        return merged_result
-    return gmap_result
-    # except:
-    #     return {}
+        cafenomad_result = list(filter(lambda x:params["target_place"] == x["name"] or params["target_place"] in x["name"],cafenomad_raw))
+        cafenomad_result = list(map(lambda x: drop(x), cafenomad_result))
+        if cafenomad_result:
+            cafenomad_result[0]["standing_desk"] = 2  if(cafenomad_result[0]["standing_desk"] == "yes") else 0
+            cafenomad_result[0]["limited_time"] = 2  if(cafenomad_result[0]["limited_time"] == "yes") else 0
+            merged_result = dict(list(gmap_result.items()) + list(cafenomad_result[0].items()))
+            return merged_result
+        return gmap_result
+    except:
+        return {}
 
 #if you don't want to use condition in this api, just let condition be {}.
 @bp.route("/radius_search", methods=['POST'])
@@ -141,6 +161,8 @@ def get_spot_arbitrary():
         gmap_raw = sorted(gmap_raw, key=lambda k: (-k[conditions[0]],-k[conditions[1]],-k[conditions[2]],-k[conditions[3]],-k[conditions[4]],-k[conditions[5]],-k[conditions[6]],-k[conditions[7]]))
     for obj in gmap_raw:
         obj["distance"] = -obj["distance"]
+    # add to firebase
+    db.child("place_api").child(gmap_raw[0]["place_id"]).set(gmap_raw[0])
     return gmap_raw
 
 #check if the user is in the correct distance from the spot
@@ -164,9 +186,15 @@ def check_in_spot():
 
 
         distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
+        if (distance<params["scope"]):
+            user_log = database.user_log.copy()
+            user_log["user_id"] = "FiRj0Arl7nXJnztdjbNlxBNdcGI3"
+            user_log["time"] = str(datetime.datetime.now())
+            user_log["place_id"] = params["place_id"]
+            db.child("user_log").child("log0").set(user_log)
         return str(distance < params["scope"])
     except:
-        return {}
+        return "error"
 
 @bp.route("/get_references_from_spot", methods=['POST'])
 def get_references_from_spot():
@@ -188,3 +216,12 @@ def get_photo_from_reference():
         "maxheight": receive["maxheight"]
     }
     return get_photo_from_a_reference(params["reference"],params["maxwidth"],params["maxheight"])
+
+@bp.route("/build_DB", methods = ['POST'])
+def build_DB():
+    receive = request.get_json()
+    params = {
+        "address" : receive["address"]
+    }
+    gmap_result = place_name_search(params)["candidates"][0]
+    return gmap_result
