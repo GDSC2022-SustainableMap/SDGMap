@@ -33,10 +33,9 @@ def place_name_search(params):
             input = params["target_place"],
             input_type = "textquery",
             fields=["place_id", "business_status", "name", "formatted_address", "geometry", "opening_hours", "rating", "user_ratings_total", "price_level","photos"],
-            location_bias = "circle:10000@24.801798905507397,120.97159605610153",
             language = "zh-TW"
         )
-    get_references_from_a_spot("ChIJb1dSFvo2aDQRVIbVaIC8rXc",10, 500, 500)
+    #get_references_from_a_spot("ChIJb1dSFvo2aDQRVIbVaIC8rXc",10, 500, 500)
     return place_search
 
 def place_arbitrary_search(params):
@@ -90,3 +89,7 @@ def get_photo_from_a_reference(reference,maxwidth,maxheight):
     file_like_object = io.BytesIO(r.content)
 
     return send_file(file_like_object, mimetype='image/png')
+
+def get_address_detail(address):
+    result = gmaps.geocode(address)
+    return result

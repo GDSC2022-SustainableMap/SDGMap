@@ -3,6 +3,12 @@ from instance.config import Config
 from app.membership import bp
 from flask import redirect, request, session, flash
 from app.membership.utils import login_required
+from os import path
+import sys
+basedir = path.abspath(path.dirname(path.abspath(path.dirname(path.abspath(path.dirname(__file__))))))
+basedir+="/database"
+sys.path.append(basedir)
+import database
 
 # read firebase configuration
 config = Config.USER_DB_CONFIG
@@ -11,9 +17,6 @@ config = Config.USER_DB_CONFIG
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
-
-# user info
-person = {"name":"", "email":"","birthday":"", "user_id":"", "change_name_chance":0}
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -57,14 +60,16 @@ def register():
             "new_email" : submit["email"],
             "new_password" : submit["password"],
             "new_birthday" : submit["birthday"],
-            "new_name" : submit["userName"],
-            "new_region": submit["region"]
+            "new_name" : submit["userName"]
         }
         try:
             newUser = auth.create_user_with_email_and_password(params["new_email"], params["new_password"])
-            #Append data to the firebase db
-            data = {"name": params["new_name"], "email": params["new_email"], "birthday": params["new_birthday"], "region": params["new_region"],"change_name_chance": 1}
-            db.child("users").child(newUser['localId']).set(data)
+            # new user info
+            person = database.user_setting.copy()
+            person["email"] = params["new_email"]
+            person["name"] = params["new_name"]
+            person["birthday"] = params["new_birthday"]
+            db.child("users").child(newUser['localId']).set(person)
             return "register successful"
         except:
             raise "not able to create account"
