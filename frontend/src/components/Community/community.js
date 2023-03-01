@@ -57,12 +57,3 @@ export default function Community() {
     </div>
   );
 }
-
-function Communitys() {
-  return (
-    <div className='container-community'>
-        <div className='box-community'><SearchFriends/></div>
-        <div className='box-community'><Leaderboard/></div>
-    </div>
-  );
-}

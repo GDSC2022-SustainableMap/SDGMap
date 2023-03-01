@@ -98,6 +98,27 @@ const SimpleMap = (props) => {
             alert("Geolocation not supported by this browser.")
         }
 
+        if (searchType === "Name") findByName();
+        else findByLocation();
+    }
+
+    /* To get user position */
+    const showLocation = (position) => {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        alert("Latitude: " + position.coords.latitude +
+            "\nLongitude: " + position.coords.longitude);
+        setCurrentCenter([latitude, longitude]);
+        RenderResult();
+    }
+
+    const errorHandler = (err) => {
+        if (err.code == 1) {
+            alert("Error: Access is denied!");
+        } else if (err.code == 2) {
+            alert("Error: We need your position to finish the search!");
+        }
+    }
 
     const InfoBlock = ({ name, addr, price, rate }) => {
         let p = "";
@@ -110,7 +131,7 @@ const SimpleMap = (props) => {
         const handleShow = () => setShow(true);
         const [liked, setIsLiked] = useState(false);
         return ( 
-            <div className="card">
+            <div className="card-map">
                 <h6 className="card-header">
                     <b>{name}</b>
                     {liked?
@@ -172,24 +193,6 @@ const SimpleMap = (props) => {
         setSearchBtn(true);
     }
 
-    /* To get user position */
-    const showLocation = (position) => {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
-        alert("Latitude: " + position.coords.latitude +
-            "\nLongitude: " + position.coords.longitude);
-        setCurrentCenter([latitude, longitude]);
-        RenderResult();
-    }
-
-    const errorHandler = (err) => {
-        if (err.code === 1) {
-            alert("Error: Access is denied!");
-        } else if (err.code === 2) {
-            alert("Error: We need your position to finish the search!");
-        }
-    }
-
     // merge in start search
     // const getLocation = () => {
     //     if (navigator.geolocation) {
@@ -201,60 +204,18 @@ const SimpleMap = (props) => {
     //     }
     // }
 
-
-    const ImageToggleOnMouseOver = ({primaryImg, secondaryImg, t}) => {
-        const imageRef = useRef(null);
-        const [show, setShow] = useState(false);
-        const handleClose = () => setShow(false);
-        const handleShow = () => setShow(true);
-        return (
-            <div className="BoxText1">
-                <b>{name}</b>
-                <hr />
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                <Stars
-                    stars={rate}
-                    size={20} //optional
-                    fill='#e7711b' //optional
-                /><br />
-                <div>
-                    電話: 沒有這個資訊:(<br />
-                    價格: {p}<br />
-                    {/* 待完成：將此button靠右對齊 */}
-                    <Button variant="primary" onClick={handleShow}>
-                        More info
-                    </Button>
-                    <Modal show={show} onHide={handleClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>{name}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            地址: {addr}<br />
-                            評分: {rate}&emsp;
-                            <Stars
-                                stars={rate}
-                                size={20} //optional
-                                fill='#e7711b' //optional
-                            /><br />
-                            電話: 沒有這個資訊:(<br />
-                            價格: {p}
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary">
-                                <BsFillPinMapFill /> Check In
-                            </Button>
-                            <Button variant="secondary" onClick={handleClose}>
-                                OK
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-
-                </div>
-            </div>
-        );
+   
+    const getLocation = () => {
+        if (navigator.geolocation) {
+            var options = { timeout: 60000 };
+            navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+        }
+        else {
+            alert("Geolocation not supported by this browser.")
+        }
     }
-    // Badge Image button on/off
+
+
     const [badge1, setBadge1] = useState(false);
     const [badge2, setBadge2] = useState(false);
     const [badge3, setBadge3] = useState(false);
@@ -267,7 +228,7 @@ const SimpleMap = (props) => {
     const [badge10, setBadge10] = useState(false);
     const [badge11, setBadge11] = useState(false);
     const [badge12, setBadge12] = useState(false);
-
+    
     return (
         <div className="container">
             <div className="searchbar">
