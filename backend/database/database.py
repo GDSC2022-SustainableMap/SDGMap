@@ -9,6 +9,7 @@ user_setting = {
     "birthday":"",
     "change_name_chance":0,
     "friends":{
+        "friend_number":0,
         "friend_1":{
             "user_id":"",
             "name":""

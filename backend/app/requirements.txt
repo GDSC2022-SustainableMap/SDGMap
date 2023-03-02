@@ -17,6 +17,7 @@ Fiona==1.8.22
 Flask==2.2.2
 Flask-Cors==3.0.10
 Flask-Session==0.4.0
+firebase==4.0.1
 future==0.18.2
 gcloud==0.18.3
 GeoAlchemy2==0.12.5

@@ -10,7 +10,7 @@ def deg2rad(degrees):
 
 def getDistanceBetweenPointsNew(latitude1, longitude1, latitude2, longitude2, unit = 'kilometers'):
     
-    theta = longitude1 - longitude2
+    theta = float(longitude1) - float(longitude2)
     
     distance = 60 * 1.1515 * rad2deg(
         arccos(

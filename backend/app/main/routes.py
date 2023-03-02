@@ -3,9 +3,10 @@ from app.main import bp
 from app.main.google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference, find_place_detail
 from app.main.cafenomad.cafenomad import get_cafe, drop
 from app.main.utils import getDistanceBetweenPointsNew, get_values
+from app.membership.utils import login_required
 import datetime
 from os import path
-
+from flask import redirect, request, session, flash
 import pyrebase
 from instance.config import Config
 
@@ -167,6 +168,7 @@ def get_spot_arbitrary():
 
 #check if the user is in the correct distance from the spot
 @bp.route("/check_in", methods=['POST'])
+@login_required
 def check_in_spot():
     receive = request.get_json()
     params = {
@@ -182,16 +184,17 @@ def check_in_spot():
         if(gmap_result):
             spot_lat = gmap_result["result"]["geometry"]["location"]["lat"]
             spot_lng = gmap_result["result"]["geometry"]["location"]["lng"]
-        # return gmap_result
 
-
-        distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
+        distance = getDistanceBetweenPointsNew(float(params["user_lat"]) ,float(params["user_lng"]), float(spot_lat), float(spot_lng))
         if (distance<params["scope"]):
+            current_log_count = db.child("user_log").child("log_count").get().val()
             user_log = database.user_log.copy()
-            user_log["user_id"] = "FiRj0Arl7nXJnztdjbNlxBNdcGI3"
+            user_log["user_id"] = session["user_id"]
             user_log["time"] = str(datetime.datetime.now())
             user_log["place_id"] = params["place_id"]
-            db.child("user_log").child("log0").set(user_log)
+            db.child("user_log").child(f"log{current_log_count}").set(user_log)
+            current_log_count += 1
+            db.child("user_log").update({"log_count":current_log_count})
         return str(distance < params["scope"])
     except:
         return "error"
