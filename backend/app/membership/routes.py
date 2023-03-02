@@ -4,9 +4,11 @@ from app.membership import bp
 from flask import redirect, request, session, flash
 from app.membership.utils import login_required
 from os import path
+
 from firebase import firebase as fb
 
 from app.membership.utils import login_required
+
 import sys
 basedir = path.abspath(path.dirname(path.abspath(path.dirname(path.abspath(path.dirname(__file__))))))
 basedir+="/database"

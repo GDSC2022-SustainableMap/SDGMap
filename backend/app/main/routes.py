@@ -3,10 +3,15 @@ from app.main import bp
 from app.main.google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference, find_place_detail
 from app.main.cafenomad.cafenomad import get_cafe, drop
 from app.main.utils import getDistanceBetweenPointsNew, get_values
+
 from app.membership.utils import login_required
 import datetime
 from os import path
 from flask import redirect, request, session, flash
+
+import datetime
+from os import path
+
 import pyrebase
 from instance.config import Config
 
@@ -195,6 +200,7 @@ def check_in_spot():
             db.child("user_log").child(f"log{current_log_count}").set(user_log)
             current_log_count += 1
             db.child("user_log").update({"log_count":current_log_count})
+
         return str(distance < params["scope"])
     except:
         return "error"
