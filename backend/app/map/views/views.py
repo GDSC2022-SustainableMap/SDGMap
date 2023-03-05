@@ -4,7 +4,7 @@ from app.map.infrastructure.cafenomad.cafenomad import *
 from app.map.views.utils import *
 from flask import Blueprint
 
-bp = Blueprint('main', __name__)
+bp = Blueprint('main', __name__,url_prefix='/map')
 
 @bp.route("/name_search", methods=['POST'])
 def get_spot_from_name():
