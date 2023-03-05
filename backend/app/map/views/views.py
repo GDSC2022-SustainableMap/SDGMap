@@ -1,8 +1,10 @@
 from flask import  request
-from app.main import bp
-from app.main.google.gmaps import place_name_search, place_radius_search, place_arbitrary_search, get_references_from_a_spot, get_photo_from_a_reference, find_place_detail
-from app.main.cafenomad.cafenomad import get_cafe, drop
-from app.main.utils import getDistanceBetweenPointsNew, get_values
+from app.map.infrastructure.google.gmaps import *
+from app.map.infrastructure.cafenomad.cafenomad import *
+from app.map.views.utils import *
+from flask import Blueprint
+
+bp = Blueprint('main', __name__)
 
 @bp.route("/name_search", methods=['POST'])
 def get_spot_from_name():
