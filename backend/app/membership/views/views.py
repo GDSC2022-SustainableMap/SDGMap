@@ -1,30 +1,41 @@
-from flask import Blueprint, request, render_template, redirect, session,flash
+from flask import Blueprint, request, render_template, redirect,flash,jsonify
 
 from werkzeug.exceptions import InternalServerError
 
 from app.membership.infrastructure import db,auth
-from app.membership.domain.user import User
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
 
+
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+                               unset_jwt_cookies, jwt_required
+from datetime import datetime, timedelta, timezone
+import json
 bp = Blueprint('user', __name__, url_prefix='/user')
 
 
 from functools import wraps
-from flask import redirect, session
-
-def login_required(f):
-    """ Decorate routes to require login. """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
+from flask import redirect
 
 userrepo = UserRepo()
 
-
+@bp.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+    
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     """ Let user register account. """
@@ -41,7 +52,7 @@ def register():
         except:
             raise "not able to create account"
     else:
-        if session.get("user_id"): 
+        if get_jwt_identity(): 
             # Redirect to home page
             return redirect("/")
         else:
@@ -51,22 +62,20 @@ def register():
 @bp.route("/login", methods=["GET", "POST"])
 def login():    
     """ Login to webpage. """
-    # forget any user using
-    session.clear()
     if request.method == "POST":
         receive = request.get_json()
         try:
             user = auth.sign_in_with_email_and_password(receive["email"], receive["password"])
             # Remember which user has logged in
-            session["user_id"] = user["localId"]
-            # #Get the name of the user
-            # data = db.child("users").get()
-            # person["name"] = data.val()[person["user_id"]]["name"]
-            return f"login successful, userid: {user['localId']}"
+            access_token = create_access_token(identity=user["localId"])
+
+            # return f"login successful, userid: {user['localId']},access_token: {access_token}"
+            response = {"access_token":access_token}
+            return response
         except:
             raise "login info unreconizable"
     else:
-        if session.get("user_id"): 
+        if get_jwt_identity(): 
             # Redirect to home page
             return {}
         else:
@@ -74,7 +83,7 @@ def login():
             return {}
         
 @bp.route("/edit_profile", methods=["GET", "POST"])
-@login_required
+@jwt_required()
 def edit_profile():
     """ allow user to change profile. """
 
@@ -86,8 +95,24 @@ def edit_profile():
         return result
     else:
         return redirect("/")
+
+@bp.route("/profile", methods=["GET"])
+@jwt_required()
+def get_profile():
+    """ allow user to get profile. """
+
+    if request.method == "GET":
+        # receive = request.get_json()
+        current_user = get_jwt_identity()
+        print(current_user)
+        # result = userrepo.update(receive)
+
+        return current_user
+    else:
+        return redirect("/")
     
 @bp.route("/reset_password", methods=["POST"])
+@jwt_required()
 def reset_password():
     """ allow user to reset password """
     receive = request.get_json()
@@ -97,11 +122,12 @@ def reset_password():
 
 
 @bp.route("/logout")
-@login_required
+@jwt_required()
 def logout():
     """Log user out"""
-    session.clear()
-    return redirect("/")
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 @bp.route("/delete", methods=["POST"])
 def delete():
@@ -112,7 +138,7 @@ def delete():
     return result
 
 @bp.route("/add_friend", methods=["POST"])
-@login_required
+@jwt_required()
 def add_friend():
     """allow user to make friends, passint the friend's uuid to become friends"""
     receive = request.get_json()

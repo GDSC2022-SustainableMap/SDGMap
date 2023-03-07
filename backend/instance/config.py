@@ -18,7 +18,7 @@ class Config(object):
     GOOGLE_GEOLOCATION_API_KEY = os.environ.get("GOOGLE_GEOLOCATION_API_KEY")
     USER_DB_CONFIG = json.loads(os.environ.get("USER_DB_CONFIG"))
     #set secret key
-    SECRET_KEY="secretstring"
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 class ProductionConfig(Config):
     FLASK_ENV = 'production'

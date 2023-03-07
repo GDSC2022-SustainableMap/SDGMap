@@ -1,6 +1,5 @@
 from app.membership.domain import User
 from app.app import db, auth
-from flask import session
 from app.membership.domain.friend import Friend
 class UserRepo():
 
