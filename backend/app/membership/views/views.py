@@ -24,7 +24,7 @@ def refresh_expiring_jwts(response):
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=100))
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
@@ -89,9 +89,10 @@ def edit_profile():
 
     if request.method == "POST":
         receive = request.get_json()
-
+        current_user = get_jwt_identity()
+        receive['user_id'] = current_user
         result = userrepo.update(receive)
-
+        print(receive)
         return result
     else:
         return redirect("/")
@@ -100,16 +101,10 @@ def edit_profile():
 @jwt_required()
 def get_profile():
     """ allow user to get profile. """
-
-    if request.method == "GET":
-        # receive = request.get_json()
-        current_user = get_jwt_identity()
-        print(current_user)
-        # result = userrepo.update(receive)
-
-        return current_user
-    else:
-        return redirect("/")
+    current_user = get_jwt_identity()
+    receive = {'user_id':current_user}
+    result = userrepo.read(receive)
+    return result
     
 @bp.route("/reset_password", methods=["POST"])
 @jwt_required()

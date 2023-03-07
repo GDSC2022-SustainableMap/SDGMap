@@ -22,7 +22,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/map" element={<Map />} />
         <Route exact path="/sdgbook" element={<Book />} />
-        <Route exact path="/user" element={<User />} />
+        <Route exact path="/user" element={<User token={token}/>} />
         <Route exact path="/signin" element={<Login setToken={setToken} token={token}/>} />
         <Route exact path="/community" element={<Community />} />
         <Route exact path="/password_reset" element={<PasswordReset />} />
