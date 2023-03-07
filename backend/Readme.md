@@ -16,10 +16,11 @@ To get a local copy up and running follow these simple steps.
 
 ### Run Backend Server
 
-1. Change into the repo directory: `cd backend`
+1. Change into the repo directory: `cd backend/app`
 2. Run the flask server (will start on port 5000 by default):
     ```bash
-        ./app.py
+        set FLASK_APP=__init__.py
+        flask run
     ```
     
 # APIs:
@@ -102,7 +103,7 @@ Nothing special here.:)
 (5) "target_place" should not be empty.
 
 
-### 4. /login
+### 4. /membership/login
 
 #### (a)Input:
 
@@ -113,7 +114,7 @@ Nothing special here.:)
 }
 ```
 
-### 5. /register
+### 5. /membership/register
 
 #### (a)Input:
 
@@ -127,7 +128,7 @@ Nothing special here.:)
 }
 ```
 
-### 6. /reset_password
+### 6. /membership/reset_password
 
 #### (a)Input:
 

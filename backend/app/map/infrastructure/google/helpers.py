@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, session
+from flask import render_template
 from functools import wraps
 
 def apology(message, code=400):

@@ -3,5 +3,4 @@
 2. Some css style rendered incorrectly. (eg: signup.js)
 
 ### Backend has not implemented:
-1. Change data schema and readme.
-2. Code splitting.
+1. Change data schema.

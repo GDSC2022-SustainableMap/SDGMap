@@ -61,14 +61,13 @@
   
   .info_sidebar{
     display: block;
-    margin-right: 5px;
     padding: 8px;
     overflow: auto;
     width: 600px;
     height: 700px;
   }
 
-  .card{
+  .card-map{
     border: 1.5px solid rgb(210, 207, 207);
     box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -86,8 +85,11 @@
     padding: 0.4vh 0.4vw;
     margin-left: 8px;
     height: fit-content;
+    transition: 0.3s;
   }
-  
+  #name:hover, #pos:hover{
+    background-color: #f7eab4;
+  }
   #location {
     margin-right: 8px;
     border: 6px;
@@ -119,6 +121,7 @@
   .badges {
     display: flex;
     flex-direction: row;
+    justify-content: center;
   }
 
   .badges > button {
@@ -135,4 +138,13 @@
     padding: 0;
     margin: 0;
     /* margin-left: 0.4vw; */
+  }
+
+  .ant-layout .ant-layout-sider-trigger{
+    background-color: #BBDED6;
+  }
+  .ant-layout-sider-children{
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
