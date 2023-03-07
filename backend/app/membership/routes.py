@@ -74,6 +74,9 @@ def register():
             person["name"] = params["new_name"]
             person["birthday"] = params["new_birthday"]
             db.child("users").child(newUser['localId']).set(person)
+
+            friend = database.user_friend.copy()
+            db.child("friend").child(newUser['localId']).set(friend)
             return "register successful"
         except:
             raise "not able to create account"
@@ -124,12 +127,12 @@ def add_friend():
     }
     friend_name = db.child("users").child(params["friend_uuid"]).get().val()["name"]
     current_user = session["user_id"]
-    current_user_friend_num = db.child("users").child(current_user).get().val()["friends"]["friend_number"]
+    current_user_friend_num = db.child("users").child(current_user).get().val()["friend_number"]
     current_user_friend_num += 1
     
     # update new friend to firebase
-    db.child("users").child(current_user).child("friends").child(f"friend_{current_user_friend_num}").update({"name":friend_name, "user_id":params["friend_uuid"]})
-    db.child("users").child(current_user).child("friends").update({"friend_number":current_user_friend_num})
+    db.child("friend").child(current_user).child(f"friend_{current_user_friend_num}").update({"name":friend_name, "user_id":params["friend_uuid"]})
+    db.child("users").child(current_user).update({"friend_number":current_user_friend_num})
     return f"{params['friend_uuid']} added as friend"
 
 @bp.route("/track_userlog", methods=["POST"])

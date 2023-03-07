@@ -29,7 +29,22 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
-# def place_detail(place_id):
+badge_names = database.badge_names
+
+def addBadge (place_id):
+    green_stores = db.child("green_stores").get().val()
+    for key in green_stores:
+        if (key == place_id):
+            a = db.child("green_stores").child(key).get().val()
+            for i in range(18):
+                if badge_names[i]:
+                    user_score = db.child("users").child(session["user_id"]).child("coins").get().val()
+                    user_score += a[badge_names[i]]
+                    bdg_num = db.child("users").child(session["user_id"]).update({"coins": user_score})
+                    bdg_num = db.child("users").child(session["user_id"]).child("badges").child(badge_names[i]).get().val()
+                    bdg_num += a[badge_names[i]]
+                    bdg_num = db.child("users").child(session["user_id"]).child("badges").update({badge_names[i]: bdg_num})
+    return "aaa"
     
 
 @bp.route("/name_search", methods=['POST'])
@@ -201,9 +216,40 @@ def check_in_spot():
             current_log_count += 1
             db.child("user_log").update({"log_count":current_log_count})
 
+            addBadge(params["place_id"])
+
         return str(distance < params["scope"])
-    except:
-        return "error"
+    except Exception as e:
+        return e
+    
+@bp.route("/test", methods = ["POST"])
+def test():
+    green_stores = db.child("green_stores").get().val()
+    greens = []
+    for key in green_stores:
+        greens.append(key)
+    return greens
+
+@bp.route("/save_store", methods=["POST"])
+@login_required
+def save_spot():
+    receive = request.get_json()
+    params = {
+        "place_id": receive['place_id']
+    }
+    gmap_result = find_place_detail(params["place_id"])
+    if (gmap_result):
+        current_save_count = db.child("user_log").child("save_count").get().val()
+        user_save = database.user_save.copy()
+        user_save["user_id"] = session["user_id"]
+        user_save["place_id"] = params["place_id"]
+        db.child("user_save").child(f"save{current_save_count}").set(user_save)
+        current_save_count += 1
+        db.child("user_saved").update({"save_count": current_save_count})
+        return f'{params["place_id"]} saved'
+    else:
+        return "this place doesn't exist"
+
 
 @bp.route("/get_references_from_spot", methods=['POST'])
 def get_references_from_spot():

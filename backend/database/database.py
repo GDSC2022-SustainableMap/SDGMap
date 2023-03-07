@@ -8,123 +8,140 @@ user_setting = {
     "email":"",
     "birthday":"",
     "change_name_chance":0,
-    "friends":{
-        "friend_number":0,
-        "friend_1":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_2":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_3":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_4":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_5":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_6":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_7":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_8":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_9":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_10":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_11":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_12":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_13":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_14":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_15":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_16":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_17":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_18":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_19":{
-            "user_id":"",
-            "name":""
-        },
-        "friend_20":{
-            "user_id":"",
-            "name":""
-        },
-    },
+    "friend_number": 0,
     "coins": 0,
     "biograph":"",
     "comments_count":0,
     "rating_count":0,
     "visited_store_count":0,
     "badges":{
-        "badge_1":False,
-        "badge_2":False,
-        "badge_3":False,
-        "badge_4":False,
-        "badge_5":False,
-        "badge_6":False,
-        "badge_7":False,
-        "badge_8":False,
-        "badge_9":False,
-        "badge_10":False
+        "公共議題分享":0,
+        "公平交易":0,
+        "創意料理":0,
+        "創新蔬食":0,
+        "友善環境":0,
+        "在地食材":0,
+        "寵物友善":0,
+        "惜食不浪費":0,
+        "有機小農":0,
+        "流浪動物":0,
+        "減塑":0,
+        "源頭減量":0,
+        # "社會服務":0,
+        "純素":0,
+        "綠色採購":0,
+        "蛋奶素":0,
+        "關懷弱勢":0,
+        "食育教育":0,
+        "食農教育":0
     },
     "backpack":{
-        "item_1":False,
-        "item_2":False,
-        "item_3":False,
-        "item_4":False,
-        "item_5":False,
-        "item_6":False,
-        "item_7":False,
-        "item_8":False,
-        "item_9":False,
-        "item_10":False
+        "item_1":0,
+        "item_2":0,
+        "item_3":0,
+        "item_4":0,
+        "item_5":0,
+        "item_6":0,
+        "item_7":0,
+        "item_8":0,
+        "item_9":0,
+        "item_10":0
     }
 }
 
+user_friend = {
+    "friend_1":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_2":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_3":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_4":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_5":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_6":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_7":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_8":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_9":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_10":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_11":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_12":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_13":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_14":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_15":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_16":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_17":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_18":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_19":{
+        "user_id":"",
+        "name":""
+    },
+    "friend_20":{
+        "user_id":"",
+        "name":""
+    },
+}
+
+# template for user check in
 user_log = {
     "user_id":"",
     "time" : "",
+    "place_id": ""
+}
+
+# template for user save store
+user_save = {
+    "user_id":"",
     "place_id": ""
 }
 
@@ -146,3 +163,24 @@ place_api = {}
 # }
 
 cafe_map = {}
+
+badge_names = [
+    "公共議題分享",
+    "公平交易",
+    "創意料理",
+    "創新蔬食",
+    "友善環境",
+    "在地食材",
+    "寵物友善",
+    "惜食不浪費",
+    "有機小農",
+    "流浪動物",
+    "減塑",
+    "源頭減量",
+    "純素",
+    "綠色採購",
+    "蛋奶素",
+    "關懷弱勢",
+    "食育教育",
+    "食農教育"
+]
