@@ -61,20 +61,17 @@
   
   .info_sidebar{
     display: block;
-    margin-right: 5px;
     padding: 8px;
     overflow: auto;
     width: 600px;
     height: 700px;
   }
-  
-  .BoxText1 {
+
+  .card-map{
     border: 1.5px solid rgb(210, 207, 207);
     box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    padding:5px; /* boarder內和內容之間 */
-    width: auto;
-    margin:10px 0px; /* boarder外面 */
+    margin:10px 0px;
   }
     
   #name, #pos {

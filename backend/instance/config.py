@@ -14,10 +14,11 @@ class Config(object):
     # set application
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
-    USER_DB_CONFIG = json.loads(os.environ.get("USER_DB_CONFIG"))
     GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
     GOOGLE_GEOLOCATION_API_KEY = os.environ.get("GOOGLE_GEOLOCATION_API_KEY")
     USER_DB_CONFIG = json.loads(os.environ.get("USER_DB_CONFIG"))
+    #set secret key
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 class ProductionConfig(Config):
     FLASK_ENV = 'production'

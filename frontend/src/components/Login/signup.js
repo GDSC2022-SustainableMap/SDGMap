@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./login.css";
 import axios from "axios";
-
+import dayjs from "dayjs";
+import "dayjs/locale/zh-tw";
+import locale from "antd/locale/zh_TW";
+import { DatePicker } from "antd";
 function Signup() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,20 +18,19 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        rawResponse = (
-        await axios.post("http://127.0.0.1:5000/register", {
-            userName: userName,
-            email: email,
-            password: password,
-            birthday: birthday,
-            region: region,
+      rawResponse = (
+        await axios.post("http://127.0.0.1:5000/user/register", {
+          userName: userName,
+          email: email,
+          password: password,
+          birthday: birthday,
+          region: region,
         })
-        ).data;
-        alert("Resgister successfully! Jumping to sign in page.");
-        navigate("/signin");
-    }
-    catch(error){
-        console.log(error)
+      ).data;
+      alert("Resgister successfully! Jumping to sign in page.");
+      navigate("/signin");
+    } catch (error) {
+      console.log(error);
     }
     return rawResponse;
   };
@@ -73,28 +75,21 @@ function Signup() {
               />
               {/* <a href="/password_reset">Forgot password?</a> */}
             </div>
-            <div className="form-group mt-3">
+            <div
+              className="form-group mt-3"
+              style={{ borderColor: "#379878e7" }}
+            >
               <label className="login-label">Birth</label>
-              <input
-                type="text"
-                className="form-control mt-1"
-                placeholder="YYYY/MM/DD"
-                onChange={(e) => {
-                  setBirthday(e.target.value);
+
+              <DatePicker
+                onChange={(dateString) => {
+                  setBirthday(dateString);
                 }}
+                style={{ width: "100%" }}
+                locale={locale}
               />
             </div>
-            <div className="form-group mt-3">
-              <label className="login-label">Region</label>
-              <input
-                type="text"
-                className="form-control mt-1"
-                placeholder="Ex: Taiwan"
-                onChange={(e) => {
-                  setRegion(e.target.value);
-                }}
-              />
-            </div>
+            {/* <DatePicker locale={locale} /> */}
             <div className="d-grid gap-2 mt-3">
               <button type="submit" className="btn" onClick={handleSubmit}>
                 Submit

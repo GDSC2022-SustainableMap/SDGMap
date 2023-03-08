@@ -1,0 +1,10 @@
+.flex-column{
+    width: 150px;
+}
+
+
+.container-community{
+    width: 95%;
+    margin:10px auto;
+    /* border: 1.5px solid rgb(251, 102, 102); */
+}

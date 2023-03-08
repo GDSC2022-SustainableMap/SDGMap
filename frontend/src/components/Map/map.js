@@ -1,12 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { Key } from "../../key"; // 引入 API key
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
 import "./map.css";
+import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Stars from "./Stars";
-import { BsFillGeoAltFill, BsSearch } from "react-icons/bs";
+import { BsFillGeoAltFill, BsSearch, BsFillPinMapFill } from "react-icons/bs";
 import { Layout, theme, Input, Select, Table, Checkbox, Drawer } from "antd";
+import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import Badges from "../Badge/badge";
 
 // Map
 const SimpleMap = (props) => {
@@ -56,7 +59,7 @@ const SimpleMap = (props) => {
     try {
       setLoading(true);
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/name_search", {
+        await axios.post("http://127.0.0.1:5000/map/name_search", {
           target_place: inputText,
         })
       ).data;
@@ -79,7 +82,7 @@ const SimpleMap = (props) => {
     try {
       setLoading(true);
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/radius_search", {
+        await axios.post("http://127.0.0.1:5000/map/radius_search", {
           lat: parseFloat(inputText.split(",")[0]),
           lng: parseFloat(inputText.split(",")[1]),
           //Condition has not implemented in frontend.
@@ -111,11 +114,19 @@ const SimpleMap = (props) => {
   };
 
   const startSearch = () => {
-    if (searchType === "Name") {
-      findByName();
+    if (navigator.geolocation) {
+      var options = { timeout: 60000 };
+      navigator.geolocation.getCurrentPosition(
+        showLocation,
+        errorHandler,
+        options
+      );
     } else {
-      findByLocation();
+      alert("Geolocation not supported by this browser.");
     }
+
+    if (searchType === "Name") findByName();
+    else findByLocation();
   };
 
   const InfoBlock = ({ name, addr, price, rate }) => {
@@ -123,41 +134,64 @@ const SimpleMap = (props) => {
     for (let i = 0; i < price; i++) {
       p = p + "$";
     }
+    // for modal
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [liked, setIsLiked] = useState(false);
     return (
-      <div className="BoxText1">
-        <b>{name}</b>
-        <hr />
-        地址: {addr}
-        <br />
-        評分: {rate}&emsp;
-        <Stars
-          stars={rate}
-          size={20} //optional
-          fill="#e7711b" //optional
-        />
-        <br />
-        <div>
-          電話: 沒有這個資訊:(
+      <div className="card-map">
+        <h6 className="card-header">
+          <b>{name}</b>
+          {liked ? (
+            <MDBBtn
+              size="sm"
+              className="ms-1"
+              tag="a"
+              color="danger"
+              floating
+              style={{ float: "right" }}
+              onClick={() => setIsLiked(!liked)}
+            >
+              <MDBIcon far icon="star" />
+            </MDBBtn>
+          ) : (
+            <MDBBtn
+              size="sm"
+              className="ms-1"
+              tag="a"
+              color="danger"
+              outline
+              floating
+              style={{ float: "right" }}
+              onClick={() => setIsLiked(!liked)}
+            >
+              <MDBIcon far icon="star" />
+            </MDBBtn>
+          )}
+        </h6>
+        <div className="card-body">
+          <Badges />
+          {addr}
           <br />
-          價格: {p}
-          <br />
-          <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-            <input
-              id="name"
-              type="button"
-              value="More info"
-              onClick={handleShow}
-            />
-          </div>
+          {rate}&nbsp;
+          <Stars
+            stars={rate}
+            size={20} //optional
+            fill="#e7711b" //optional
+          />
+          &emsp;{p}
+          <span style={{ float: "right" }}>
+            <Button variant="primary" size="sm" onClick={handleShow}>
+              More info
+            </Button>
+          </span>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>{name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+              <Badges />
               地址: {addr}
               <br />
               評分: {rate}&emsp;
@@ -172,8 +206,12 @@ const SimpleMap = (props) => {
               價格: {p}
             </Modal.Body>
             <Modal.Footer>
-              <input id="name" type="button" value="Check In" />
-              <input id="name" type="button" value="OK" onClick={handleClose} />
+              <Button variant="secondary">
+                <BsFillPinMapFill /> Check In
+              </Button>
+              <Button variant="secondary" onClick={handleClose}>
+                OK
+              </Button>
             </Modal.Footer>
           </Modal>
         </div>
@@ -195,49 +233,25 @@ const SimpleMap = (props) => {
   };
 
   const errorHandler = (err) => {
-    if (err.code == 1) {
+    if (err.code === 1) {
       alert("Error: Access is denied!");
-    } else if (err.code == 2) {
+    } else if (err.code === 2) {
       alert("Error: Position is unavailable!");
     }
   };
 
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      var options = { timeout: 60000 };
-      navigator.geolocation.getCurrentPosition(
-        showLocation,
-        errorHandler,
-        options
-      );
-    } else {
-      alert("Geolocation not supported by this browser.");
-    }
-  };
-
-  const tag_Onoff = (image) => {
-    let tmpsrc = image.src;
-    // tmpsrc=tmpsrc.replace("n_", "t_");
-    // image.src=require(tmpsrc);
-  };
-
-  const ImageToggleOnMouseOver = ({ primaryImg, secondaryImg, t }) => {
-    const imageRef = useRef(null);
-    return (
-      <img
-        onMouseOver={() => {
-          imageRef.current.src = secondaryImg;
-        }}
-        onMouseOut={() => {
-          imageRef.current.src = primaryImg;
-        }}
-        src={primaryImg}
-        alt={t}
-        title={t}
-        ref={imageRef}
-      />
-    );
-  };
+  const [badge1, setBadge1] = useState(false);
+  const [badge2, setBadge2] = useState(false);
+  const [badge3, setBadge3] = useState(false);
+  const [badge4, setBadge4] = useState(false);
+  const [badge5, setBadge5] = useState(false);
+  const [badge6, setBadge6] = useState(false);
+  const [badge7, setBadge7] = useState(false);
+  const [badge8, setBadge8] = useState(false);
+  const [badge9, setBadge9] = useState(false);
+  const [badge10, setBadge10] = useState(false);
+  const [badge11, setBadge11] = useState(false);
+  const [badge12, setBadge12] = useState(false);
 
   const {
     token: { colorBgContainer },
@@ -351,95 +365,168 @@ const SimpleMap = (props) => {
                   style={{ paddingTop: "10px" }}
                   options={options}
                 />
+
                 <div style={{ paddingTop: "10px" }}>
                   永續指標:
-                  <div className="badges">
+                  <div className="badges" style={{ display: "flex" }}>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_careweak.png")}
-                        secondaryImg={require("../../Badge/t_careweak.png")}
-                        t="關懷弱勢"
+                      <img
+                        id="badge1"
+                        title="關懷弱勢"
+                        alt="關懷弱勢"
+                        onClick={() => setBadge1((prevMode) => !prevMode)}
+                        src={
+                          badge1
+                            ? require("../../Badge/t_careweak.png")
+                            : require("../../Badge/n_careweak.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_envfriend.png")}
-                        secondaryImg={require("../../Badge/t_envfriend.png")}
-                        t="友善環境"
+                      <img
+                        id="badge2"
+                        title="友善環境"
+                        alt="友善環境"
+                        onClick={() => setBadge2((prevMode) => !prevMode)}
+                        src={
+                          badge2
+                            ? require("../../Badge/t_envfriend.png")
+                            : require("../../Badge/n_envfriend.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_foodeduc.png")}
-                        secondaryImg={require("../../Badge/t_foodeduc.png")}
-                        t="食育教育"
+                      <img
+                        id="badge3"
+                        title="食育教育"
+                        alt="食育教育"
+                        onClick={() => setBadge3((prevMode) => !prevMode)}
+                        src={
+                          badge3
+                            ? require("../../Badge/t_foodeduc.png")
+                            : require("../../Badge/n_foodeduc.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_freetrade.png")}
-                        secondaryImg={require("../../Badge/t_freetrade.png")}
-                        t="公平交易"
-                      />
-                    </button>
-                  </div>
-                  <div className="badges">
-                    <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_localgred.png")}
-                        secondaryImg={require("../../Badge/t_localgred.png")}
-                        t="在地食材"
-                      />
-                    </button>
-                    <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_organic.png")}
-                        secondaryImg={require("../../Badge/t_organic.png")}
-                        t="有機小農"
-                      />
-                    </button>
-                    <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_ovolacto.png")}
-                        secondaryImg={require("../../Badge/t_ovolacto.png")}
-                        t="蛋奶素"
-                      />
-                    </button>
-                    <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_petfriend.png")}
-                        secondaryImg={require("../../Badge/t_petfriend.png")}
-                        t="寵物友善"
+                      <img
+                        id="badge4"
+                        title="公平交易"
+                        alt="公平交易"
+                        onClick={() => setBadge4((prevMode) => !prevMode)}
+                        src={
+                          badge4
+                            ? require("../../Badge/t_freetrade.png")
+                            : require("../../Badge/n_freetrade.png")
+                        }
                       />
                     </button>
                   </div>
-                  <div className="badges">
+                  <div className="badges" style={{ display: "flex" }}>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_noplastic.png")}
-                        secondaryImg={require("../../Badge/t_noplastic.png")}
-                        t="減塑"
+                      <img
+                        id="badge5"
+                        title="在地食材"
+                        alt="在地食材"
+                        onClick={() => setBadge5((prevMode) => !prevMode)}
+                        src={
+                          badge5
+                            ? require("../../Badge/t_localgred.png")
+                            : require("../../Badge/n_localgred.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_publicissue.png")}
-                        secondaryImg={require("../../Badge/t_publicissue.png")}
-                        t="公共議題分享"
+                      <img
+                        id="badge6"
+                        title="有機小農"
+                        alt="有機小農"
+                        onClick={() => setBadge6((prevMode) => !prevMode)}
+                        src={
+                          badge6
+                            ? require("../../Badge/t_organic.png")
+                            : require("../../Badge/n_organic.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_stray.png")}
-                        secondaryImg={require("../../Badge/t_stray.png")}
-                        t="流浪動物"
+                      <img
+                        id="badge7"
+                        title="蛋奶素"
+                        alt="蛋奶素"
+                        onClick={() => setBadge7((prevMode) => !prevMode)}
+                        src={
+                          badge7
+                            ? require("../../Badge/t_ovolacto.png")
+                            : require("../../Badge/n_ovolacto.png")
+                        }
                       />
                     </button>
                     <button>
-                      <ImageToggleOnMouseOver
-                        primaryImg={require("../../Badge/n_vegetarianism.png")}
-                        secondaryImg={require("../../Badge/t_vegetarianism.png")}
-                        t="純素"
+                      <img
+                        id="badge8"
+                        title="寵物友善"
+                        alt="寵物友善"
+                        onClick={() => setBadge8((prevMode) => !prevMode)}
+                        src={
+                          badge8
+                            ? require("../../Badge/t_petfriend.png")
+                            : require("../../Badge/n_petfriend.png")
+                        }
+                      />
+                    </button>
+                  </div>
+                  <div className="badges" style={{ display: "flex" }}>
+                    <button>
+                      <img
+                        id="badge9"
+                        title="減塑"
+                        alt="減塑"
+                        onClick={() => setBadge9((prevMode) => !prevMode)}
+                        src={
+                          badge9
+                            ? require("../../Badge/t_noplastic.png")
+                            : require("../../Badge/n_noplastic.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge10"
+                        title="公共議題分享"
+                        alt="公共議題分享"
+                        onClick={() => setBadge10((prevMode) => !prevMode)}
+                        src={
+                          badge10
+                            ? require("../../Badge/t_publicissue.png")
+                            : require("../../Badge/n_publicissue.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge11"
+                        title="流浪動物"
+                        alt="流浪動物"
+                        onClick={() => setBadge11((prevMode) => !prevMode)}
+                        src={
+                          badge11
+                            ? require("../../Badge/t_stray.png")
+                            : require("../../Badge/n_stray.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge12"
+                        title="純素"
+                        alt="純素"
+                        onClick={() => setBadge12((prevMode) => !prevMode)}
+                        src={
+                          badge12
+                            ? require("../../Badge/t_vegetarianism.png")
+                            : require("../../Badge/n_vegetarianism.png")
+                        }
                       />
                     </button>
                   </div>
@@ -457,12 +544,12 @@ const SimpleMap = (props) => {
                     value="開始搜尋"
                     onClick={startSearch}
                   />
-                  <input
+                  {/* <input
                     id="pos"
                     type="button"
                     value="Get Position"
                     onClick={getLocation}
-                  />
+                  /> */}
                 </div>
                 <div style={{ paddingTop: "20px" }}>
                   <Table

@@ -2,28 +2,99 @@ ul{
     list-style: none;
 }
 
-.wrap{
-    width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    padding: 15px;
-    background-color: white;
-    justify-content: center;
-    flex-direction: row;
-    flex-wrap: wrap;
+.page-title{
+    margin: 0 0;
+    text-align: center;
+    font-size: 2rem;
 }
+
+.hline1{
+    width: 8vw;
+    height: 0;
+    margin: 25px 0;
+    border: 8px solid rgb(var(--hr-gray));
+    /* background-color: rgb(var(--hr-gray));     */
+}
+
+.hline2{
+    width: 12vw;
+    height: 0;
+    margin: 25px 0;
+    border: 8px solid rgb(var(--hr-gray));
+    /* background-color: rgb(var(--hr-gray)); */
+}
+
+.book {
+    /* position: absolute; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.twelve-grid-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0% 3.2%;
+    width: 80%;
+    padding: 0;
+}
+
 .mark {
-    flex: 0 0 30%;
-    background-color: #f8f6ed;
-    margin: 5px;
+    /* position: static; */
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid white;
-    color: #379878e7;
+    justify-content: center;
+    background-color: #f8f6ed;
+    border-radius: 20px;
+    box-shadow: #5c5c5c 1px 2px 6px 0px;
+    padding: 1.2vh 0.6vw;
+    height: max-content;
+    z-index: 0;
+}
+.mark-border {
+    /* position: relative; */
+    padding: 1.9vh 1.5vw;
+    border-radius: 20px;
+    border: 2px dotted #5c5c5c;
+    z-index: 1;
 }
 
+/* .dot {
+    display: flex;
+    position: sticky;
+    align-items: left;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #5c5c5c;
+    box-shadow: #936b2b 1px 2px 5px 0px;
+    z-index: 3;
+} */
+
+.mark-img {
+    margin: 2% 0 12% 0;
+    width: 150px;
+    height: 150px;
+    border: 5px solid #6bba4e;
+    border-style: dashed solid;
+    border-radius: 50%;
+}
+.mark-title {
+    font-size: 1.2rem;
+    color: #936b2b;
+    background-color: #f8e4c4;
+    padding: 0.2vh 0.4vw;
+    margin-bottom: 1vh;
+    border-radius: 12px;
+    border-bottom: 2px solid #ffffff;
+    border-right: 2px solid #ffffff;
+}
 p{
-    background-color: rgba(170, 89, 64, 0.169);
-    color: #807f7f;
+    font-size: 1rem;
+    color: #2f6d50;
 }
