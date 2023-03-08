@@ -464,8 +464,8 @@ const [editName,setEditName] = useState();
                       onClick={() => setBadge1((prevValue) => prevValue + 1)}
                       src={
                         badge1 > 0
-                          ? require("../../Badge/t_careweak.png")
-                          : require("../../Badge/n_careweak.png")
+                          ? require("../../Badge/t_careforweak.png")
+                          : require("../../Badge/n_careforweak.png")
                       }
                     />
                     <span className="amount1">{badge1}</span>
