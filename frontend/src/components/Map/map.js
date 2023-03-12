@@ -252,6 +252,12 @@ const SimpleMap = (props) => {
   const [badge10, setBadge10] = useState(false);
   const [badge11, setBadge11] = useState(false);
   const [badge12, setBadge12] = useState(false);
+  const [badge13, setBadge13] = useState(false);
+  const [badge14, setBadge14] = useState(false);
+  const [badge15, setBadge15] = useState(false);
+  const [badge16, setBadge16] = useState(false);
+  const [badge17, setBadge17] = useState(false);
+  const [badge18, setBadge18] = useState(false);
 
   const {
     token: { colorBgContainer },
@@ -328,7 +334,7 @@ const SimpleMap = (props) => {
               </div>
             ) : (
               <div>
-                <div style={{ paddingTop: "10px" }}>
+                <div style={{ paddingTop: "50px" }}>
                   搜尋方式
                   <div>
                     <Select
@@ -377,8 +383,8 @@ const SimpleMap = (props) => {
                         onClick={() => setBadge1((prevMode) => !prevMode)}
                         src={
                           badge1
-                            ? require("../../Badge/t_careweak.png")
-                            : require("../../Badge/n_careweak.png")
+                            ? require("../../Badge/t_careforweak.png")
+                            : require("../../Badge/n_careforweak.png")
                         }
                       />
                     </button>
@@ -421,8 +427,6 @@ const SimpleMap = (props) => {
                         }
                       />
                     </button>
-                  </div>
-                  <div className="badges" style={{ display: "flex" }}>
                     <button>
                       <img
                         id="badge5"
@@ -449,6 +453,8 @@ const SimpleMap = (props) => {
                         }
                       />
                     </button>
+                  </div>
+                  <div className="badges" style={{ display: "flex" }}>
                     <button>
                       <img
                         id="badge7"
@@ -475,8 +481,6 @@ const SimpleMap = (props) => {
                         }
                       />
                     </button>
-                  </div>
-                  <div className="badges" style={{ display: "flex" }}>
                     <button>
                       <img
                         id="badge9"
@@ -526,6 +530,86 @@ const SimpleMap = (props) => {
                           badge12
                             ? require("../../Badge/t_vegetarianism.png")
                             : require("../../Badge/n_vegetarianism.png")
+                        }
+                      />
+                    </button>
+                  </div>
+                  <div className="badges" style={{ display: "flex" }}>
+                    <button>
+                      <img
+                        id="badge13"
+                        title="食農教育"
+                        alt="食農教育"
+                        onClick={() => setBadge13((prevMode) => !prevMode)}
+                        src={
+                          badge13
+                            ? require("../../Badge/t_foodagricultureeducation.png")
+                            : require("../../Badge/n_foodagricultureeducation.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge14"
+                        title="惜食不浪費"
+                        alt="惜食不浪費"
+                        onClick={() => setBadge14((prevMode) => !prevMode)}
+                        src={
+                          badge14
+                            ? require("../../Badge/t_appreciatefood.png")
+                            : require("../../Badge/n_appreciatefood.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge15"
+                        title="創意料理"
+                        alt="創意料理"
+                        onClick={() => setBadge15((prevMode) => !prevMode)}
+                        src={
+                          badge15
+                            ? require("../../Badge/t_creativecuisine.png")
+                            : require("../../Badge/n_creativecuisine.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge16"
+                        title="創新蔬食"
+                        alt="創新蔬食"
+                        onClick={() => setBadge16((prevMode) => !prevMode)}
+                        src={
+                          badge16
+                            ? require("../../Badge/t_creativevegetarian.png")
+                            : require("../../Badge/n_creativevegetarian.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge17"
+                        title="源頭減量"
+                        alt="源頭減量"
+                        onClick={() => setBadge17((prevMode) => !prevMode)}
+                        src={
+                          badge17
+                            ? require("../../Badge/t_sourcereduction.png")
+                            : require("../../Badge/n_sourcereduction.png")
+                        }
+                      />
+                    </button>
+                    <button>
+                      <img
+                        id="badge18"
+                        title="綠色採購"
+                        alt="綠色採購"
+                        onClick={() => setBadge18((prevMode) => !prevMode)}
+                        src={
+                          badge18
+                            ? require("../../Badge/t_greenprocurement.png")
+                            : require("../../Badge/n_greenprocurement.png")
                         }
                       />
                     </button>

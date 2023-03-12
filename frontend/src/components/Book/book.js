@@ -3,7 +3,7 @@ import './book.css';
 import petfriend from '../../Badge/t_petfriend.png';
 import stray from '../../Badge/t_stray.png';
 import publicissue from '../../Badge/t_publicissue.png';
-import careweak from '../../Badge/t_careweak.png';
+import careforweak from '../../Badge/t_careforweak.png';
 import foodeduc from '../../Badge/t_foodeduc.png';
 import localgred from '../../Badge/t_localgred.png';
 import envfriend from '../../Badge/t_envfriend.png';
@@ -46,7 +46,7 @@ function Book() {
                 </div>
                 <div className='mark'>
                     <div className='mark-border'>
-                        <img className='mark-img' src={careweak} alt='careforweak' style={{ width: '150px', height: '150px' }} class="rounded-circle" />
+                        <img className='mark-img' src={careforweak} alt='careforweak' style={{ width: '150px', height: '150px' }} class="rounded-circle" />
                         <div className='mark-title'>關懷弱勢</div>
                         <p>店家透過自身的力量幫助弱勢族群，也提供客人更了解相關的弱勢族群的機會，讓彼此可以有更多溫暖的交流。</p>
                     </div>

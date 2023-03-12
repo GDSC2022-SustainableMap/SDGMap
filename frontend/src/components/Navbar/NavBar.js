@@ -79,6 +79,11 @@ function NavBar(props) {
           ) : (
             <ul>
               <li>
+                <Link to="/sdgbook">
+                  <BsJournalBookmark size={18} /> SDGBook
+                </Link>
+              </li>
+              <li>
                 <Link to="/map">
                   <ImMap2 size={20} /> Map
                 </Link>
