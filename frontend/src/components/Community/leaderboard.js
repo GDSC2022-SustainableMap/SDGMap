@@ -36,7 +36,7 @@ function Leaderboard() {
             </div>
           </td>
           <td>
-          <Badges/>
+          {/* <Badges/> */}
           </td>
           <td>20</td>
           <td>
@@ -62,7 +62,7 @@ function Leaderboard() {
             </div>
           </td>
           <td>
-          <Badges/>
+          {/* <Badges/> */}
           </td>
           <td>20</td>
           <td>

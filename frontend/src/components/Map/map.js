@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Key } from "../../key"; // 引入 API key
 import GoogleMapReact from "google-map-react";
 import axios from "axios";
@@ -10,7 +10,7 @@ import { BsFillGeoAltFill, BsSearch, BsFillPinMapFill } from "react-icons/bs";
 import { Layout, theme, Input, Select, Table, Checkbox, Drawer } from "antd";
 import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
 import Badges from "../Badge/badge";
-
+import n_careforweak from "../../Badge/n_careforweak.png";
 // Map
 const SimpleMap = (props) => {
   const [places, setPlaces] = useState([]);
@@ -22,8 +22,11 @@ const SimpleMap = (props) => {
   const [loading, setLoading] = useState(false);
   //sider collapse or not
   const [collapsed, setCollapsed] = useState(false);
+  const [userPosition, setUserPosition] = useState([]);
+  const [checkBoxValue, setCheckBoxValue] = useState([]);
+
   // Cafe Marker
-  const Marker = ({ text, addr, price, rate }) => {
+  const Marker = ({ text, addr, price, rate, data }) => {
     const [open, setOpen] = useState(false);
     const [size, setSize] = useState();
     const showDefaultDrawer = () => {
@@ -43,7 +46,13 @@ const SimpleMap = (props) => {
           onClose={onClose}
           open={open}
         >
-          <InfoBlock name={text} addr={addr} price={price} rate={rate} />
+          <InfoBlock
+            name={text}
+            addr={addr}
+            price={price}
+            rate={rate}
+            data={data}
+          />
         </Drawer>
         <div onClick={showDefaultDrawer}>
           <BsFillGeoAltFill size={30} color="#61C0BF" />
@@ -74,6 +83,7 @@ const SimpleMap = (props) => {
       rawResponse.geometry.location.lat,
       rawResponse.geometry.location.lng,
     ]);
+    console.log([rawResponse]);
     return rawResponse;
   };
 
@@ -81,22 +91,28 @@ const SimpleMap = (props) => {
   const findByLocation = async () => {
     try {
       setLoading(true);
+      const newData = {};
+      let count = 0
+      for (const key in greenIndicators) {
+        if(greenIndicators[key] === true){
+          newData[count.toString()] = key;
+          count++;
+        }
+      }
+      for (const key in checkBoxValue){
+        newData[count.toString()] = checkBoxValue[key];
+        count++;
+      }
+            
+      // newData = Object.assign(newData, checkBoxValue);
+      // newData = Object.
+      console.log(newData);
       rawResponse = (
         await axios.post("http://127.0.0.1:5000/map/radius_search", {
           lat: parseFloat(inputText.split(",")[0]),
           lng: parseFloat(inputText.split(",")[1]),
           //Condition has not implemented in frontend.
-          condition: {
-            0: "distance",
-            1: "quiet",
-            2: "seat",
-            3: "standing_desk",
-            4: "tasty",
-            5: "cheap",
-            6: "music",
-            7: "limited_time",
-            8: "wifi",
-          },
+          condition: newData,
         })
       ).data;
     } catch (e) {
@@ -110,6 +126,7 @@ const SimpleMap = (props) => {
       rawResponse[0].geometry.location.lat,
       rawResponse[0].geometry.location.lng,
     ]);
+    console.log(rawResponse)
     return rawResponse;
   };
 
@@ -129,7 +146,7 @@ const SimpleMap = (props) => {
     else findByLocation();
   };
 
-  const InfoBlock = ({ name, addr, price, rate }) => {
+  const InfoBlock = ({ name, addr, price, rate, data }) => {
     let p = "";
     for (let i = 0; i < price; i++) {
       p = p + "$";
@@ -171,7 +188,7 @@ const SimpleMap = (props) => {
           )}
         </h6>
         <div className="card-body">
-          <Badges />
+          <Badges data={data} />
           {addr}
           <br />
           {rate}&nbsp;
@@ -191,7 +208,7 @@ const SimpleMap = (props) => {
               <Modal.Title>{name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <Badges />
+              <Badges data={data} />
               地址: {addr}
               <br />
               評分: {rate}&emsp;
@@ -223,13 +240,13 @@ const SimpleMap = (props) => {
   const showLocation = (position) => {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-    alert(
-      "Latitude: " +
-        position.coords.latitude +
-        "\nLongitude: " +
-        position.coords.longitude
-    );
-    setCurrentCenter([latitude, longitude]);
+    // alert(
+    //   "Latitude: " +
+    //     position.coords.latitude +
+    //     "\nLongitude: " +
+    //     position.coords.longitude
+    // );
+    setUserPosition([latitude, longitude]);
   };
 
   const errorHandler = (err) => {
@@ -240,24 +257,35 @@ const SimpleMap = (props) => {
     }
   };
 
-  const [badge1, setBadge1] = useState(false);
-  const [badge2, setBadge2] = useState(false);
-  const [badge3, setBadge3] = useState(false);
-  const [badge4, setBadge4] = useState(false);
-  const [badge5, setBadge5] = useState(false);
-  const [badge6, setBadge6] = useState(false);
-  const [badge7, setBadge7] = useState(false);
-  const [badge8, setBadge8] = useState(false);
-  const [badge9, setBadge9] = useState(false);
-  const [badge10, setBadge10] = useState(false);
-  const [badge11, setBadge11] = useState(false);
-  const [badge12, setBadge12] = useState(false);
-  const [badge13, setBadge13] = useState(false);
-  const [badge14, setBadge14] = useState(false);
-  const [badge15, setBadge15] = useState(false);
-  const [badge16, setBadge16] = useState(false);
-  const [badge17, setBadge17] = useState(false);
-  const [badge18, setBadge18] = useState(false);
+
+
+  const [greenIndicators, setGreenIndicators] = useState({
+    careforweak: false,
+    envfriend: false,
+    foodeduc: false,
+    freetrade: false,
+    localgred: false,
+    organic: false,
+    ovolacto: false,
+    petfriend: false,
+    noplastic: false,
+    publicissue: false,
+    stray: false,
+    vegetarianism: false,
+    foodagricultureeducation: false,
+    appreciatefood: false,
+    creativecuisine: false,
+    creativevegetarian: false,
+    sourcereduction: false,
+    greenprocurement: false,
+  });
+
+  const options = [
+    { label: "WI-FI", value: "wifi" },
+    { label: "插座", value: "socket" },
+    { label: "不限時", value: "limited_time" },
+    { label: "營業中", value: "open_now" },
+  ];
 
   const {
     token: { colorBgContainer },
@@ -267,12 +295,121 @@ const SimpleMap = (props) => {
   const { Option } = Select;
   const SearchType = ["Name", "Location"];
 
-  const options = [
-    { label: "WI-FI", value: "wi-fi" },
-    { label: "插座", value: "socket" },
-    { label: "不限時", value: "time_unlimited" },
-    { label: "營業中", value: "operation" },
+  const greenOptions = [
+    {
+      id: "careforweak",
+      title: "關懷弱勢",
+      alt: "關懷弱勢",
+      img_for_true: require("../../Badge/t_careforweak.png"),
+      img_for_false: require("../../Badge/n_careforweak.png"),
+    },
+    {
+      id: "envfriend",
+      title: "友善環境",
+      alt: "友善環境",
+      img_for_true: require("../../Badge/t_envfriend.png"),
+      img_for_false: require("../../Badge/n_envfriend.png"),
+    },
+    {
+      id: "foodeduc",
+      title: "食育教育",
+      alt: "食育教育",
+      img_for_true: require("../../Badge/t_foodeduc.png"),
+      img_for_false: require("../../Badge/n_foodeduc.png"),
+    },
+    {
+      id: "localgred",
+      title: "在地食材",
+      alt: "在地食材",
+      img_for_true: require("../../Badge/t_localgred.png"),
+      img_for_false: require("../../Badge/n_localgred.png"),
+    },
+    {
+      id: "organic",
+      title: "有機小農",
+      alt: "有機小農",
+      img_for_true: require("../../Badge/t_organic.png"),
+      img_for_false: require("../../Badge/n_organic.png"),
+    },
+    {
+      id: "ovolacto",
+      title: "蛋奶素",
+      alt: "蛋奶素",
+      img_for_true: require("../../Badge/t_ovolacto.png"),
+      img_for_false: require("../../Badge/n_ovolacto.png"),
+    },
+    {
+      id: "petfriend",
+      title: "寵物友善",
+      alt: "寵物友善",
+      img_for_true: require("../../Badge/t_petfriend.png"),
+      img_for_false: require("../../Badge/n_petfriend.png"),
+    },
+    {
+      id: "noplastic",
+      title: "減塑",
+      alt: "減塑",
+      img_for_true: require("../../Badge/t_noplastic.png"),
+      img_for_false: require("../../Badge/n_noplastic.png"),
+    },
+    {
+      id: "stray",
+      title: "流浪動物",
+      alt: "流浪動物",
+      img_for_true: require("../../Badge/t_stray.png"),
+      img_for_false: require("../../Badge/n_stray.png"),
+    },
+    {
+      id: "vegetarianism",
+      title: "純素",
+      alt: "純素",
+      img_for_true: require("../../Badge/t_vegetarianism.png"),
+      img_for_false: require("../../Badge/n_vegetarianism.png"),
+    },
+    {
+      id: "foodagricultureeducation",
+      title: "食農教育",
+      alt: "食農教育",
+      img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
+      img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
+    },
+    {
+      id: "appreciatefood",
+      title: "惜食不浪費",
+      alt: "惜食不浪費",
+      img_for_true: require("../../Badge/t_appreciatefood.png"),
+      img_for_false: require("../../Badge/n_appreciatefood.png"),
+    },
+    {
+      id: "creativecuisine",
+      title: "創意料理",
+      alt: "創意料理",
+      img_for_true: require("../../Badge/t_creativecuisine.png"),
+      img_for_false: require("../../Badge/n_creativecuisine.png"),
+    },
+    {
+      id: "creativevegetarian",
+      title: "創新蔬食",
+      alt: "創新蔬食",
+      img_for_true: require("../../Badge/t_creativevegetarian.png"),
+      img_for_false: require("../../Badge/n_creativevegetarian.png"),
+    },
+    {
+      id: "sourcereduction",
+      title: "源頭減量",
+      alt: "源頭減量",
+      img_for_true: require("../../Badge/t_sourcereduction.png"),
+      img_for_false: require("../../Badge/n_sourcereduction.png"),
+    },
+    {
+      id: "greenprocurement",
+      title: "綠色採購",
+      alt: "綠色採購",
+      img_for_true: require("../../Badge/t_greenprocurement.png"),
+      img_for_false: require("../../Badge/n_greenprocurement.png"),
+    },
   ];
+
   const columns = [
     {
       title: "地點名稱",
@@ -284,6 +421,15 @@ const SimpleMap = (props) => {
       dataIndex: "rating",
     },
   ];
+  const handleGreenIndicatorsChange = (e) => {
+    const { id, checked } = e.target;
+    console.log(greenIndicators);
+    setGreenIndicators({ ...greenIndicators, [id]: !checked });
+  };
+  const checkBoxOnChange = (e) => {
+    setCheckBoxValue(e);
+    console.log(e);
+  };
   return (
     <Layout className="layout">
       <Content style={{ height: "92.5vh" }}>
@@ -366,255 +512,48 @@ const SimpleMap = (props) => {
                     </div>
                   </div>
                 </Input.Group>
-                <div style={{ paddingTop: "10px" }}>店家條件:</div>
-                <Checkbox.Group
-                  style={{ paddingTop: "10px" }}
-                  options={options}
-                />
 
-                <div style={{ paddingTop: "10px" }}>
-                  永續指標:
-                  <div className="badges" style={{ display: "flex" }}>
-                    <button>
-                      <img
-                        id="badge1"
-                        title="關懷弱勢"
-                        alt="關懷弱勢"
-                        onClick={() => setBadge1((prevMode) => !prevMode)}
-                        src={
-                          badge1
-                            ? require("../../Badge/t_careforweak.png")
-                            : require("../../Badge/n_careforweak.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge2"
-                        title="友善環境"
-                        alt="友善環境"
-                        onClick={() => setBadge2((prevMode) => !prevMode)}
-                        src={
-                          badge2
-                            ? require("../../Badge/t_envfriend.png")
-                            : require("../../Badge/n_envfriend.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge3"
-                        title="食育教育"
-                        alt="食育教育"
-                        onClick={() => setBadge3((prevMode) => !prevMode)}
-                        src={
-                          badge3
-                            ? require("../../Badge/t_foodeduc.png")
-                            : require("../../Badge/n_foodeduc.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge4"
-                        title="公平交易"
-                        alt="公平交易"
-                        onClick={() => setBadge4((prevMode) => !prevMode)}
-                        src={
-                          badge4
-                            ? require("../../Badge/t_freetrade.png")
-                            : require("../../Badge/n_freetrade.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge5"
-                        title="在地食材"
-                        alt="在地食材"
-                        onClick={() => setBadge5((prevMode) => !prevMode)}
-                        src={
-                          badge5
-                            ? require("../../Badge/t_localgred.png")
-                            : require("../../Badge/n_localgred.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge6"
-                        title="有機小農"
-                        alt="有機小農"
-                        onClick={() => setBadge6((prevMode) => !prevMode)}
-                        src={
-                          badge6
-                            ? require("../../Badge/t_organic.png")
-                            : require("../../Badge/n_organic.png")
-                        }
-                      />
-                    </button>
+                {searchType === "Location" ? (
+                  <div>
+                    <div style={{ paddingTop: "10px" }}>店家條件:</div>
+                    <Checkbox.Group
+                      style={{ paddingTop: "10px" }}
+                      options={options}
+                      onChange={checkBoxOnChange}
+                    />
+                    <div style={{ paddingTop: "10px" }}>
+                      永續指標:
+                      {[
+                        [0, 4],
+                        [4, 8],
+                        [8, 12],
+                        [12, 16],
+                      ].map((e) => (
+                        <div className="badges" style={{ display: "flex" }}>
+                          {greenOptions.slice(e[0], e[1]).map((e) => (
+                            <button>
+                              <img
+                                id={e.id}
+                                title={e.title}
+                                alt={e.alt}
+                                src={
+                                  greenIndicators[e.id]
+                                    ? e.img_for_true
+                                    : e.img_for_false
+                                }
+                                checked={greenIndicators[e.id]}
+                                onClick={handleGreenIndicatorsChange}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="badges" style={{ display: "flex" }}>
-                    <button>
-                      <img
-                        id="badge7"
-                        title="蛋奶素"
-                        alt="蛋奶素"
-                        onClick={() => setBadge7((prevMode) => !prevMode)}
-                        src={
-                          badge7
-                            ? require("../../Badge/t_ovolacto.png")
-                            : require("../../Badge/n_ovolacto.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge8"
-                        title="寵物友善"
-                        alt="寵物友善"
-                        onClick={() => setBadge8((prevMode) => !prevMode)}
-                        src={
-                          badge8
-                            ? require("../../Badge/t_petfriend.png")
-                            : require("../../Badge/n_petfriend.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge9"
-                        title="減塑"
-                        alt="減塑"
-                        onClick={() => setBadge9((prevMode) => !prevMode)}
-                        src={
-                          badge9
-                            ? require("../../Badge/t_noplastic.png")
-                            : require("../../Badge/n_noplastic.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge10"
-                        title="公共議題分享"
-                        alt="公共議題分享"
-                        onClick={() => setBadge10((prevMode) => !prevMode)}
-                        src={
-                          badge10
-                            ? require("../../Badge/t_publicissue.png")
-                            : require("../../Badge/n_publicissue.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge11"
-                        title="流浪動物"
-                        alt="流浪動物"
-                        onClick={() => setBadge11((prevMode) => !prevMode)}
-                        src={
-                          badge11
-                            ? require("../../Badge/t_stray.png")
-                            : require("../../Badge/n_stray.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge12"
-                        title="純素"
-                        alt="純素"
-                        onClick={() => setBadge12((prevMode) => !prevMode)}
-                        src={
-                          badge12
-                            ? require("../../Badge/t_vegetarianism.png")
-                            : require("../../Badge/n_vegetarianism.png")
-                        }
-                      />
-                    </button>
-                  </div>
-                  <div className="badges" style={{ display: "flex" }}>
-                    <button>
-                      <img
-                        id="badge13"
-                        title="食農教育"
-                        alt="食農教育"
-                        onClick={() => setBadge13((prevMode) => !prevMode)}
-                        src={
-                          badge13
-                            ? require("../../Badge/t_foodagricultureeducation.png")
-                            : require("../../Badge/n_foodagricultureeducation.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge14"
-                        title="惜食不浪費"
-                        alt="惜食不浪費"
-                        onClick={() => setBadge14((prevMode) => !prevMode)}
-                        src={
-                          badge14
-                            ? require("../../Badge/t_appreciatefood.png")
-                            : require("../../Badge/n_appreciatefood.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge15"
-                        title="創意料理"
-                        alt="創意料理"
-                        onClick={() => setBadge15((prevMode) => !prevMode)}
-                        src={
-                          badge15
-                            ? require("../../Badge/t_creativecuisine.png")
-                            : require("../../Badge/n_creativecuisine.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge16"
-                        title="創新蔬食"
-                        alt="創新蔬食"
-                        onClick={() => setBadge16((prevMode) => !prevMode)}
-                        src={
-                          badge16
-                            ? require("../../Badge/t_creativevegetarian.png")
-                            : require("../../Badge/n_creativevegetarian.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge17"
-                        title="源頭減量"
-                        alt="源頭減量"
-                        onClick={() => setBadge17((prevMode) => !prevMode)}
-                        src={
-                          badge17
-                            ? require("../../Badge/t_sourcereduction.png")
-                            : require("../../Badge/n_sourcereduction.png")
-                        }
-                      />
-                    </button>
-                    <button>
-                      <img
-                        id="badge18"
-                        title="綠色採購"
-                        alt="綠色採購"
-                        onClick={() => setBadge18((prevMode) => !prevMode)}
-                        src={
-                          badge18
-                            ? require("../../Badge/t_greenprocurement.png")
-                            : require("../../Badge/n_greenprocurement.png")
-                        }
-                      />
-                    </button>
-                  </div>
-                </div>
+                ) : (
+                  <></>
+                )}
+
                 <div
                   style={{
                     paddingTop: "10px",
@@ -681,6 +620,7 @@ const SimpleMap = (props) => {
                   lng={item.geometry.location.lng}
                   text={item.name}
                   placeId={item.place_id}
+                  data={item}
                 />
               ))}
             </GoogleMapReact>

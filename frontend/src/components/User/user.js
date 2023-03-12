@@ -86,7 +86,7 @@ const [editName,setEditName] = useState();
     if(rawResponse.name){
         setUsername(rawResponse.name);
     }
-    setBiograph(rawResponse.biograph);
+    setBiograph(editBiograph);
     // setUsername(rawResponse.name);
     setShow(false);
     return rawResponse;

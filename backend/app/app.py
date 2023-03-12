@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from instance.config import Config
-from flask_session import Session
 import pyrebase
 from instance.config import Config
 from flask_jwt_extended import JWTManager
