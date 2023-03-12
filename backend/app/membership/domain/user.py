@@ -16,16 +16,26 @@ class User():
         self.rating_count: int = 0
         self.visited_count: int = 0
         self.badges: dict = {
-            "badge_01":False,
-            "badge_02":False,
-            "badge_03":False,
-            "badge_04":False,
-            "badge_05":False,
-            "badge_06":False,
-            "badge_07":False,
-            "badge_08":False,
-            "badge_09":False,
-            "badge_10":False
+            "badges":{
+            "公共議題分享":0,
+            "公平交易":0,
+            "創意料理":0,
+            "創新蔬食":0,
+            "友善環境":0,
+            "在地食材":0,
+            "寵物友善":0,
+            "惜食不浪費":0,
+            "有機小農":0,
+            "流浪動物":0,
+            "減塑":0,
+            "源頭減量":0,
+            "純素":0,
+            "綠色採購":0,
+            "蛋奶素":0,
+            "關懷弱勢":0,
+            "食育教育":0,
+            "食農教育":0
+            }
         }
         self.backpack: dict = {
             "item_01":False,

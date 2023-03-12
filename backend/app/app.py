@@ -5,6 +5,7 @@ from flask_session import Session
 import pyrebase
 from instance.config import Config
 from flask_jwt_extended import JWTManager
+import os
 # read firebase configuration
 config = Config.USER_DB_CONFIG
 # initialize firebase
@@ -16,13 +17,14 @@ jwt_key = Config.JWT_SECRET_KEY
 
 def create_app(config_class=Config):
     app = Flask(__name__)
+    app.config.update(SECRET_KEY=os.urandom(24))
     jwt = JWTManager(app)
     # app.config.from_object(config_class)
 
     # Initialize Flask extensions here
     CORS(app)
     app.config.from_object(config_class)
-    Session(app)
+    #Session(app)
     # # Register blueprints
     # from app.main import bp as main_bp
     # app.register_blueprint(main_bp)

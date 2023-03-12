@@ -2,7 +2,23 @@ from flask import  request
 from app.map.infrastructure.google.gmaps import *
 from app.map.infrastructure.cafenomad.cafenomad import *
 from app.map.views.utils import *
+<<<<<<< HEAD:backend/app/map/views/views.py
 from flask import Blueprint
+=======
+from app.map.domain.badge import Badge
+from flask import Blueprint
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, unset_jwt_cookies, jwt_required
+import pyrebase
+from instance.config import Config
+import datetime
+
+# read firebase configuration
+config = Config.USER_DB_CONFIG
+# initialize firebase
+firebase = pyrebase.initialize_app(config)
+auth = firebase.auth()
+db = firebase.database()
+>>>>>>> 4785ae5760d75a1c24df160b217c34e7268051ff:backend/app/main/routes.py
 
 bp = Blueprint('main', __name__,url_prefix='/map')
 
@@ -147,6 +163,7 @@ def get_spot_arbitrary():
 
 #check if the user is in the correct distance from the spot
 @bp.route("/check_in", methods=['POST'])
+@jwt_required()
 def check_in_spot():
     receive = request.get_json()
     params = {
@@ -165,10 +182,63 @@ def check_in_spot():
         # return gmap_result
 
 
-        distance = getDistanceBetweenPointsNew(params["user_lat"] ,params["user_lng"], spot_lat, spot_lng)
+        distance = getDistanceBetweenPointsNew(float(params["user_lat"]) ,float(params["user_lng"]), float(spot_lat), float(spot_lng))
+        current_user = get_jwt_identity()
+        if (distance<params["scope"]):
+            current_log_count = 0
+            # already have log
+            if db.child("user_log").child(current_user).get().val():
+                current_log_count = db.child("user_log").child(current_user).child("log_count").get().val()
+            # not yet have log
+            else:
+                db.child("user_log").child(current_user).set({"log_count": 0})
+                
+            user_log = Badge().get_user_log()
+            user_log["user_id"] = current_user
+            user_log["time"] = str(datetime.datetime.now())
+            user_log["place_id"] = params["place_id"]
+
+            #db.child("user_log").child(f"log{current_log_count}").set(user_log)
+            db.child("user_log").child(current_user).child(f"log{current_log_count}").set(user_log)
+
+            current_log_count += 1
+            db.child("user_log").child(current_user).update({"log_count":current_log_count})
+
+            # record the badges and coins obtained
+            addBadge (params["place_id"], current_user)
         return str(distance < params["scope"])
-    except:
-        return {}
+    except Exception as e:
+        return e
+    
+@bp.route("/save_store", methods=["POST"])
+@jwt_required()
+def save_spot():
+    receive = request.get_json()
+    params = {
+        "place_id": receive['place_id']
+    }
+    current_user = get_jwt_identity()
+    gmap_result = find_place_detail(params["place_id"])
+    if (gmap_result):
+        current_save_count = 0
+        # already have log
+        if db.child("user_save").child(current_user).get().val():
+            current_save_count = db.child("user_save").child(current_user).child("save_count").get().val()
+        # not yet have log
+        else:
+            db.child("user_save").child(current_user).set({"save_count": 0})
+        
+        user_save = Badge().get_user_save()
+        user_save["user_id"] = current_user
+        user_save["place_id"] = params["place_id"]
+        db.child("user_save").child(current_user).child(f"save{current_save_count}").set(user_save)
+
+        current_save_count += 1
+        db.child("user_save").child(current_user).update({"save_count": current_save_count})
+
+        return f'{params["place_id"]} saved, {current_save_count}'
+    else:
+        return "this place doesn't exist"
 
 @bp.route("/get_references_from_spot", methods=['POST'])
 def get_references_from_spot():

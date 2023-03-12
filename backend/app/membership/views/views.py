@@ -39,6 +39,7 @@ def refresh_expiring_jwts(response):
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     """ Let user register account. """
+    WTF_CSRF_ENABLED = False
     form = RegisterForm(meta={'csrf': False})
     if request.method == "POST":
         if not form.validate_on_submit():
@@ -141,20 +142,19 @@ def add_friend():
     result = userrepo.update(receive)
     return result
 
-
 #I don't know what is this XD. Frank Hu
 @bp.route("/track_userlog", methods=["POST"])
-def stalking():
+def get_specific_userlog():
+    """ gives back the userlog of a specific user """
     submit = request.get_json()
     params = {
         "user_uuid":submit["user_uuid"]
     }
     obj = {}
-    obj.update(db.child("users").child(params["user_uuid"]).get().val())
     user_log = db.child("user_log").get().val()
-    for i in user_log:
-        if (i == "log_count"):
+    for key in user_log:
+        if (key == "log_count"):
             continue
-        elif (params["user_uuid"] == user_log[i]["user_id"]):
-            obj[i] = user_log[i]
+        elif (params["user_uuid"] == user_log[key]["user_id"]):
+            obj[key] = user_log[key]
     return obj
