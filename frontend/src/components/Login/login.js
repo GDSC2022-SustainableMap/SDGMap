@@ -19,6 +19,7 @@ export default function Login(props) {
       })
       .then((response) => {
         props.setToken(response.data.access_token);
+        console.log(response.data);
       })
       .catch((error) => {
         if (error.response) {
@@ -29,11 +30,10 @@ export default function Login(props) {
       });
     alert("Login successfully! Jumping to main page.");
     navigate("/");
-
     return rawResponse;
   };
 
-  return props.token ? (
+  return props.token!==null ? (
     <Navigate to="/" />
   ) : (
     <div className="login-container">

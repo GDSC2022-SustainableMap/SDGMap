@@ -351,6 +351,7 @@ def check_in_spot():
             float(spot_lng),
         )
         current_user = get_jwt_identity()
+        print(current_user)
         if distance < params["scope"]:
             current_log_count = 0
             # already have log
@@ -383,10 +384,11 @@ def check_in_spot():
 
             # # record the badges and coins obtained
             addBadge(params["place_id"], current_user)
-        return str(distance < params["scope"])
+            return {"msg":"You have checked in successfully!"}
+        else:
+            return {"msg":"You should come to this place to check in!"}
     except Exception as e:
         return e
-
 
 @bp.route("/save_store", methods=["POST"])
 @jwt_required()
@@ -425,8 +427,7 @@ def save_spot():
         return f'{params["place_id"]} saved, {current_save_count}'
     else:
         return "this place doesn't exist"
-
-
+        
 @bp.route("/get_references_from_spot", methods=["POST"])
 def get_references_from_spot():
     receive = request.get_json()

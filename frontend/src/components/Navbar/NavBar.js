@@ -43,7 +43,7 @@ function NavBar(props) {
       </div>
       <div className="container">
         <div className="main_list" id="mainListDiv">
-          {props.token ? (
+          {props.token!==null ? (
             <ul>
               <li>
                 <Link to="/map">

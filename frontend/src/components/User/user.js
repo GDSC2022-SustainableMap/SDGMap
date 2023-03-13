@@ -3,9 +3,11 @@ import { FiEdit } from "react-icons/fi";
 import { IoMdAddCircle } from "react-icons/io";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import { BsFillPinMapFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import "./user.css";
 import axios from "axios";
 function User(props) {
+  const navigate = useNavigate();
   let [selectImage, setSelectImage] = useState(null);
   let [username, setUsername] = useState(null);
   let [numoffriend, setNumoffriend] = useState(null);
@@ -56,13 +58,21 @@ const [editName,setEditName] = useState();
       ).data;
       //   console.log(rawResponse);
     } catch (error) {
-      console.log(error);
+      console.log(error.response)
+      if (error.response.status === 401) {
+          props.removeToken();
+          alert("Token expired! Please login again!");
+          navigate("/");
+      
+          return error;
+       }
     }
     setUserData(rawResponse);
     setUsername(rawResponse.name);
     setNumoffriend(rawResponse.friends.friend_number);
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
+    console.log(rawResponse);
     return rawResponse;
   };
   const updateUserProfile = async (e) => {
@@ -331,6 +341,123 @@ const [editName,setEditName] = useState();
       </Carousel>
     );
   }
+
+
+  const greenOptions = [
+    {
+      id: "careforweak",
+      title: "關懷弱勢",
+      alt: "關懷弱勢",
+      img_for_true: require("../../Badge/t_careforweak.png"),
+      img_for_false: require("../../Badge/n_careforweak.png"),
+    },
+    {
+      id: "envfriend",
+      title: "友善環境",
+      alt: "友善環境",
+      img_for_true: require("../../Badge/t_envfriend.png"),
+      img_for_false: require("../../Badge/n_envfriend.png"),
+    },
+    {
+      id: "foodeduc",
+      title: "食育教育",
+      alt: "食育教育",
+      img_for_true: require("../../Badge/t_foodeduc.png"),
+      img_for_false: require("../../Badge/n_foodeduc.png"),
+    },
+    {
+      id: "localgred",
+      title: "在地食材",
+      alt: "在地食材",
+      img_for_true: require("../../Badge/t_localgred.png"),
+      img_for_false: require("../../Badge/n_localgred.png"),
+    },
+    {
+      id: "organic",
+      title: "有機小農",
+      alt: "有機小農",
+      img_for_true: require("../../Badge/t_organic.png"),
+      img_for_false: require("../../Badge/n_organic.png"),
+    },
+    {
+      id: "ovolacto",
+      title: "蛋奶素",
+      alt: "蛋奶素",
+      img_for_true: require("../../Badge/t_ovolacto.png"),
+      img_for_false: require("../../Badge/n_ovolacto.png"),
+    },
+    {
+      id: "petfriend",
+      title: "寵物友善",
+      alt: "寵物友善",
+      img_for_true: require("../../Badge/t_petfriend.png"),
+      img_for_false: require("../../Badge/n_petfriend.png"),
+    },
+    {
+      id: "noplastic",
+      title: "減塑",
+      alt: "減塑",
+      img_for_true: require("../../Badge/t_noplastic.png"),
+      img_for_false: require("../../Badge/n_noplastic.png"),
+    },
+    {
+      id: "stray",
+      title: "流浪動物",
+      alt: "流浪動物",
+      img_for_true: require("../../Badge/t_stray.png"),
+      img_for_false: require("../../Badge/n_stray.png"),
+    },
+    {
+      id: "vegetarianism",
+      title: "純素",
+      alt: "純素",
+      img_for_true: require("../../Badge/t_vegetarianism.png"),
+      img_for_false: require("../../Badge/n_vegetarianism.png"),
+    },
+    {
+      id: "foodagricultureeducation",
+      title: "食農教育",
+      alt: "食農教育",
+      img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
+      img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
+    },
+    {
+      id: "appreciatefood",
+      title: "惜食不浪費",
+      alt: "惜食不浪費",
+      img_for_true: require("../../Badge/t_appreciatefood.png"),
+      img_for_false: require("../../Badge/n_appreciatefood.png"),
+    },
+    {
+      id: "creativecuisine",
+      title: "創意料理",
+      alt: "創意料理",
+      img_for_true: require("../../Badge/t_creativecuisine.png"),
+      img_for_false: require("../../Badge/n_creativecuisine.png"),
+    },
+    {
+      id: "creativevegetarian",
+      title: "創新蔬食",
+      alt: "創新蔬食",
+      img_for_true: require("../../Badge/t_creativevegetarian.png"),
+      img_for_false: require("../../Badge/n_creativevegetarian.png"),
+    },
+    {
+      id: "sourcereduction",
+      title: "源頭減量",
+      alt: "源頭減量",
+      img_for_true: require("../../Badge/t_sourcereduction.png"),
+      img_for_false: require("../../Badge/n_sourcereduction.png"),
+    },
+    {
+      id: "greenprocurement",
+      title: "綠色採購",
+      alt: "綠色採購",
+      img_for_true: require("../../Badge/t_greenprocurement.png"),
+      img_for_false: require("../../Badge/n_greenprocurement.png"),
+    },
+  ];
+
   return (
     <div className="user-container">
       <div className="user-lb">

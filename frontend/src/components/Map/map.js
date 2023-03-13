@@ -8,11 +8,14 @@ import Modal from "react-bootstrap/Modal";
 import Stars from "./Stars";
 import { BsFillGeoAltFill, BsSearch, BsFillPinMapFill } from "react-icons/bs";
 import { Layout, theme, Input, Select, Table, Checkbox, Drawer } from "antd";
-import { MDBBtn, MDBIcon } from "mdb-react-ui-kit";
+import { MDBBtn, MDBIcon, MDBSpinner} from "mdb-react-ui-kit";
 import Badges from "../Badge/badge";
-import n_careforweak from "../../Badge/n_careforweak.png";
+import { useNavigate } from "react-router-dom";
+import useToken from "../../hooks/token";
 // Map
 const SimpleMap = (props) => {
+  const { getToken, removeToken } = useToken();
+  const navigate = useNavigate();
   const [places, setPlaces] = useState([]);
   const [inputText, setInputText] = useState("");
   const [searchType, setSearchType] = useState("Name");
@@ -92,18 +95,18 @@ const SimpleMap = (props) => {
     try {
       setLoading(true);
       const newData = {};
-      let count = 0
+      let count = 0;
       for (const key in greenIndicators) {
-        if(greenIndicators[key] === true){
+        if (greenIndicators[key] === true) {
           newData[count.toString()] = key;
           count++;
         }
       }
-      for (const key in checkBoxValue){
+      for (const key in checkBoxValue) {
         newData[count.toString()] = checkBoxValue[key];
         count++;
       }
-            
+
       // newData = Object.assign(newData, checkBoxValue);
       // newData = Object.
       console.log(newData);
@@ -126,7 +129,7 @@ const SimpleMap = (props) => {
       rawResponse[0].geometry.location.lat,
       rawResponse[0].geometry.location.lng,
     ]);
-    console.log(rawResponse)
+    console.log(rawResponse);
     return rawResponse;
   };
 
@@ -156,6 +159,48 @@ const SimpleMap = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [liked, setIsLiked] = useState(false);
+    const [checkInLoading, setCheckInLoading] = useState(false);
+    const handleCheckin = async () => {
+      try {
+        setCheckInLoading(true);
+        console.log(data);
+        console.log(userPosition);
+        const t = getToken();
+        rawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/map/check_in",
+            {
+              place_id: data.place_id,
+              user_lat: userPosition[0],
+              user_lng: userPosition[1],
+              scope: 1000,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + t,
+              },
+            }
+          )
+        ).data;
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          removeToken();
+          alert("Token expired or you have not logined! Please login again!");
+          navigate("/signin");
+
+          return error;
+        }
+      }
+      if(rawResponse.msg === 'You should come to this place to check in!'){
+        alert('You should come to this place to check in!');
+      }else if(rawResponse.msg === 'You have checked in successfully!'){
+        alert('You have checked in successfully!');
+      }
+      console.log(rawResponse);
+      setCheckInLoading(false);
+      return rawResponse;
+    };
     return (
       <div className="card-map">
         <h6 className="card-header">
@@ -223,8 +268,12 @@ const SimpleMap = (props) => {
               價格: {p}
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary">
-                <BsFillPinMapFill /> Check In
+              <Button variant="secondary" onClick={handleCheckin}>
+                {
+                  checkInLoading? <MDBSpinner size='sm'/>:<BsFillPinMapFill />
+                }
+              Check In
+
               </Button>
               <Button variant="secondary" onClick={handleClose}>
                 OK
@@ -256,8 +305,6 @@ const SimpleMap = (props) => {
       alert("Error: Position is unavailable!");
     }
   };
-
-
 
   const [greenIndicators, setGreenIndicators] = useState({
     careforweak: false,
