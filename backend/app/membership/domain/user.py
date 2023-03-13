@@ -16,7 +16,6 @@ class User():
         self.rating_count: int = 0
         self.visited_count: int = 0
         self.badges: dict = {
-            "badges":{
             "公共議題分享":0,
             "公平交易":0,
             "創意料理":0,
@@ -35,19 +34,17 @@ class User():
             "關懷弱勢":0,
             "食育教育":0,
             "食農教育":0
-            }
         }
         self.backpack: dict = {
-            "item_01":False,
-            "item_02":False,
-            "item_03":False,
-            "item_04":False,
-            "item_05":False,
-            "item_06":False,
-            "item_07":False,
-            "item_08":False,
-            "item_09":False,
-            "item_10":False
+            "banana":0,
+            "caterpillar":0,
+            "the_egg":0,
+            "earthworm":0,
+            "honey":0,
+            "ant":0,
+            "red_fruit":0,
+            "grape":0,
+            "nuts":0,
         }
     def change_name(self, new_name: str):
         if (not new_name or not len(new_name)):

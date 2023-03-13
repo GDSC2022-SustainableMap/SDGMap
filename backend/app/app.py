@@ -10,6 +10,7 @@ import datetime
 config = Config.USER_DB_CONFIG
 # initialize firebase
 firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
 auth = firebase.auth()
 db = firebase.database()
 jwt_key = Config.JWT_SECRET_KEY

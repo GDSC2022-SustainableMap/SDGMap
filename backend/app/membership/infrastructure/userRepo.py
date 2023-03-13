@@ -1,6 +1,10 @@
 from app.membership.domain import User
-from app.app import db, auth
+from app.app import db, auth,storage
 from app.membership.domain.friend import Friend
+from PIL import Image
+from base64 import decodestring
+import base64
+
 class UserRepo():
 
     def __init__(self, ) -> None:

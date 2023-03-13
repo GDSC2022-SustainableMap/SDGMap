@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect,flash,jsonify
 
 from werkzeug.exceptions import InternalServerError
 
-from app.membership.infrastructure import db,auth
+from app.membership.infrastructure import db,auth,storage
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
 
@@ -39,11 +39,12 @@ def refresh_expiring_jwts(response):
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     """ Let user register account. """
+    print(request.get_json())
     WTF_CSRF_ENABLED = False
     form = RegisterForm(meta={'csrf': False})
     if request.method == "POST":
         if not form.validate_on_submit():
-            # print(form.errors)
+            print(form.errors)
             raise InternalServerError('Invalid form')
         try:
             receive = request.get_json()
@@ -93,7 +94,7 @@ def edit_profile():
         current_user = get_jwt_identity()
         receive['user_id'] = current_user
         result = userrepo.update(receive)
-        print(receive)
+        # print(receive)
         return result
     else:
         return redirect("/")
@@ -158,3 +159,11 @@ def get_specific_userlog():
         elif (params["user_uuid"] == user_log[key]["user_id"]):
             obj[key] = user_log[key]
     return obj
+
+@bp.route("/image", methods=["GET","POST"])
+@jwt_required()
+def image():
+        if request.method == "POST":
+            current_user = get_jwt_identity()
+            storage.child("images/{}.jpg".format(current_user)).put("example2.jpg")
+

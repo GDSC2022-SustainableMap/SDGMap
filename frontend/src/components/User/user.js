@@ -8,43 +8,19 @@ import "./user.css";
 import axios from "axios";
 function User(props) {
   const navigate = useNavigate();
-  let [selectImage, setSelectImage] = useState(null);
-  let [username, setUsername] = useState(null);
-  let [numoffriend, setNumoffriend] = useState(null);
-  let [numofcoin, setNumofcoin] = useState(null);
-  let [biograph, setBiograph] = useState(null);
-    const [userData, setUserData] = useState({});
+  const [userImage, setUserImage] = useState([]);
+  const [username, setUsername] = useState(null);
+  const [numoffriend, setNumoffriend] = useState(null);
+  const [numofcoin, setNumofcoin] = useState(null);
+  const [biograph, setBiograph] = useState(null);
+  const [userData, setUserData] = useState({});
   const [editBiograph, setEditBiograph] = useState();
-const [editName,setEditName] = useState();
+  const [editName, setEditName] = useState();
+  const [loading, setLoading] = useState(true);
   //Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  //Badge Collection
-  const [badge1, setBadge1] = useState(0);
-  const [badge2, setBadge2] = useState(0);
-  const [badge3, setBadge3] = useState(0);
-  const [badge4, setBadge4] = useState(0);
-  const [badge5, setBadge5] = useState(0);
-  const [badge6, setBadge6] = useState(0);
-  const [badge7, setBadge7] = useState(0);
-  const [badge8, setBadge8] = useState(0);
-  const [badge9, setBadge9] = useState(0);
-  const [badge10, setBadge10] = useState(0);
-  const [badge11, setBadge11] = useState(0);
-  const [badge12, setBadge12] = useState(0);
-
-  // equipment collection
-  const [equip1, setEquip1] = useState(0);
-  const [equip2, setEquip2] = useState(0);
-  const [equip3, setEquip3] = useState(0);
-  const [equip4, setEquip4] = useState(0);
-  const [equip5, setEquip5] = useState(0);
-  const [equip6, setEquip6] = useState(0);
-  const [equip7, setEquip7] = useState(0);
-  const [equip8, setEquip8] = useState(0);
-  const [equip9, setEquip9] = useState(0);
 
   let rawResponse;
   const fetchUserProfile = async (e) => {
@@ -58,14 +34,14 @@ const [editName,setEditName] = useState();
       ).data;
       //   console.log(rawResponse);
     } catch (error) {
-      console.log(error.response)
+      console.log(error.response);
       if (error.response.status === 401) {
-          props.removeToken();
-          alert("Token expired! Please login again!");
-          navigate("/");
-      
-          return error;
-       }
+        props.removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+
+        return error;
+      }
     }
     setUserData(rawResponse);
     setUsername(rawResponse.name);
@@ -73,33 +49,38 @@ const [editName,setEditName] = useState();
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
     console.log(rawResponse);
+    setLoading(false);
     return rawResponse;
   };
   const updateUserProfile = async (e) => {
     try {
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/user/edit_profile", 
-        {
-            biograph:editBiograph,
-            name:editName
-        },{
-          headers: {
-            Authorization: "Bearer " + props.token,
+        await axios.post(
+          "http://127.0.0.1:5000/user/edit_profile",
+          {
+            biograph: editBiograph,
+            name: editName,
+            // image: userImage
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + props.token,
+            },
           }
-        })
+        )
       ).data;
       //   console.log(rawResponse);
     } catch (error) {
       console.log(error);
     }
     console.log(rawResponse);
-    if(rawResponse.name){
-        setUsername(rawResponse.name);
+    if (rawResponse.name) {
+      setUsername(rawResponse.name);
     }
     setBiograph(editBiograph);
     // setUsername(rawResponse.name);
     setShow(false);
-    return rawResponse;
+    // return rawResponse;
   };
   useEffect(() => {
     fetchUserProfile();
@@ -107,6 +88,19 @@ const [editName,setEditName] = useState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleImageChange = (e) => {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () => {
+      setUserImage(reader.result);
+      console.log(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
   //Carousel
   function CarouselOfVisitedStore() {
     const [index, setIndex] = useState(0);
@@ -342,7 +336,6 @@ const [editName,setEditName] = useState();
     );
   }
 
-
   const greenOptions = [
     {
       id: "careforweak",
@@ -350,6 +343,7 @@ const [editName,setEditName] = useState();
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
+      num: loading ? 0 : userData.badges.關懷弱勢,
     },
     {
       id: "envfriend",
@@ -357,6 +351,7 @@ const [editName,setEditName] = useState();
       alt: "友善環境",
       img_for_true: require("../../Badge/t_envfriend.png"),
       img_for_false: require("../../Badge/n_envfriend.png"),
+      num: loading ? 0 : userData.badges.友善環境,
     },
     {
       id: "foodeduc",
@@ -364,6 +359,7 @@ const [editName,setEditName] = useState();
       alt: "食育教育",
       img_for_true: require("../../Badge/t_foodeduc.png"),
       img_for_false: require("../../Badge/n_foodeduc.png"),
+      num: loading ? 0 : userData.badges.食育教育,
     },
     {
       id: "localgred",
@@ -371,6 +367,7 @@ const [editName,setEditName] = useState();
       alt: "在地食材",
       img_for_true: require("../../Badge/t_localgred.png"),
       img_for_false: require("../../Badge/n_localgred.png"),
+      num: loading ? 0 : userData.badges.在地食材,
     },
     {
       id: "organic",
@@ -378,6 +375,7 @@ const [editName,setEditName] = useState();
       alt: "有機小農",
       img_for_true: require("../../Badge/t_organic.png"),
       img_for_false: require("../../Badge/n_organic.png"),
+      num: loading ? 0 : userData.badges.有機小農,
     },
     {
       id: "ovolacto",
@@ -385,6 +383,7 @@ const [editName,setEditName] = useState();
       alt: "蛋奶素",
       img_for_true: require("../../Badge/t_ovolacto.png"),
       img_for_false: require("../../Badge/n_ovolacto.png"),
+      num: loading ? 0 : userData.badges.蛋奶素,
     },
     {
       id: "petfriend",
@@ -392,6 +391,7 @@ const [editName,setEditName] = useState();
       alt: "寵物友善",
       img_for_true: require("../../Badge/t_petfriend.png"),
       img_for_false: require("../../Badge/n_petfriend.png"),
+      num: loading ? 0 : userData.badges.寵物友善,
     },
     {
       id: "noplastic",
@@ -399,6 +399,7 @@ const [editName,setEditName] = useState();
       alt: "減塑",
       img_for_true: require("../../Badge/t_noplastic.png"),
       img_for_false: require("../../Badge/n_noplastic.png"),
+      num: loading ? 0 : userData.badges.減塑,
     },
     {
       id: "stray",
@@ -406,6 +407,7 @@ const [editName,setEditName] = useState();
       alt: "流浪動物",
       img_for_true: require("../../Badge/t_stray.png"),
       img_for_false: require("../../Badge/n_stray.png"),
+      num: loading ? 0 : userData.badges.流浪動物,
     },
     {
       id: "vegetarianism",
@@ -413,6 +415,7 @@ const [editName,setEditName] = useState();
       alt: "純素",
       img_for_true: require("../../Badge/t_vegetarianism.png"),
       img_for_false: require("../../Badge/n_vegetarianism.png"),
+      num: loading ? 0 : userData.badges.純素,
     },
     {
       id: "foodagricultureeducation",
@@ -420,6 +423,7 @@ const [editName,setEditName] = useState();
       alt: "食農教育",
       img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
       img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
+      num: loading ? 0 : userData.badges.食農教育,
     },
     {
       id: "appreciatefood",
@@ -427,6 +431,7 @@ const [editName,setEditName] = useState();
       alt: "惜食不浪費",
       img_for_true: require("../../Badge/t_appreciatefood.png"),
       img_for_false: require("../../Badge/n_appreciatefood.png"),
+      num: loading ? 0 : userData.badges.惜食不浪費,
     },
     {
       id: "creativecuisine",
@@ -434,6 +439,7 @@ const [editName,setEditName] = useState();
       alt: "創意料理",
       img_for_true: require("../../Badge/t_creativecuisine.png"),
       img_for_false: require("../../Badge/n_creativecuisine.png"),
+      num: loading ? 0 : userData.badges.創意料理,
     },
     {
       id: "creativevegetarian",
@@ -441,6 +447,7 @@ const [editName,setEditName] = useState();
       alt: "創新蔬食",
       img_for_true: require("../../Badge/t_creativevegetarian.png"),
       img_for_false: require("../../Badge/n_creativevegetarian.png"),
+      num: loading ? 0 : userData.badges.創新蔬食,
     },
     {
       id: "sourcereduction",
@@ -448,6 +455,7 @@ const [editName,setEditName] = useState();
       alt: "源頭減量",
       img_for_true: require("../../Badge/t_sourcereduction.png"),
       img_for_false: require("../../Badge/n_sourcereduction.png"),
+      num: loading ? 0 : userData.badges.源頭減量,
     },
     {
       id: "greenprocurement",
@@ -455,9 +463,83 @@ const [editName,setEditName] = useState();
       alt: "綠色採購",
       img_for_true: require("../../Badge/t_greenprocurement.png"),
       img_for_false: require("../../Badge/n_greenprocurement.png"),
+      num: loading ? 0 : userData.badges.綠色採購,
     },
   ];
-
+  const backpackItems = [
+    {
+      id: "banana",
+      title: "香蕉",
+      alt: "香蕉",
+      img_for_true: require("../../Equipment/banana.png"),
+      img_for_false: require("../../Equipment/n_banana.png"),
+      num: loading ? 0 : userData.backpack.banana,
+    },
+    {
+      id: "caterpillar",
+      title: "毛毛蟲",
+      alt: "毛毛蟲",
+      img_for_true: require("../../Equipment/caterpillar.png"),
+      img_for_false: require("../../Equipment/n_caterpillar.png"),
+      num: loading ? 0 : userData.backpack.caterpillar,
+    },
+    {
+      id: "the_egg",
+      title: "蛋",
+      alt: "蛋",
+      img_for_true: require("../../Equipment/the_egg.png"),
+      img_for_false: require("../../Equipment/n_the_egg.png"),
+      num: loading ? 0 : userData.backpack.the_egg,
+    },
+    {
+      id: "earthworm",
+      title: "地球蟲",
+      alt: "地球蟲",
+      img_for_true: require("../../Equipment/earthworm.png"),
+      img_for_false: require("../../Equipment/n_earthworm.png"),
+      num: loading ? 0 : userData.backpack.earthworm,
+    },
+    {
+      id: "grape",
+      title: "葡萄",
+      alt: "葡萄",
+      img_for_true: require("../../Equipment/grape.png"),
+      img_for_false: require("../../Equipment/n_grape.png"),
+      num: loading ? 0 : userData.backpack.grape,
+    },
+    {
+      id: "honey",
+      title: "蜂蜜",
+      alt: "蜂蜜",
+      img_for_true: require("../../Equipment/honey.png"),
+      img_for_false: require("../../Equipment/n_honey.png"),
+      num: loading ? 0 : userData.backpack.honey,
+    },
+    {
+      id: "ant",
+      title: "螞蟻",
+      alt: "螞蟻",
+      img_for_true: require("../../Equipment/ant.png"),
+      img_for_false: require("../../Equipment/n_ant.png"),
+      num: loading ? 0 : userData.backpack.ant,
+    },
+    {
+      id: "red_fruit",
+      title: "紅水果",
+      alt: "紅水果",
+      img_for_true: require("../../Equipment/red_fruit.png"),
+      img_for_false: require("../../Equipment/n_red_fruit.png"),
+      num: loading ? 0 : userData.backpack.red_fruit,
+    },
+    {
+      id: "nuts",
+      title: "堅果",
+      alt: "堅果",
+      img_for_true: require("../../Equipment/nuts.png"),
+      img_for_false: require("../../Equipment/n_nuts.png"),
+      num: loading ? 0 : userData.backpack.nuts,
+    },
+  ];
   return (
     <div className="user-container">
       <div className="user-lb">
@@ -499,24 +581,31 @@ const [editName,setEditName] = useState();
                 {/* <form className='user-form'> */}
                 <div className="user-form-group">
                   <label className="user-form-label">Name</label>
-                  { userData.change_name_chance >=1?<input
-                    className="value"
-                    type="text"
-                    placeholder="Username"
-                    onChange={(e) => setEditName(e.target.value)}
-                  ></input>:<input
-                  className="value"
-                  type="text"
-                  placeholder="You can only changed your name once!"
-                  disabled="true" readOnly="true"
-                  style={{backgroundColor:"#efeeee"}}
-                ></input>
-
-                  }
+                  {userData.change_name_chance >= 1 ? (
+                    <input
+                      className="value"
+                      type="text"
+                      placeholder="Username"
+                      onChange={(e) => setEditName(e.target.value)}
+                    ></input>
+                  ) : (
+                    <input
+                      className="value"
+                      type="text"
+                      placeholder="You can only changed your name once!"
+                      disabled="true"
+                      readOnly="true"
+                      style={{ backgroundColor: "#efeeee" }}
+                    ></input>
+                  )}
                 </div>
                 <div className="user-form-group">
                   <label className="user-form-label">Photo</label>
-                  <input className="value" type="file"></input>
+                  <input
+                    className="value"
+                    type="file"
+                    onChange={handleImageChange}
+                  ></input>
                 </div>
                 {/* <div className='user-form-group'>
                                         <label className='user-form-label'>Email Address</label>
@@ -538,7 +627,11 @@ const [editName,setEditName] = useState();
                 {/* </form> */}
               </Modal.Body>
               <Modal.Footer>
-                <button id="closebtn" variant="secondary" onClick={updateUserProfile}>
+                <button
+                  id="closebtn"
+                  variant="secondary"
+                  onClick={updateUserProfile}
+                >
                   Finish Edition
                 </button>
               </Modal.Footer>
@@ -549,7 +642,16 @@ const [editName,setEditName] = useState();
                                 <button onClick={() => setSelectImage(null)}>Remove</button>
                             </div>
                         )} */}
-            <img id="user-photo" src={require("./user-icon.png")} />
+            {userImage.length >= 1 ? (
+              <img id="user-photo" alt="user" src={userImage} />
+            ) : (
+              <img
+                id="user-photo"
+                alt="user"
+                src={require("./user-icon.png")}
+              />
+            )}
+
             {/* <label id='imagebtn'><IoMdAddCircle size='30' />
                             <input type='file' display='none' id='imgouterbtn'
                                 onChange={(event) => {
@@ -583,174 +685,23 @@ const [editName,setEditName] = useState();
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="關懷弱勢"
-                      alt="關懷弱勢"
-                      onClick={() => setBadge1((prevValue) => prevValue + 1)}
-                      src={
-                        badge1 > 0
-                          ? require("../../Badge/t_careforweak.png")
-                          : require("../../Badge/n_careforweak.png")
-                      }
-                    />
-                    <span className="amount1">{badge1}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="友善環境"
-                      alt="友善環境"
-                      onClick={() => setBadge2((prevValue) => prevValue + 1)}
-                      src={
-                        badge2 > 0
-                          ? require("../../Badge/t_envfriend.png")
-                          : require("../../Badge/n_envfriend.png")
-                      }
-                    />
-                    <span className="amount1">{badge2}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="食育教育"
-                      alt="食育教育"
-                      onClick={() => setBadge3((prevValue) => prevValue + 1)}
-                      src={
-                        badge3 > 0
-                          ? require("../../Badge/t_foodeduc.png")
-                          : require("../../Badge/n_foodeduc.png")
-                      }
-                    />
-                    <span className="amount1">{badge3}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="公平交易"
-                      alt="公平交易"
-                      onClick={() => setBadge4((prevValue) => prevValue + 1)}
-                      src={
-                        badge4 > 0
-                          ? require("../../Badge/t_freetrade.png")
-                          : require("../../Badge/n_freetrade.png")
-                      }
-                    />
-                    <span className="amount1">{badge4}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="在地食材"
-                      alt="在地食材"
-                      onClick={() => setBadge5((prevValue) => prevValue + 1)}
-                      src={
-                        badge5 > 0
-                          ? require("../../Badge/t_localgred.png")
-                          : require("../../Badge/n_localgred.png")
-                      }
-                    />
-                    <span className="amount1">{badge5}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_left"
-                      title="有機小農"
-                      alt="有機小農"
-                      onClick={() => setBadge6((prevValue) => prevValue + 1)}
-                      src={
-                        badge6 > 0
-                          ? require("../../Badge/t_organic.png")
-                          : require("../../Badge/n_organic.png")
-                      }
-                    />
-                    <span className="amount1">{badge6}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="蛋奶素"
-                      alt="蛋奶素"
-                      onClick={() => setBadge7((prevValue) => prevValue + 1)}
-                      src={
-                        badge7 > 0
-                          ? require("../../Badge/t_ovolacto.png")
-                          : require("../../Badge/n_ovolacto.png")
-                      }
-                    />
-                    <span className="amount2">{badge7}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="寵物友善"
-                      alt="寵物友善"
-                      onClick={() => setBadge8((prevValue) => prevValue + 1)}
-                      src={
-                        badge8 > 0
-                          ? require("../../Badge/t_petfriend.png")
-                          : require("../../Badge/n_petfriend.png")
-                      }
-                    />
-                    <span className="amount2">{badge8}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="減塑"
-                      alt="減塑"
-                      onClick={() => setBadge9((prevValue) => prevValue + 1)}
-                      src={
-                        badge9 > 0
-                          ? require("../../Badge/t_noplastic.png")
-                          : require("../../Badge/n_noplastic.png")
-                      }
-                    />
-                    <span className="amount2">{badge9}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="公共議題分享"
-                      alt="公共議題分享"
-                      onClick={() => setBadge10((prevValue) => prevValue + 1)}
-                      src={
-                        badge10 > 0
-                          ? require("../../Badge/t_publicissue.png")
-                          : require("../../Badge/n_publicissue.png")
-                      }
-                    />
-                    <span className="amount2">{badge10}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="流浪動物"
-                      alt="流浪動物"
-                      onClick={() => setBadge11((prevValue) => prevValue + 1)}
-                      src={
-                        badge11 > 0
-                          ? require("../../Badge/t_stray.png")
-                          : require("../../Badge/n_stray.png")
-                      }
-                    />
-                    <span className="amount2">{badge11}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="badge_right"
-                      title="純素"
-                      alt="純素"
-                      onClick={() => setBadge12((prevValue) => prevValue + 1)}
-                      src={
-                        badge12 > 0
-                          ? require("../../Badge/t_vegetarianism.png")
-                          : require("../../Badge/n_vegetarianism.png")
-                      }
-                    />
-                    <span className="amount2">{badge12}</span>
-                  </div>
+                  {loading ? (
+                    <></>
+                  ) : (
+                    greenOptions.map((e, index) => (
+                      <div className="com">
+                        <img
+                          className={index < 8 ? "badge_left" : "badge_right"}
+                          title={e.title}
+                          alt={e.alt}
+                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
+                        />
+                        <span className={index < 8 ? "amount1" : "amount2"}>
+                          {e.num}
+                        </span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -775,114 +726,21 @@ const [editName,setEditName] = useState();
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip1((prevValue) => prevValue + 1)}
-                      src={
-                        equip1 > 0
-                          ? require("../../Equipment/banana.png")
-                          : require("../../Equipment/n_banana.png")
-                      }
-                    />
-                    <span className="amount1">{equip1}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip2((prevValue) => prevValue + 1)}
-                      src={
-                        equip2 > 0
-                          ? require("../../Equipment/caterpillar.png")
-                          : require("../../Equipment/n_caterpillar.png")
-                      }
-                    />
-                    <span className="amount1">{equip2}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip3((prevValue) => prevValue + 1)}
-                      src={
-                        equip3 > 0
-                          ? require("../../Equipment/the_egg.png")
-                          : require("../../Equipment/n_the_egg.png")
-                      }
-                    />
-                    <span className="amount1">{equip3}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip4((prevValue) => prevValue + 1)}
-                      src={
-                        equip4 > 0
-                          ? require("../../Equipment/earthworm.png")
-                          : require("../../Equipment/n_earthworm.png")
-                      }
-                    />
-                    <span className="amount1">{equip4}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip5((prevValue) => prevValue + 1)}
-                      src={
-                        equip5 > 0
-                          ? require("../../Equipment/honey.png")
-                          : require("../../Equipment/n_honey.png")
-                      }
-                    />
-                    <span className="amount1">{equip5}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip6((prevValue) => prevValue + 1)}
-                      src={
-                        equip6 > 0
-                          ? require("../../Equipment/grape.png")
-                          : require("../../Equipment/n_grape.png")
-                      }
-                    />
-                    <span className="amount1">{equip6}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip7((prevValue) => prevValue + 1)}
-                      src={
-                        equip7 > 0
-                          ? require("../../Equipment/nuts.png")
-                          : require("../../Equipment/n_nuts.png")
-                      }
-                    />
-                    <span className="amount1">{equip7}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip8((prevValue) => prevValue + 1)}
-                      src={
-                        equip8 > 0
-                          ? require("../../Equipment/ant.png")
-                          : require("../../Equipment/n_ant.png")
-                      }
-                    />
-                    <span className="amount1">{equip8}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip9((prevValue) => prevValue + 1)}
-                      src={
-                        equip9 > 0
-                          ? require("../../Equipment/red_fruit.png")
-                          : require("../../Equipment/n_red_fruit.png")
-                      }
-                    />
-                    <span className="amount1">{equip9}</span>
-                  </div>
+                  {loading ? (
+                    <></>
+                  ) : (
+                    backpackItems.map((e, index) => (
+                      <div className="com">
+                        <img
+                          className="equip"
+                          title={e.title}
+                          alt={e.alt}
+                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
+                        />
+                        <span className="amount1">{parseInt(e.num)}</span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
