@@ -60,14 +60,14 @@ function NavBar(props) {
                   <AiOutlineHome size={20} /> Store
                 </Link>
               </li>
-              <li onClick={handleLogout}>
-                <Link to="/">
-                  <VscSignIn size={20} /> LogOut
-                </Link>
-              </li>
               <li>
                 <Link to="/community">
                   <HiOutlineUserGroup size={20} /> Community
+                </Link>
+              </li>
+              <li onClick={handleLogout}>
+                <Link to="/">
+                  <VscSignIn size={20} /> LogOut
                 </Link>
               </li>
               <li>
