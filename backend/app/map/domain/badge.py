@@ -26,7 +26,6 @@ class Badge():
             "place_id": ""
         }
         self.user_save: dict = {
-            "user_id":"",
             "place_id": ""
         }
     def get_badges(self):

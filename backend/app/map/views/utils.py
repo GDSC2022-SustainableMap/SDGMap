@@ -44,10 +44,11 @@ def addBadge (place_id, current_user):
                     user_score = db.child("users").child(current_user).child("coin").get().val()
                     user_score += a[badge_names[i]]
                     db.child("users").child(current_user).update({"coin": user_score})
-                    bdg_num = db.child("users").child(current_user).child("badges").child("badges").child(badge_names[i]).get().val()
+                    bdg_num = db.child("users").child(current_user).child("badges").child(badge_names[i]).get().val()
                     bdg_num += a[badge_names[i]]
-                    bdg_num = db.child("users").child(current_user).child("badges").child("badges").update({badge_names[i]: bdg_num})
+                    bdg_num = db.child("users").child(current_user).child("badges").update({badge_names[i]: bdg_num})
                 return "check in successful"
         return "This store is not green"
     except Exception as e:
         return e
+    

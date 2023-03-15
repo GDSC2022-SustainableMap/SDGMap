@@ -23,7 +23,7 @@ To get a local copy up and running follow these simple steps.
         flask run
     ```
     
-# APIs:
+# map APIs:
 ### 1. /name_search
 
 #### (a)Input:
@@ -184,3 +184,25 @@ Nothing special here.:)
 (2) Scope is scaled by KM.
 
 (3)If the distance between place_id's location and user's location is smaller than the scope(KM), it returns True, otherwise False. 
+
+
+# map APIs
+
+### /upload_image
+### (a) Inputs:
+```yaml
+{
+    "base64_image" : <image in base64>
+}
+```
+### (b) Details:
+* The input code of base64 should not include "data:image/png;base64," (this header string will be added by the function implemented by backend)
+
+### /get_user_image
+### (a) Inputs:
+```yaml
+{
+    "user_uuid" : <uuid of user>
+}
+```
+This will return the png file of the designated user

@@ -352,17 +352,17 @@ def check_in_spot():
         )
         current_user = get_jwt_identity()
         print(current_user)
+        current_log_count = current_log_count = (
+            db.child("user_log")
+            .child(current_user)
+            .child("log_count")
+            .get()
+            .val()
+        )
         if distance < params["scope"]:
-            current_log_count = 0
             # already have log
             if db.child("user_log").child(current_user).get().val():
-                current_log_count = (
-                    db.child("user_log")
-                    .child(current_user)
-                    .child("log_count")
-                    .get()
-                    .val()
-                )
+                pass
             # not yet have log
             else:
                 db.child("user_log").child(current_user).set({"log_count": 0})
@@ -375,7 +375,7 @@ def check_in_spot():
             # db.child("user_log").child(f"log{current_log_count}").set(user_log)
             db.child("user_log").child(current_user).child(
                 f"log{current_log_count}"
-            ).set(user_log)
+            ).update(user_log)
 
             current_log_count += 1
             db.child("user_log").child(current_user).update(
@@ -383,7 +383,8 @@ def check_in_spot():
             )
 
             # # record the badges and coins obtained
-            addBadge(params["place_id"], current_user)
+            a = addBadge(params["place_id"], current_user)
+            print(a)
             return {"msg":"You have checked in successfully!"}
         else:
             return {"msg":"You should come to this place to check in!"}
@@ -397,27 +398,32 @@ def save_spot():
     params = {"place_id": receive["place_id"]}
     current_user = get_jwt_identity()
     gmap_result = find_place_detail(params["place_id"])
+    current_save_count = (
+        db.child("user_save")
+        .child(current_user)
+        .child("save_count")
+        .get()
+        .val()
+    )
     if gmap_result:
-        current_save_count = 0
-        # already have log
-        if db.child("user_save").child(current_user).get().val():
-            current_save_count = (
-                db.child("user_save")
-                .child(current_user)
-                .child("save_count")
-                .get()
-                .val()
-            )
+        # already have log, check if the place is already saved
+        user_db = db.child("user_save").child(current_user).get().val()
+        if user_db:
+            for i in range(user_db["save_count"]):
+                save_log = db.child("user_save").child(current_user).child(f"save{i}").get().val()
+                if save_log == None:
+                    continue
+                if db.child("user_save").child(current_user).child(f"save{i}").get().val()["place_id"] == params["place_id"]:
+                    return "place already saved"
         # not yet have log
         else:
             db.child("user_save").child(current_user).set({"save_count": 0})
 
         user_save = Badge().get_user_save()
-        user_save["user_id"] = current_user
         user_save["place_id"] = params["place_id"]
         db.child("user_save").child(current_user).child(
             f"save{current_save_count}"
-        ).set(user_save)
+        ).update(user_save)
 
         current_save_count += 1
         db.child("user_save").child(current_user).update(
@@ -427,6 +433,29 @@ def save_spot():
         return f'{params["place_id"]} saved, {current_save_count}'
     else:
         return "this place doesn't exist"
+    
+@bp.route("/delete_saved_store", methods=["POST"])
+@jwt_required()
+def delete_store():
+    receive = request.get_json()
+    params = {"place_id": receive["place_id"]}
+    current_user = get_jwt_identity()
+    current_user_save_count = (
+                db.child("user_save")
+                .child(current_user)
+                .child("save_count")
+                .get()
+                .val()
+            )
+    for i in range(current_user_save_count):
+        save_log = db.child("user_save").child(current_user).child(f"save{i}").get().val()
+        if save_log == None:
+            continue
+        if (save_log["place_id"] == params["place_id"]):
+            db.child("user_save").child(current_user).child(f"save{i}").remove()
+            break
+
+    return "done"
         
 @bp.route("/get_references_from_spot", methods=["POST"])
 def get_references_from_spot():

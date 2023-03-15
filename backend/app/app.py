@@ -20,7 +20,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.update(SECRET_KEY=os.urandom(24))
     app.config.from_object(config_class)
-    print(int(Config.JWT_ACCESS_TOKEN_EXPIRES_HOURS))
+    # print(int(Config.JWT_ACCESS_TOKEN_EXPIRES_HOURS))
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=int(Config.JWT_ACCESS_TOKEN_EXPIRES_HOURS))
     app.config.from_object(config_class)
 

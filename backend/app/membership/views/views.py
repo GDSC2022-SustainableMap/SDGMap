@@ -5,12 +5,16 @@ from werkzeug.exceptions import InternalServerError
 from app.membership.infrastructure import db,auth,storage
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
-
-
+from app.app import firebase
+from app.membership.views.utils import base64_to_png
+Db = firebase.database()
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required
 from datetime import datetime, timedelta, timezone
 import json
+# import base64
+# import io
+# from PIL import Image
 bp = Blueprint('user', __name__, url_prefix='/user')
 
 
@@ -163,7 +167,33 @@ def get_specific_userlog():
 @bp.route("/image", methods=["GET","POST"])
 @jwt_required()
 def image():
-        if request.method == "POST":
-            current_user = get_jwt_identity()
-            storage.child("images/{}.jpg".format(current_user)).put("example2.jpg")
+    if request.method == "POST":
+        current_user = get_jwt_identity()
+        storage.child("images/{}.jpg".format(current_user)).put("example2.jpg")
 
+@bp.route("/upload_image", methods=["GET", "POST"])
+@jwt_required()
+def add_profile_image():
+    """ This allows the user to upload its own profile picture."""
+    current_user = get_jwt_identity()
+    submit = request.get_json()
+    base64_image = submit["base64_image"]
+    png_str = base64_to_png(base64_image)
+    Db.child("profile_pics").child(current_user).set(png_str)
+    return '<img src="data:{}">'.format(png_str)
+    # return jsonify({"data":png_str})
+
+@bp.route("/get_image", methods=["GET", "POST"])
+def get_user_image():
+    submit = request.get_json()
+    params = {
+        "user_uuid": submit["user_uuid"]
+    }
+    user_base64img = Db.child("profile_pics").child(submit["user_uuid"]).get().val()
+    return '<img src="{}">'.format(user_base64img)
+    return jsonify(user_base64img)
+
+@bp.route("/leaderboard", methods=["POSTs"])
+@jwt_required()
+def get_leaderboard():
+    pass
