@@ -5,7 +5,7 @@ import { Modal, Carousel, Card, Stack } from 'react-bootstrap';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import Badges from '../Badge/badge';
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai"
-// import './leaderboard.css'
+import './leaderboard.css'
 
 function FriendProfile() {
   const [user, setUser] = useState({
@@ -67,21 +67,6 @@ function FriendProfile() {
             電話: 沒有這個資訊<br />
             價格: {p}<br />
             <button className="card-button-orange" variant="primary" onClick={handleShow}>More info</button>
-            {/* <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>{name}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                電話: 沒有這個資訊<br />
-                價格: {p}
-              </Modal.Body>
-              <Modal.Footer>
-                <button variant="secondary">Check In</button>
-                <button variant="secondary" onClick={handleClose}>OK</button>
-              </Modal.Footer>
-            </Modal> */}
           </div>
         </div>
       );
@@ -152,21 +137,6 @@ function FriendProfile() {
             電話: 沒有這個資訊<br />
             價格: {p}<br />
             <button className="card-button-green" variant="primary" onClick={handleShow}>More info</button>
-            {/* <Modal show={show} onHide={handleClose}>
-              <Modal.Header closeButton>
-                <Modal.Title>{name}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                地址: {addr}<br />
-                評分: {rate}&emsp;
-                電話: 沒有這個資訊<br />
-                價格: {p}
-              </Modal.Body>
-              <Modal.Footer>
-                <button variant="secondary">Check In</button>
-                <button variant="secondary" onClick={handleClose}>OK</button>
-              </Modal.Footer>
-            </Modal> */}
           </div>
         </div>
       );
@@ -221,25 +191,25 @@ function FriendProfile() {
   }
 
   return (
-    <div className='user-container'>
-      <div className='user-lb'>
-        <div>
-          <button id="addfriendbtn" variant="primary" onclick={AddFriend}><AiOutlineUserAdd size={20}/></button>
-          <button id="delfriendbtn" variant="primary" onclick={DelFriend}><AiOutlineUserDelete size={20}/></button>
-        </div>
+    <div className='board-container'>
+      <div className='board-lb'>
+          <button id="addfriendbtn" onclick={AddFriend} alt="增加好友"><AiOutlineUserAdd size={25}/></button>
+          <button id="delfriendbtn" onclick={DelFriend} alt="刪除好友"><AiOutlineUserDelete size={25}/></button>
+          <div className='vircharacter'><img src={require('../../character/bear.gif')}></img></div>
+          <div style={{position:'absolute'}}><div className="circle" /></div>
       </div>
-      <div className='user-rb'>
-        <div className='user-rtb'>
-          <div className='user-rtlb'>
+      <div className='board-rb'>
+        <div className='board-rtb'>
+          <div className='board-rtlb'>
             <div className='line'>
               <div className='pack'>
-                <label className='user-label'>Name</label>
+                <label className='board-label'>名稱</label>
                 <p>{user.username}</p>
               </div>
             </div>
             <div className='line'>
               <div className='pack'>
-                <label className='user-label'>Friends</label>
+                <label className='board-label'>朋友</label>
                 <p >{user.friends}</p>
               </div>
               {/* <div className='pack'>
@@ -251,16 +221,16 @@ function FriendProfile() {
 
           </div>
 
-          <div className='user-rtrb'>
+          <div className='board-rtrb'>
             <img id='user-photo' src={require('./user-icon.png')} />
           </div>
         </div>
-        <div className='user-rbb'>
+        <div className='board-rbb'>
           <div className="accordion accordion-flush">
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingOne">
-                <button className="accordion-button collapsed" id='btn1' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                  SDG Badge Collection
+                <button className="accordion-button collapsed" id='f-btn1' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  永續發展徽章收集
                 </button>
               </h2>
               <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -330,8 +300,8 @@ function FriendProfile() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingTwo">
-                <button className="accordion-button collapsed" id='btn2' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                  Backpack
+                <button className="accordion-button collapsed" id='f-btn2' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  道具背包
                 </button>
               </h2>
               <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
@@ -386,8 +356,8 @@ function FriendProfile() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingThree">
-                <button className="accordion-button collapsed " id='btn3' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                  Visited Store Collection
+                <button className="accordion-button collapsed " id='f-btn3' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  到訪過的店家
                 </button>
               </h2>
               <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
@@ -398,8 +368,8 @@ function FriendProfile() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingFour">
-                <button className="accordion-button collapsed" id='btn4' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                  Stored Store Collection
+                <button className="accordion-button collapsed" id='f-btn4' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                  收藏店家
                 </button>
               </h2>
               <div id="flush-collapseFour" className="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
@@ -425,11 +395,11 @@ function Leaderboard() {
       <MDBTable align='middle' hover>
         <MDBTableHead>
           <tr>
-            <th scope='col'>Rank</th>
-            <th scope='col'>User</th>
-            <th scope='col'>Badge Collection</th>
-            <th scope='col'>Badge Count</th>
-            <th scope='col'>Actions</th>
+            <th scope='col'>排名</th>
+            <th scope='col'>玩家</th>
+            <th scope='col'>徽章</th>
+            <th scope='col'>徽章數量</th>
+            <th scope='col'>了解</th>
           </tr>
         </MDBTableHead>
         <MDBTableBody>
@@ -452,15 +422,15 @@ function Leaderboard() {
             <td><Badges /></td>
             <td>20</td>
             <td>
-              <MDBBtn color='secondary' rounded size='sm' onClick={FriendProfile}>
-                <button className="card-button-green" variant="primary" onClick={handleShow}>Visit</button>
+              <MDBBtn className='vst-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
+                <button className='vst-btn'  onClick={handleShow}>Visit</button>
                 <Modal show={show} onHide={handleClose} size="xl" style={{padding:'0'}}>
                   <Modal.Header closeButton />
                   <Modal.Body>
                     <FriendProfile />
                   </Modal.Body >
                   <Modal.Footer>
-                      <button variant="secondary" onClick={handleClose}>Leave</button>
+                      <button className='ld-btn' onClick={handleClose}>Leave</button>
                     </Modal.Footer>
                 </Modal>
               </MDBBtn>
