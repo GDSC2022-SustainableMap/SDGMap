@@ -47,27 +47,27 @@ function NavBar(props) {
             <ul>
               <li>
                 <Link to="/map">
-                  <ImMap2 size={20} /> Map
+                  <ImMap2 size={20} /> 地圖
                 </Link>
               </li>
               <li>
                 <Link to="/sdgbook">
-                  <BsJournalBookmark size={18} /> SDGBook
+                  <BsJournalBookmark size={18} /> 徽章圖鑑
                 </Link>
               </li>
               <li>
                 <Link to="/">
-                  <AiOutlineHome size={20} /> Store
+                  <AiOutlineHome size={20} /> 道具商店
                 </Link>
               </li>
               <li onClick={handleLogout}>
                 <Link to="/">
-                  <VscSignIn size={20} /> LogOut
+                  <VscSignIn size={20} /> 登出
                 </Link>
               </li>
               <li>
                 <Link to="/community">
-                  <HiOutlineUserGroup size={20} /> Community
+                  <HiOutlineUserGroup size={20} /> 部落
                 </Link>
               </li>
               <li>
@@ -85,12 +85,12 @@ function NavBar(props) {
               </li>
               <li>
                 <Link to="/map">
-                  <ImMap2 size={20} /> Map
+                  <ImMap2 size={20} /> 地圖
                 </Link>
               </li>
               <li>
                 <Link to="/signin">
-                  <VscSignIn size={20} /> SignIn
+                  <VscSignIn size={20} /> 登入
                 </Link>
               </li>
             </ul>
