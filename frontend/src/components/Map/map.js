@@ -12,6 +12,7 @@ import { MDBBtn, MDBIcon, MDBSpinner} from "mdb-react-ui-kit";
 import Badges from "../Badge/badge";
 import { useNavigate } from "react-router-dom";
 import useToken from "../../hooks/token";
+import greenOptions from "./greepOptions";
 // Map
 const SimpleMap = (props) => {
   const { getToken, removeToken } = useToken();
@@ -159,10 +160,10 @@ const SimpleMap = (props) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [liked, setIsLiked] = useState(false);
-    const [checkInLoading, setCheckInLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const handleCheckin = async () => {
       try {
-        setCheckInLoading(true);
+        setLoading(true);
         console.log(data);
         console.log(userPosition);
         const t = getToken();
@@ -198,9 +199,143 @@ const SimpleMap = (props) => {
         alert('You have checked in successfully!');
       }
       console.log(rawResponse);
-      setCheckInLoading(false);
+      setLoading(false);
       return rawResponse;
     };
+
+    const handleLike = async () => {
+      try {
+        setLoading(true);
+        const t = getToken();
+        rawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/map/save_store",
+            {
+              place_id: data.place_id,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + t,
+              },
+            }
+          )
+        );
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          removeToken();
+          alert("Token expired or you have not logined! Please login again!");
+          navigate("/signin");
+
+          return error;
+        }
+      }
+
+      if(rawResponse.status !== 201){
+        alert('Something wrong!');
+      }
+      setLoading(false);
+      setIsLiked(!liked)
+      return rawResponse;
+    };
+
+    // const fetchUserLogAndSave = async (e) => {
+    //   try {
+    //     setLoading(true);
+    //     rawResponse = (
+    //       await axios.get("http://127.0.0.1:5000/user/profile", {
+    //         headers: {
+    //           Authorization: "Bearer " + props.token,
+    //         },
+    //       })
+    //     ).data;
+    //     //   console.log(rawResponse);
+    //   } catch (error) {
+    //     console.log(error.response);
+    //     if (error.response.status === 401) {
+    //       props.removeToken();
+    //       alert("Token expired! Please login again!");
+    //       navigate("/");
+  
+    //       return error;
+    //     }
+    //   }
+    //   setUserData(rawResponse);
+    //   setUsername(rawResponse.name);
+    //   setNumoffriend(rawResponse.friends.friend_number);
+    //   setNumofcoin(rawResponse.coin);
+    //   setBiograph(rawResponse.biograph);
+    //   console.log(rawResponse);
+  
+    //   let imgRawResponse;
+    //   try {
+    //     imgRawResponse = (
+    //       await axios.get("http://127.0.0.1:5000/user/get_image", {
+    //         headers: {
+    //           Authorization: "Bearer " + props.token,
+    //         },
+    //       })
+    //     ).data;
+    //     //   console.log(rawResponse);
+    //   } catch (error) {
+    //     console.log(error.response);
+    //     if (error.response.status === 401) {
+    //       props.removeToken();
+    //       alert("Token expired! Please login again!");
+    //       navigate("/");
+    //       return error;
+    //     }
+    //   }
+    //   setUserImage(imgRawResponse);
+    //   setEditImage(imgRawResponse);
+    //   // console.log(imgRawResponse);
+    //   setLoading(false);
+    //   return imgRawResponse;
+    // };
+
+    // useEffect(() => {
+    //   first
+    
+
+    // }, [])
+    
+    const handleDislike = async () => {
+      try {
+        setLoading(true);
+        const t = getToken();
+        rawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/map/delete_saved_store",
+            {
+              place_id: data.place_id,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + t,
+              },
+            }
+          )
+        );
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          removeToken();
+          alert("Token expired or you have not logined! Please login again!");
+          navigate("/signin");
+
+          return error;
+        }
+      }
+
+      if(rawResponse.status !== 201){
+        alert('Something wrong!');
+      }
+
+      setLoading(false);
+      setIsLiked(!liked)
+      return rawResponse;
+    };
+
     return (
       <div className="card-map">
         <h6 className="card-header">
@@ -213,7 +348,8 @@ const SimpleMap = (props) => {
               color="danger"
               floating
               style={{ float: "right" }}
-              onClick={() => setIsLiked(!liked)}
+              // onClick={() => setIsLiked(!liked)}
+              onClick={handleDislike}
             >
               <MDBIcon far icon="star" />
             </MDBBtn>
@@ -226,7 +362,7 @@ const SimpleMap = (props) => {
               outline
               floating
               style={{ float: "right" }}
-              onClick={() => setIsLiked(!liked)}
+              onClick={handleLike}
             >
               <MDBIcon far icon="star" />
             </MDBBtn>
@@ -270,7 +406,7 @@ const SimpleMap = (props) => {
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCheckin}>
                 {
-                  checkInLoading? <MDBSpinner size='sm'/>:<BsFillPinMapFill />
+                  loading? <MDBSpinner size='sm'/>:<BsFillPinMapFill />
                 }
               Check In
 
@@ -341,121 +477,6 @@ const SimpleMap = (props) => {
   const { Content, Sider } = Layout;
   const { Option } = Select;
   const SearchType = ["Name", "Location"];
-
-  const greenOptions = [
-    {
-      id: "careforweak",
-      title: "關懷弱勢",
-      alt: "關懷弱勢",
-      img_for_true: require("../../Badge/t_careforweak.png"),
-      img_for_false: require("../../Badge/n_careforweak.png"),
-    },
-    {
-      id: "envfriend",
-      title: "友善環境",
-      alt: "友善環境",
-      img_for_true: require("../../Badge/t_envfriend.png"),
-      img_for_false: require("../../Badge/n_envfriend.png"),
-    },
-    {
-      id: "foodeduc",
-      title: "食育教育",
-      alt: "食育教育",
-      img_for_true: require("../../Badge/t_foodeduc.png"),
-      img_for_false: require("../../Badge/n_foodeduc.png"),
-    },
-    {
-      id: "localgred",
-      title: "在地食材",
-      alt: "在地食材",
-      img_for_true: require("../../Badge/t_localgred.png"),
-      img_for_false: require("../../Badge/n_localgred.png"),
-    },
-    {
-      id: "organic",
-      title: "有機小農",
-      alt: "有機小農",
-      img_for_true: require("../../Badge/t_organic.png"),
-      img_for_false: require("../../Badge/n_organic.png"),
-    },
-    {
-      id: "ovolacto",
-      title: "蛋奶素",
-      alt: "蛋奶素",
-      img_for_true: require("../../Badge/t_ovolacto.png"),
-      img_for_false: require("../../Badge/n_ovolacto.png"),
-    },
-    {
-      id: "petfriend",
-      title: "寵物友善",
-      alt: "寵物友善",
-      img_for_true: require("../../Badge/t_petfriend.png"),
-      img_for_false: require("../../Badge/n_petfriend.png"),
-    },
-    {
-      id: "noplastic",
-      title: "減塑",
-      alt: "減塑",
-      img_for_true: require("../../Badge/t_noplastic.png"),
-      img_for_false: require("../../Badge/n_noplastic.png"),
-    },
-    {
-      id: "stray",
-      title: "流浪動物",
-      alt: "流浪動物",
-      img_for_true: require("../../Badge/t_stray.png"),
-      img_for_false: require("../../Badge/n_stray.png"),
-    },
-    {
-      id: "vegetarianism",
-      title: "純素",
-      alt: "純素",
-      img_for_true: require("../../Badge/t_vegetarianism.png"),
-      img_for_false: require("../../Badge/n_vegetarianism.png"),
-    },
-    {
-      id: "foodagricultureeducation",
-      title: "食農教育",
-      alt: "食農教育",
-      img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
-      img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
-    },
-    {
-      id: "appreciatefood",
-      title: "惜食不浪費",
-      alt: "惜食不浪費",
-      img_for_true: require("../../Badge/t_appreciatefood.png"),
-      img_for_false: require("../../Badge/n_appreciatefood.png"),
-    },
-    {
-      id: "creativecuisine",
-      title: "創意料理",
-      alt: "創意料理",
-      img_for_true: require("../../Badge/t_creativecuisine.png"),
-      img_for_false: require("../../Badge/n_creativecuisine.png"),
-    },
-    {
-      id: "creativevegetarian",
-      title: "創新蔬食",
-      alt: "創新蔬食",
-      img_for_true: require("../../Badge/t_creativevegetarian.png"),
-      img_for_false: require("../../Badge/n_creativevegetarian.png"),
-    },
-    {
-      id: "sourcereduction",
-      title: "源頭減量",
-      alt: "源頭減量",
-      img_for_true: require("../../Badge/t_sourcereduction.png"),
-      img_for_false: require("../../Badge/n_sourcereduction.png"),
-    },
-    {
-      id: "greenprocurement",
-      title: "綠色採購",
-      alt: "綠色採購",
-      img_for_true: require("../../Badge/t_greenprocurement.png"),
-      img_for_false: require("../../Badge/n_greenprocurement.png"),
-    },
-  ];
 
   const columns = [
     {
@@ -575,10 +596,10 @@ const SimpleMap = (props) => {
                         [4, 8],
                         [8, 12],
                         [12, 16],
-                      ].map((e) => (
-                        <div className="badges" style={{ display: "flex" }}>
-                          {greenOptions.slice(e[0], e[1]).map((e) => (
-                            <button>
+                      ].map((e,index) => (
+                        <div className="badges" style={{ display: "flex" }} key={index}>
+                          {greenOptions.slice(e[0], e[1]).map((e,index) => (
+                            <button key={index}>
                               <img
                                 id={e.id}
                                 title={e.title}

@@ -121,11 +121,12 @@ def get_spot_from_radius():
             obj.update(result[0])
 
     for obj in gmap_raw:
-        green_result = db.child("green_stores").child(obj["place_id"]).get().val()
-        if green_result:
-            obj = dict(list(obj.items()) + list(green_result.items()))
         spot = Spot.fromdict(obj)
         obj.update(spot.get_attribute())
+        green_result = db.child("green_stores").child(obj["place_id"]).get().val()
+        if green_result:
+            obj_new = dict(list(obj.items()) + list(green_result.items()))
+            obj.update(obj_new)
 
     def compare(
         ObjA,
@@ -151,7 +152,6 @@ def get_spot_from_radius():
         foodagricultureeducation
     ):
         scoreA = 0
-
         if wifi and ObjA["wifi"] > 2.5:
             scoreA += 1
         if socket and ObjA["socket"] =="yes":
@@ -162,7 +162,7 @@ def get_spot_from_radius():
             scoreA += 1
         if creativecuisine and ObjA["創意料理"] == 1:
             scoreA += 1
-        if creativevegetarian and ObjA["創意蔬食"] == 1:
+        if creativevegetarian and ObjA["創新蔬食"] == 1:
             scoreA += 1
         if envfriend and ObjA["友善環境"] == 1:
             scoreA += 1
@@ -192,7 +192,7 @@ def get_spot_from_radius():
             scoreA += 1
         if foodagricultureeducation and ObjA["食農教育"] == 1:
             scoreA += 1
-  
+        print(scoreA)
         return scoreA
 
     # filtered_gmap = filter_condition(gmap_raw,"wifi" in params["condition"].values(),"socket" in params["condition"].values(),"limited_time" in params["condition"].values(),"open_now" in params["condition"].values())
@@ -221,8 +221,9 @@ def get_spot_from_radius():
             "foodeduc" in params["condition"].values(),
             "foodagricultureeducation" in params["condition"].values(),
         ),
+        reverse = True
     )
-
+    print(sorted_map)
     return sorted_map
 
 
@@ -404,7 +405,8 @@ def save_spot():
         .child("save_count")
         .get()
         .val()
-    )
+    ) if db.child("user_save").child(current_user).child("save_count").get().val() else 0
+    print(current_save_count)
     if gmap_result:
         # already have log, check if the place is already saved
         user_db = db.child("user_save").child(current_user).get().val()
@@ -414,7 +416,7 @@ def save_spot():
                 if save_log == None:
                     continue
                 if db.child("user_save").child(current_user).child(f"save{i}").get().val()["place_id"] == params["place_id"]:
-                    return "place already saved"
+                    return {"msg":"place already saved"}
         # not yet have log
         else:
             db.child("user_save").child(current_user).set({"save_count": 0})
@@ -430,9 +432,9 @@ def save_spot():
             {"save_count": current_save_count}
         )
 
-        return f'{params["place_id"]} saved, {current_save_count}'
+        return {"msg":f'{params["place_id"]} saved, {current_save_count}'},201
     else:
-        return "this place doesn't exist"
+        return {"msg":"this place doesn't exist"}
     
 @bp.route("/delete_saved_store", methods=["POST"])
 @jwt_required()
@@ -453,9 +455,11 @@ def delete_store():
             continue
         if (save_log["place_id"] == params["place_id"]):
             db.child("user_save").child(current_user).child(f"save{i}").remove()
+            current_user_save_count -= 1
+            db.child("user_save").child(current_user).update({"save_count": current_user_save_count})
             break
 
-    return "done"
+    return {"msg":f'{params["place_id"]} deleted, {current_user_save_count}'},201
         
 @bp.route("/get_references_from_spot", methods=["POST"])
 def get_references_from_spot():

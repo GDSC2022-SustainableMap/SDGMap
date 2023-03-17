@@ -11,7 +11,6 @@ class Spot(object):
             "rating",
             "user_ratings_total",
             "socket",
-            "公平交易",
             "創意料理",
             "創新蔬食",
             "友善環境",
