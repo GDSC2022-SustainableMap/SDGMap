@@ -62,12 +62,12 @@ function NavBar(props) {
               </li>
               <li>
                 <Link to="/community">
-                  <HiOutlineUserGroup size={20} /> 部落
+                  <HiOutlineUserGroup size={20} /> 社群
                 </Link>
               </li>
               <li onClick={handleLogout}>
                 <Link to="/">
-                  <VscSignIn size={20} /> LogOut
+                  <VscSignIn size={20} /> 登出
                 </Link>
               </li>
               <li>

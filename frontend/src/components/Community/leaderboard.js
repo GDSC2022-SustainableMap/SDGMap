@@ -419,7 +419,9 @@ function Leaderboard() {
                 </div>
               </div>
             </td>
-            <td><Badges /></td>
+            <td>
+              {/* <Badges /> */}
+            </td>
             <td>20</td>
             <td>
               <MDBBtn className='vst-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
@@ -453,7 +455,7 @@ function Leaderboard() {
               </div>
             </td>
             <td>
-              <Badges />
+              {/* <Badges /> */}
             </td>
             <td>20</td>
             <td>

@@ -37,12 +37,12 @@ export default function Community() {
           <MDBTabs className='flex-column text-center'>
             <MDBTabsItem>
               <MDBTabsLink onClick={() => handleVerticalClick('tab1')} active={verticalActive === 'tab1'}>
-              <MdLeaderboard size={15}/>Leaderboard
+              <MdLeaderboard size={15}/>社群
               </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
               <MDBTabsLink onClick={() => handleVerticalClick('tab2')} active={verticalActive === 'tab2'}>
-              <MDBIcon fas icon='search-plus' className='me-2' />Search
+              <MDBIcon fas icon='search-plus' className='me-2' />搜尋好友
               </MDBTabsLink>
             </MDBTabsItem>
           </MDBTabs>
