@@ -728,7 +728,7 @@ function User(props) {
               <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%"}}>
                 <MDBSpinner />
               </div>
-            ) : userImage.length >= 1 ? (
+            ) : userImage ? (
               <img id="user-photo" alt="user" src={userImage} />
             ) : (
               <img

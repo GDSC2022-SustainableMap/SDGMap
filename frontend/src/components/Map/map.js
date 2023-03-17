@@ -150,6 +150,7 @@ const SimpleMap = (props) => {
     else findByLocation();
   };
 
+
   const InfoBlock = ({ name, addr, price, rate, data }) => {
     let p = "";
     for (let i = 0; i < price; i++) {
@@ -164,8 +165,6 @@ const SimpleMap = (props) => {
     const handleCheckin = async () => {
       try {
         setLoading(true);
-        console.log(data);
-        console.log(userPosition);
         const t = getToken();
         rawResponse = (
           await axios.post(
@@ -238,67 +237,6 @@ const SimpleMap = (props) => {
       setIsLiked(!liked)
       return rawResponse;
     };
-
-    // const fetchUserLogAndSave = async (e) => {
-    //   try {
-    //     setLoading(true);
-    //     rawResponse = (
-    //       await axios.get("http://127.0.0.1:5000/user/profile", {
-    //         headers: {
-    //           Authorization: "Bearer " + props.token,
-    //         },
-    //       })
-    //     ).data;
-    //     //   console.log(rawResponse);
-    //   } catch (error) {
-    //     console.log(error.response);
-    //     if (error.response.status === 401) {
-    //       props.removeToken();
-    //       alert("Token expired! Please login again!");
-    //       navigate("/");
-  
-    //       return error;
-    //     }
-    //   }
-    //   setUserData(rawResponse);
-    //   setUsername(rawResponse.name);
-    //   setNumoffriend(rawResponse.friends.friend_number);
-    //   setNumofcoin(rawResponse.coin);
-    //   setBiograph(rawResponse.biograph);
-    //   console.log(rawResponse);
-  
-    //   let imgRawResponse;
-    //   try {
-    //     imgRawResponse = (
-    //       await axios.get("http://127.0.0.1:5000/user/get_image", {
-    //         headers: {
-    //           Authorization: "Bearer " + props.token,
-    //         },
-    //       })
-    //     ).data;
-    //     //   console.log(rawResponse);
-    //   } catch (error) {
-    //     console.log(error.response);
-    //     if (error.response.status === 401) {
-    //       props.removeToken();
-    //       alert("Token expired! Please login again!");
-    //       navigate("/");
-    //       return error;
-    //     }
-    //   }
-    //   setUserImage(imgRawResponse);
-    //   setEditImage(imgRawResponse);
-    //   // console.log(imgRawResponse);
-    //   setLoading(false);
-    //   return imgRawResponse;
-    // };
-
-    // useEffect(() => {
-    //   first
-    
-
-    // }, [])
-    
     const handleDislike = async () => {
       try {
         setLoading(true);
@@ -327,20 +265,51 @@ const SimpleMap = (props) => {
         }
       }
 
-      if(rawResponse.status !== 201){
-        alert('Something wrong!');
-      }
 
       setLoading(false);
       setIsLiked(!liked)
       return rawResponse;
     };
+    const fetchUserSave = async () => {
+      let t = getToken()
+      try {
+        setLoading(true);
+        rawResponse = (
+          await axios.get("http://127.0.0.1:5000/user/track_usersave", {
+            headers: {
+              Authorization: "Bearer " + t,
+            },
+          })
+        ).data;
+        //   console.log(rawResponse);
+      } catch (error) {
+        console.log(error.response);
+        if (error.response.status === 401) {
+          removeToken();
+          alert("Token expired! Please login again!");
+          navigate("/");
+  
+          return error;
+        }
+      }
+
+      setIsLiked(rawResponse.save_spots.includes(data.place_id));
+      setLoading(false);
+  
+    };
+  
+    useEffect(() => {
+      fetchUserSave();
+    }, [])
+
+
+
 
     return (
       <div className="card-map">
         <h6 className="card-header">
           <b>{name}</b>
-          {liked ? (
+          {liked > 0? (
             <MDBBtn
               size="sm"
               className="ms-1"
@@ -677,7 +646,7 @@ const SimpleMap = (props) => {
               yesIWantToUseGoogleMapApiInternals
               onChange={(e) => setCurrentCenter(e.center)}
             >
-              {places.map((item, index) => (
+              {places.map((item,index) => (
                 <Marker
                   key={index}
                   index={index}

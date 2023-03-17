@@ -361,7 +361,7 @@ def check_in_spot():
         )
         current_user = get_jwt_identity()
         print(current_user)
-        current_log_count = db.child("user_log").child(place_type).child(current_user).child("log_count").get().val()
+        current_log_count = db.child("user_log").child(current_user).child("log_count").get().val()
         if distance < params["scope"]:
 
             # already have log
@@ -370,7 +370,7 @@ def check_in_spot():
             # not yet have log
             else:
                 current_log_count = 0
-                db.child("user_log").child(place_type).child(current_user).set({"log_count": 0})    
+                db.child("user_log").child(current_user).set({"log_count": 0})    
 
             user_log = Badge().get_user_log()
             user_log["user_name"] = db.child("users").child(current_user).get().val()["name"]
@@ -378,12 +378,12 @@ def check_in_spot():
             user_log["place_id"] = params["place_id"]
 
             if current_log_count:
-                db.child("user_log").child(place_type).child(current_user).child(f"log{current_log_count}").update(user_log)
+                db.child("user_log").child(current_user).child(place_type).child(f"log{current_log_count}").update(user_log)
             else:
-                db.child("user_log").child(place_type).child(current_user).child(f"log{current_log_count}").set(user_log)
+                db.child("user_log").child(current_user).child(place_type).child(f"log{current_log_count}").set(user_log)
 
             current_log_count += 1
-            db.child("user_log").child(place_type).child(current_user).update({"log_count": current_log_count})
+            db.child("user_log").child(current_user).update({"log_count": current_log_count})
 
             # record the badges and coins obtained
             addBadge(params["place_id"], current_user)
@@ -458,6 +458,7 @@ def delete_store():
         if (save_log["place_id"] == params["place_id"]):
             db.child("user_save").child(current_user).child(f"save{i}").remove()
             current_user_save_count -= 1
+            print(current_user_save_count)
             db.child("user_save").child(current_user).update({"save_count": current_user_save_count})
             break
 

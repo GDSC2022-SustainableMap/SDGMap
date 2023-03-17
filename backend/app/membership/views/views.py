@@ -162,15 +162,44 @@ def get_specific_userlog():
     #     elif (params["user_uuid"] == user_log[key]["user_id"]):
     #         obj[key] = user_log[key]
     current_user = get_jwt_identity()
-    obj = {}
-    user_log = db.child("user_log").get().val()
-    for key in user_log:
-        if (key == "log_count"):
-            continue
-        elif (current_user == user_log[key]["user_id"]):
-            obj[key] = user_log[key]
+    print(current_user)
+    user_log = db.child("user_log").child(current_user).get().val()
+    print(user_log)
+    if(user_log):
+        return user_log
+    else:
+        return {"msg":"No userlog record!"},204
 
-    return obj
+@bp.route("/track_usersave", methods=["GET","POST"])
+@jwt_required(True)
+def get_specific_usersave():
+    """ gives back the usersave of a specific user """
+    # submit = request.get_json()
+    # params = {
+    #     "user_uuid":submit["user_uuid"]
+    # }
+    # obj = {}
+    # user_log = db.child("user_log").get().val()
+    # for key in user_log:
+    #     if (key == "log_count"):
+    #         continue
+    #     elif (params["user_uuid"] == user_log[key]["user_id"]):
+    #         obj[key] = user_log[key]
+    current_user = get_jwt_identity()
+    print(current_user)
+    user_save = db.child("user_save").child(current_user).get().val()
+    obj = {"save_spots":[]}
+    if(user_save):
+        for key in user_save:
+            if (key == "save_count"):
+                continue
+            else:
+                obj["save_spots"].append(user_save[key]["place_id"])
+        print(obj)
+        return obj
+    else:
+        return {"msg":"No user_save record!"},204
+
 
 @bp.route("/upload_image", methods=["GET", "POST"])
 @jwt_required()

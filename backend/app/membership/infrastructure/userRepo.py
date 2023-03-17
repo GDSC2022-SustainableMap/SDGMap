@@ -26,7 +26,7 @@ class UserRepo():
         data = user.get_attribute()
         unity_data = unity.get_attribute()
         # print(data)
-        self._context.child(user_id).set(data)
+        db.child(user_id).set(data)
         db.child("users_unity").child(user_id).set(unity_data)
         return user
     
