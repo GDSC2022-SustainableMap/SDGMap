@@ -653,7 +653,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  道具包
+                  到訪過的店家
                 </button>
               </h2>
               <div
@@ -663,114 +663,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip1((prevValue) => prevValue + 1)}
-                      src={
-                        equip1 > 0
-                          ? require("../../Equipment/banana.png")
-                          : require("../../Equipment/n_banana.png")
-                      }
-                    />
-                    <span className="amount1">{equip1}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip2((prevValue) => prevValue + 1)}
-                      src={
-                        equip2 > 0
-                          ? require("../../Equipment/caterpillar.png")
-                          : require("../../Equipment/n_caterpillar.png")
-                      }
-                    />
-                    <span className="amount1">{equip2}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip3((prevValue) => prevValue + 1)}
-                      src={
-                        equip3 > 0
-                          ? require("../../Equipment/the_egg.png")
-                          : require("../../Equipment/n_the_egg.png")
-                      }
-                    />
-                    <span className="amount1">{equip3}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip4((prevValue) => prevValue + 1)}
-                      src={
-                        equip4 > 0
-                          ? require("../../Equipment/earthworm.png")
-                          : require("../../Equipment/n_earthworm.png")
-                      }
-                    />
-                    <span className="amount1">{equip4}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip5((prevValue) => prevValue + 1)}
-                      src={
-                        equip5 > 0
-                          ? require("../../Equipment/honey.png")
-                          : require("../../Equipment/n_honey.png")
-                      }
-                    />
-                    <span className="amount1">{equip5}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip6((prevValue) => prevValue + 1)}
-                      src={
-                        equip6 > 0
-                          ? require("../../Equipment/grape.png")
-                          : require("../../Equipment/n_grape.png")
-                      }
-                    />
-                    <span className="amount1">{equip6}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip7((prevValue) => prevValue + 1)}
-                      src={
-                        equip7 > 0
-                          ? require("../../Equipment/nuts.png")
-                          : require("../../Equipment/n_nuts.png")
-                      }
-                    />
-                    <span className="amount1">{equip7}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip8((prevValue) => prevValue + 1)}
-                      src={
-                        equip8 > 0
-                          ? require("../../Equipment/ant.png")
-                          : require("../../Equipment/n_ant.png")
-                      }
-                    />
-                    <span className="amount1">{equip8}</span>
-                  </div>
-                  <div className="com">
-                    <img
-                      className="equip"
-                      onClick={() => setEquip9((prevValue) => prevValue + 1)}
-                      src={
-                        equip9 > 0
-                          ? require("../../Equipment/red_fruit.png")
-                          : require("../../Equipment/n_red_fruit.png")
-                      }
-                    />
-                    <span className="amount1">{equip9}</span>
-                  </div>
+                  <CarouselOfVisitedStore />
                 </div>
               </div>
             </div>
@@ -785,7 +678,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  到訪過的店家
+                  收藏店家
                 </button>
               </h2>
               <div
@@ -795,32 +688,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingFour">
-                <button
-                  className="accordion-button collapsed"
-                  id="btn4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFour"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseFour"
-                >
-                  收藏店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseFour"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingFour"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfStoredStore />
+                <CarouselOfStoredStore />
                 </div>
               </div>
             </div>

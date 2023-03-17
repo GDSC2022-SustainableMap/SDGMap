@@ -1,38 +1,13 @@
 .board-container {
     display: flex;
-    padding: 0;
-}
-
-.board-lb {
-    flex: 4;
-    padding: 5vh 3vw;
-}
-
-.vircharacter {
-    display: flex;
-    justify-content: center;
-    align-items: right; 
     position: relative;
-    top: 16%;
-    left: 10%;
-    z-index: 3;
-}
-.vircharacter > img {
-    width: 100%;     
-}
-.circle{
-    position: relative;
-    width: 80%;
-    height: 80%;
-    background: rgb(181, 180, 180);
-    border-radius: 50%;
-    transform: scale(1,0.1);
-    z-index: 4;
+    flex-direction: column;
+    padding: 5vh 2vw;
 }
 
 .board-rb {
     position: relative;
-    flex: 6;
+    justify-content: center;
     /* margin: 5vh 8vw; */
     padding: 5vh 3vw;
     height: 80vh;
@@ -44,17 +19,17 @@
 }
 
 #addfriendbtn {
-    position: relative;
     border: solid 2px #ba8d33;
     border-radius: 20%;
-    margin-right: 3%; 
+    margin-right: 2%; 
+    justify-content: right;
     background-color: #fffef9;
     color: #ba8d33;
     z-index: 100;
 }
 
 #delfriendbtn {
-    position: relative;
+    justify-content: right;
     border: solid 2px #ba8d33;
     border-radius: 20%;
     background-color: #fffef9;
@@ -208,7 +183,7 @@
     transform: rotate(180deg);
 }
 
-#f-btn1, #f-btn3 {
+#f-btn2 {
     color: #ba8d33;
     font-size: 1.2rem;
     font-weight: 400;
@@ -216,7 +191,7 @@
     box-shadow: #3a3a3a29 1px 1px 2px;
 }
 
-#f-btn2, #f-btn4 {
+#f-btn1, #f-btn3 {
     color: #61C0BF;
     font-size: 1.2rem;
     font-weight: 400;

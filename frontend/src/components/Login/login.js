@@ -61,7 +61,7 @@ export default function Login(props) {
             <a href="./password_reset">忘記密碼?</a>
           </div>
           <div className="d-grid  mt-3">
-            <button type="submit" className="btn" onClick={handleSubmit}>
+            <button type="submit" className="green-btn" onClick={handleSubmit}>
               提交
             </button>
           </div>
