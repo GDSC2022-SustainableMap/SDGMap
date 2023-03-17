@@ -280,7 +280,7 @@ const SimpleMap = (props) => {
               Authorization: "Bearer " + t,
             },
           })
-        ).data;
+        ).data.save_spots_id;
         //   console.log(rawResponse);
       } catch (error) {
         console.log(error.response);
@@ -292,8 +292,8 @@ const SimpleMap = (props) => {
           return error;
         }
       }
-
-      setIsLiked(rawResponse.save_spots.includes(data.place_id));
+      console.log(rawResponse);
+      setIsLiked(rawResponse.includes(data.place_id));
       setLoading(false);
   
     };

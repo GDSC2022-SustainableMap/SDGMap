@@ -188,13 +188,13 @@ def get_specific_usersave():
     current_user = get_jwt_identity()
     print(current_user)
     user_save = db.child("user_save").child(current_user).get().val()
-    obj = {"save_spots":[]}
+    obj = {"save_spots_id":[],"save_spots":user_save}
     if(user_save):
         for key in user_save:
             if (key == "save_count"):
                 continue
             else:
-                obj["save_spots"].append(user_save[key]["place_id"])
+                obj["save_spots_id"].append(user_save[key]["place_id"])
         print(obj)
         return obj
     else:
