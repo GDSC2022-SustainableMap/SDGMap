@@ -39,9 +39,9 @@ export default function Login(props) {
     <div className="login-container">
       <form className="login-form">
         <div className="form-content">
-          <h3 className="title">Sign In</h3>
+          <h3 className="title">登入</h3>
           <div className="form-group mt-3">
-            <label className="login-label">Email address</label>
+            <label className="login-label">電子郵件</label>
             <input
               type="email"
               className="form-control mt-1"
@@ -50,25 +50,25 @@ export default function Login(props) {
             />
           </div>
           <div className="form-group mt-3">
-            <label className="login-label">Password</label>
+            <label className="login-label">密碼</label>
             <input
               type="password"
               className="form-control mt-1"
               placeholder=""
               onChange={(e) => setpassword(e.target.value)}
             />
-            <Link to="/password_reset">Forgot password?</Link>
-            <a href="./password_reset">Forgot password?</a>
+            <Link to="/password_reset">忘記密碼?</Link>
+            <a href="./password_reset">忘記密碼?</a>
           </div>
           <div className="d-grid  mt-3">
             <button type="submit" className="btn" onClick={handleSubmit}>
-              Submit
+              提交
             </button>
           </div>
           <div className="text-center mt-2">
-            Not registered yet?{" "}
+            還沒註冊?{" "}
             <Link to="/signup">
-              <span className="login-link">Sign Up</span>
+              <span className="login-link">註冊</span>
             </Link>
           </div>
         </div>

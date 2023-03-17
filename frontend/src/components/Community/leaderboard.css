@@ -1,11 +1,13 @@
-.user-container {
+.board-container {
     display: flex;
+    padding: 0;
 }
 
-.user-lb {
-    flex: 2;
-    margin: 5vh 8vw;
+.board-lb {
+    flex: 4;
+    padding: 5vh 3vw;
 }
+
 .vircharacter {
     display: flex;
     justify-content: center;
@@ -14,28 +16,57 @@
     top: 16%;
     left: 10%;
     z-index: 3;
-    width: 90%;
 }
-.user-rb {
+.vircharacter > img {
+    width: 100%;     
+}
+.circle{
     position: relative;
-    flex: 3;
-    margin: 10vh 10vw;
-    padding: 4vh 3vw;
-    height: 72vh;
+    width: 80%;
+    height: 80%;
+    background: rgb(181, 180, 180);
+    border-radius: 50%;
+    transform: scale(1,0.1);
+    z-index: 4;
+}
+
+.board-rb {
+    position: relative;
+    flex: 6;
+    /* margin: 5vh 8vw; */
+    padding: 5vh 3vw;
+    height: 80vh;
     width: 90%;
     background-color: #fffef9;
-    box-shadow: #00000029 1px 1px 10px;
+    /* box-shadow: #00000029 1px 1px 10px; */
     border-radius: 8%;
     overflow: auto;
 }
 
-#editbtn {
-    position: absolute;
-    top: 2%;
-    right: 2%;
-    border: none;
+#addfriendbtn {
+    position: relative;
+    border: solid 2px #ba8d33;
+    border-radius: 20%;
+    margin-right: 3%; 
     background-color: #fffef9;
     color: #ba8d33;
+    z-index: 100;
+}
+
+#delfriendbtn {
+    position: relative;
+    border: solid 2px #ba8d33;
+    border-radius: 20%;
+    background-color: #fffef9;
+    color: #ba8d33;
+    z-index: 100;
+}
+
+.ld-btn {
+    background-color: #1d751c;
+    color: #ffffff;
+    border: solid #1d751c 2px;
+    border-radius: 20%;
 }
 
 .user-form-group {
@@ -46,21 +77,6 @@
 }
 
 /* Modal */
-.user-form-label {
-    font-size: medium;
-    color: #379878e7;
-}
-
-.value {
-    color: #807f7f;
-    font-size: 1rem;
-    font-weight: 400;
-    box-shadow: none;
-    background-color: #f8f6ed;
-    border: none;
-    padding: 1vh 2vw;
-    margin: 0;
-}
 
 #photo_vle_btn {
     border: 1.2px solid #ba8d33;
@@ -92,13 +108,21 @@
     display: none;
 }
 
-.user-rtb {
+#vstbtn {
+    border-radius: 4%;
+    background-color: #E1EEDD;
+    border: none;
+    color: #1d751c;
+    padding: 0.5vh 0.8vw;
+}
+
+.board-rtb {
     display: flex;
     height: 40%;
     margin: 2vh 0;
 }
 
-.user-rtlb {
+.board-rtlb {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -121,13 +145,15 @@
     width: 100%;
 }
 
-.user-label {
-    font-size: 1.2rem;
+.board-label {
+    font-size: 1.3rem;
     text-orientation: upright; 
     width: 25%;
-    color: #fcf4e4;
+    text-align: center;
+    justify-content: center;
+    color: #f7f6ed;
     font-weight: 500;
-    background-color: #61C0BF;
+    background-color: #f8c58f;
     box-shadow: #00000029 1px 1px 2px;
     border-radius: 12%;
     padding: 0 3%;
@@ -146,13 +172,6 @@
     width: 100%;
 }
 
-/* .txt {
-    width: 16vw;
-}
-.num {
-    width: 7.2vw;
-} */
-
 .biograph {
     font-size: 20px;
     font-weight: 400;
@@ -166,7 +185,7 @@
     margin: 0;
 }
 
-.user-rtrb {
+.board-rtrb {
     position: relative;
     display: flex;
     width: 40%;
@@ -189,14 +208,20 @@
     transform: rotate(180deg);
 }
 
-#btn1, #btn3 {
+#f-btn1, #f-btn3 {
     color: #ba8d33;
-    background-color: #f9e79d;
+    font-size: 1.2rem;
+    font-weight: 400;
+    background-color: #fcf4d4;
+    box-shadow: #3a3a3a29 1px 1px 2px;
 }
 
-#btn2, #btn4 {
-    color: #fcf4e4;
-    background-color: #61C0BF;
+#f-btn2, #f-btn4 {
+    color: #61C0BF;
+    font-size: 1.2rem;
+    font-weight: 400;
+    background-color: #E1EEDD;
+    box-shadow: #3a3a3a29 1px 1px 2px;
 }
 
 .accordion-body {
@@ -215,7 +240,7 @@
 
 .com {
     position: relative;
-    width: 11.25%;
+    width: 15%;
     margin: 0 0.2vw;
 }
 

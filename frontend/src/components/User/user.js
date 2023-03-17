@@ -146,7 +146,7 @@ function User(props) {
               variant="primary"
               onClick={handleShow}
             >
-              More info
+              更多資訊
             </button>
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
@@ -160,9 +160,9 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">Check In</button>
+                <button variant="secondary">打卡</button>
                 <button variant="secondary" onClick={handleClose}>
-                  OK
+                  關閉頁面
                 </button>
               </Modal.Footer>
             </Modal>
@@ -263,7 +263,7 @@ function User(props) {
               variant="primary"
               onClick={handleShow}
             >
-              More info
+              更多資訊
             </button>
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
@@ -277,9 +277,9 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">Check In</button>
+                <button variant="secondary">打卡</button>
                 <button variant="secondary" onClick={handleClose}>
-                  OK
+                  關閉頁面
                 </button>
               </Modal.Footer>
             </Modal>
@@ -543,26 +543,26 @@ function User(props) {
   return (
     <div className="user-container">
       <div className="user-lb">
-        <h1>3Dcharacter</h1>
+        <img className='vircharacter'src={require('../../character/bear.gif')}></img>
       </div>
       <div className="user-rb">
         <div className="user-rtb">
           <div className="user-rtlb">
             <div className="line">
               <div className="pack">
-                <label className="user-label">Name</label>
+                <label className="user-label">名稱</label>
                 <p>{username}</p>
               </div>
             </div>
             <div className="line">
               <div className="pack">
-                <label className="user-label">Friends</label>
+                <label className="user-label">朋友</label>
                 <p>{numoffriend}</p>
               </div>
-              <div className="pack">
+              {/* <div className="pack">
                 <label className="user-label">Coins</label>
                 <p className="num">{numofcoin}</p>
-              </div>
+              </div> */}
             </div>
             <p className="biograph" resize="none">
               {biograph}
@@ -575,7 +575,7 @@ function User(props) {
             </button>
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
-                <Modal.Title>Edit Your Profile</Modal.Title>
+                <Modal.Title>編輯個人頁面</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 {/* <form className='user-form'> */}
@@ -616,7 +616,7 @@ function User(props) {
                                         <input className='value' type='text' placeholder='password'></input>
                                     </div> */}
                 <div className="user-form-group">
-                  <label className="user-form-label">Biograph</label>
+                  <label className="user-form-label">簡介</label>
                   <input
                     className="value"
                     type="text"
@@ -675,7 +675,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseOne"
                 >
-                  SDG Badge Collection
+                  永續發展徽章收集
                 </button>
               </h2>
               <div
@@ -716,7 +716,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  Backpack
+                  道具包
                 </button>
               </h2>
               <div
@@ -755,7 +755,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  Visited Store Collection
+                  到訪過的店家
                 </button>
               </h2>
               <div
@@ -780,7 +780,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseFour"
                 >
-                  Stored Store Collection
+                  收藏店家
                 </button>
               </h2>
               <div

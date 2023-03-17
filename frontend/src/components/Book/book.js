@@ -162,7 +162,7 @@ function Book() {
                     <div className='mark-border'>
                         <img className='mark-img' src={creativevegetaranism} alt='creativevegetaranism' style={{ width: '150px', height: '150px' }} class="rounded-circle" />
                         <div className='mark-title'>創意蔬食</div>
-                        <p>待完成。</p>
+                        <p>創意蔬食可以被定義為使用創新的烹飪技術和食材組合創造出豐富、美味且多樣化的素食菜餚。它強調素食主義的價值，同時也讓非素食者能夠體驗新的飲食文化和享受不同的口味。</p>
                     </div>
                 </div>
             </div>
