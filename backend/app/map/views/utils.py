@@ -52,3 +52,14 @@ def addBadge (place_id, current_user):
     except Exception as e:
         return e
     
+def find_store_type(types_of_store):
+    if "restaurant" in types_of_store:
+        return "Restaurant"
+    elif "cafe" in types_of_store:
+        return "CoffeeShop"
+    elif "bar" in types_of_store:
+        return "Bar"
+    elif "bakery" in types_of_store:
+        return "Bakery"
+    else:
+        return "Tent"

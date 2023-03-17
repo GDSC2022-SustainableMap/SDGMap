@@ -324,6 +324,11 @@ def get_spot_arbitrary():
         obj["distance"] = -obj["distance"]
     return gmap_raw
 
+@bp.route("/find_place_result", methods=["POST"])
+def find_format():
+    receive = request.get_json()
+    gmap_result = find_place_detail(receive["place_id"])
+    return gmap_result
 
 # check if the user is in the correct distance from the spot
 @bp.route("/check_in", methods=["POST"])
@@ -338,8 +343,11 @@ def check_in_spot():
     }
 
     try:
-        # gmap_result = place_name_search(params)["candidates"][0]
         gmap_result = find_place_detail(params["place_id"])
+        place_type = find_store_type(gmap_result["result"]["types"])
+
+        print(place_type)
+        
         if gmap_result:
             spot_lat = gmap_result["result"]["geometry"]["location"]["lat"]
             spot_lng = gmap_result["result"]["geometry"]["location"]["lng"]
@@ -353,39 +361,33 @@ def check_in_spot():
         )
         current_user = get_jwt_identity()
         print(current_user)
-        current_log_count = current_log_count = (
-            db.child("user_log")
-            .child(current_user)
-            .child("log_count")
-            .get()
-            .val()
-        )
+        current_log_count = db.child("user_log").child(place_type).child(current_user).child("log_count").get().val()
         if distance < params["scope"]:
+
             # already have log
-            if db.child("user_log").child(current_user).get().val():
+            if current_log_count:
                 pass
             # not yet have log
             else:
-                db.child("user_log").child(current_user).set({"log_count": 0})
+                current_log_count = 0
+                db.child("user_log").child(place_type).child(current_user).set({"log_count": 0})    
 
             user_log = Badge().get_user_log()
-            user_log["user_id"] = current_user
+            user_log["user_name"] = db.child("users").child(current_user).get().val()["name"]
             user_log["time"] = str(datetime.datetime.now())
             user_log["place_id"] = params["place_id"]
 
-            # db.child("user_log").child(f"log{current_log_count}").set(user_log)
-            db.child("user_log").child(current_user).child(
-                f"log{current_log_count}"
-            ).update(user_log)
+            if current_log_count:
+                db.child("user_log").child(place_type).child(current_user).child(f"log{current_log_count}").update(user_log)
+            else:
+                db.child("user_log").child(place_type).child(current_user).child(f"log{current_log_count}").set(user_log)
 
             current_log_count += 1
-            db.child("user_log").child(current_user).update(
-                {"log_count": current_log_count}
-            )
+            db.child("user_log").child(place_type).child(current_user).update({"log_count": current_log_count})
 
-            # # record the badges and coins obtained
-            a = addBadge(params["place_id"], current_user)
-            print(a)
+            # record the badges and coins obtained
+            addBadge(params["place_id"], current_user)
+            
             return {"msg":"You have checked in successfully!"}
         else:
             return {"msg":"You should come to this place to check in!"}

@@ -1,14 +1,16 @@
-from app.membership.domain import User
-from app.app import db, auth,storage
+from app.membership.domain import User, user_unity
+from app.app import db, auth, storage
 from app.membership.domain.friend import Friend
 from PIL import Image
 # from base64 import decodestring
 import base64
+import time
 
 class UserRepo():
 
     def __init__(self, ) -> None:
         self._context = db.child("users")
+        
 
     def create(self, receive:dict) -> User:
         newUser = auth.create_user_with_email_and_password(receive["email"], receive["password"])
@@ -20,9 +22,12 @@ class UserRepo():
             password=receive['password'],
             user_id=user_id
         )
+        unity = user_unity()
         data = user.get_attribute()
+        unity_data = unity.get_attribute()
         # print(data)
         self._context.child(user_id).set(data)
+        db.child("users_unity").child(user_id).set(unity_data)
         return user
     
     def update(self, receive:dict) -> User:

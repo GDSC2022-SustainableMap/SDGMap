@@ -67,5 +67,117 @@ class User():
             friend_str = "friend_" + f"{self.friend_number:02d}"
             self.friends[friend_str] = friend.info
 
+class user_unity():
+    """ Attirbutes for player's unity account """
+    def __init__(self) -> None:
+        self.background: int = 0
+        self.bearCl: dict = {
+            "normal": True,
+            "plainClothes": False
+        }
+        self.bearIt: dict = {
+            "honey": False,
+            "normal": True,
+            "salmon": False
+        }
+        self.bearItems : int = 0
+        self.bearclothes : int = 0
+        self.birdCl :dict = {
+            "normal": True
+        }
+        self.birdIt : dict = {
+            "fan": False,
+            "flower": False,
+            "normal": True
+        }
+        self.birdItems : int = 0
+        self.birdclothes : int = 0
+        self.carpet : int = 1
+        self.character : int = 0
+        self.chat1 : str = "Hello~"
+        self.chat2 : str = "Let Adventure!"
+        self.chat3 : str = "Hi!"
+        self.deco : dict = {
+            "bed": False,
+            "bookcase": False,
+            "lamp": False,
+            "sofa": False,
+            "switch": False,
+            "treadmill": False,
+            "tv": False,
+            "window": False
+        }
+        self.exp : int = 10000
+        self.friend : dict = {}
+        self.glasses : int = 0
+        self.hat : int = 0
+        self.hbackground : dict = {
+            "DarkWall": False,
+            "SoftWall": False,
+            "SweetWall": False,
+            "WoodWall": False,
+            "normal": True
+        }
+        self.hcarpet : dict = {
+            "WhiteRug": False,
+            "basketballCourt": False,
+            "beach": False,
+            "normal": True,
+            "woodFloor": False
+        }
+        self.hdeco : dict = {
+            "bed": False,
+            "bookcase": False,
+            "lamp": False,
+            "sofa": False,
+            "switch": False,
+            "treadmill": False,
+            "tv": False,
+            "window": False
+        }
+        self.hglasses : dict = {
+            "fasionglasses": False,
+            "normal": True,
+            "sunglasses": False
+        }
+        self.hhat : dict = {
+            "atHelmat": False,
+            "fasionHat": False,
+            "normal": True,
+            "xmasHat": False
+        }
+        self.hmask : dict = {
+            "greenMask": False,
+            "normal": True
+        }
+        self.hshoe : dict = {
+            "bwShoe": False,
+            "fasionShoe": False,
+            "normal": True
+        }
+        self.login : bool = False
+        self.mask : int = 0
+        self.money : int = 2000
+        self.monkeyCl : dict = {
+            "normal": True,
+            "workClothes": False
+        }
+        self.monkeyIt : dict = {
+            "banana": False,
+            "basketball": False,
+            "normal": True
+        }
+        self.monkeyItems : int = 0
+        self.monkeyclothes : int = 0
+        self.name : str = "Player001"
+        self.password: str = "001"
+        self.shoe : int = 0
+        self.sound1 : float = 0.5
+        self.sound2 : float = 0.5
+
+    def get_attribute(self):
+        outer_attribute = self.__dict__
+        return outer_attribute
+
 
 

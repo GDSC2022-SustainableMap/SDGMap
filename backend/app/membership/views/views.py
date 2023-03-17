@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect,flash,jsonify
 
 from werkzeug.exceptions import InternalServerError
 
-from app.membership.infrastructure import db,auth,storage
+from app.app import db, auth, storage
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
 from app.app import firebase
