@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect,flash,jsonify
 
 from werkzeug.exceptions import InternalServerError
 
-from app.membership.infrastructure import db,auth,storage
+from app.app import db, auth, storage
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
 from app.app import firebase
@@ -12,13 +12,10 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required
 from datetime import datetime, timedelta, timezone
 import json
-# import base64
-# import io
-# from PIL import Image
+
+
 bp = Blueprint('user', __name__, url_prefix='/user')
 
-
-from functools import wraps
 from flask import redirect
 
 userrepo = UserRepo()
@@ -110,6 +107,7 @@ def get_profile():
     current_user = get_jwt_identity()
     receive = {'user_id':current_user}
     result = userrepo.read(receive)
+
     return result
     
 @bp.route("/reset_password", methods=["POST"])
@@ -148,28 +146,60 @@ def add_friend():
     return result
 
 #I don't know what is this XD. Frank Hu
-@bp.route("/track_userlog", methods=["POST"])
+@bp.route("/track_userlog", methods=["GET","POST"])
+@jwt_required(True)
 def get_specific_userlog():
     """ gives back the userlog of a specific user """
-    submit = request.get_json()
-    params = {
-        "user_uuid":submit["user_uuid"]
-    }
-    obj = {}
-    user_log = db.child("user_log").get().val()
-    for key in user_log:
-        if (key == "log_count"):
-            continue
-        elif (params["user_uuid"] == user_log[key]["user_id"]):
-            obj[key] = user_log[key]
-    return obj
+    # submit = request.get_json()
+    # params = {
+    #     "user_uuid":submit["user_uuid"]
+    # }
+    # obj = {}
+    # user_log = db.child("user_log").get().val()
+    # for key in user_log:
+    #     if (key == "log_count"):
+    #         continue
+    #     elif (params["user_uuid"] == user_log[key]["user_id"]):
+    #         obj[key] = user_log[key]
+    current_user = get_jwt_identity()
+    print(current_user)
+    user_log = db.child("user_log").child(current_user).get().val()
+    print(user_log)
+    if(user_log):
+        return user_log
+    else:
+        return {"msg":"No userlog record!"},204
 
-@bp.route("/image", methods=["GET","POST"])
-@jwt_required()
-def image():
-    if request.method == "POST":
-        current_user = get_jwt_identity()
-        storage.child("images/{}.jpg".format(current_user)).put("example2.jpg")
+@bp.route("/track_usersave", methods=["GET","POST"])
+@jwt_required(True)
+def get_specific_usersave():
+    """ gives back the usersave of a specific user """
+    # submit = request.get_json()
+    # params = {
+    #     "user_uuid":submit["user_uuid"]
+    # }
+    # obj = {}
+    # user_log = db.child("user_log").get().val()
+    # for key in user_log:
+    #     if (key == "log_count"):
+    #         continue
+    #     elif (params["user_uuid"] == user_log[key]["user_id"]):
+    #         obj[key] = user_log[key]
+    current_user = get_jwt_identity()
+    print(current_user)
+    user_save = db.child("user_save").child(current_user).get().val()
+    obj = {"save_spots":[]}
+    if(user_save):
+        for key in user_save:
+            if (key == "save_count"):
+                continue
+            else:
+                obj["save_spots"].append(user_save[key]["place_id"])
+        print(obj)
+        return obj
+    else:
+        return {"msg":"No user_save record!"},204
+
 
 @bp.route("/upload_image", methods=["GET", "POST"])
 @jwt_required()
@@ -180,17 +210,19 @@ def add_profile_image():
     base64_image = submit["base64_image"]
     png_str = base64_to_png(base64_image)
     Db.child("profile_pics").child(current_user).set(png_str)
-    return '<img src="data:{}">'.format(png_str)
-    # return jsonify({"data":png_str})
+    # return '<img src="data:{}">'.format(png_str)
+    return jsonify({"data":png_str})
 
 @bp.route("/get_image", methods=["GET", "POST"])
+@jwt_required()
 def get_user_image():
-    submit = request.get_json()
-    params = {
-        "user_uuid": submit["user_uuid"]
-    }
-    user_base64img = Db.child("profile_pics").child(submit["user_uuid"]).get().val()
-    return '<img src="{}">'.format(user_base64img)
+    # submit = request.get_json()
+    # params = {
+    #     "user_uuid": submit["user_uuid"]
+    # }
+    current_user = get_jwt_identity()
+    user_base64img = Db.child("profile_pics").child(current_user).get().val()
+    # return '<img src="{}">'.format(user_base64img)
     return jsonify(user_base64img)
 
 @bp.route("/leaderboard", methods=["POSTs"])

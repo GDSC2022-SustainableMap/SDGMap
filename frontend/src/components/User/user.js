@@ -5,6 +5,7 @@ import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import { BsFillPinMapFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
+import { MDBSpinner } from "mdb-react-ui-kit";
 import axios from "axios";
 function User(props) {
   const navigate = useNavigate();
@@ -14,17 +15,22 @@ function User(props) {
   const [numofcoin, setNumofcoin] = useState(null);
   const [biograph, setBiograph] = useState(null);
   const [userData, setUserData] = useState({});
-  const [editBiograph, setEditBiograph] = useState();
-  const [editName, setEditName] = useState();
+  const [editBiograph, setEditBiograph] = useState("");
+  const [editName, setEditName] = useState("");
+  const [editImage, setEditImage] = useState("");
   const [loading, setLoading] = useState(true);
   //Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setEditImage(userImage);
+  };
 
   let rawResponse;
   const fetchUserProfile = async (e) => {
     try {
+      setLoading(true);
       rawResponse = (
         await axios.get("http://127.0.0.1:5000/user/profile", {
           headers: {
@@ -49,37 +55,100 @@ function User(props) {
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
     console.log(rawResponse);
-    setLoading(false);
-    return rawResponse;
-  };
-  const updateUserProfile = async (e) => {
+
+    let imgRawResponse;
     try {
-      rawResponse = (
-        await axios.post(
-          "http://127.0.0.1:5000/user/edit_profile",
-          {
-            biograph: editBiograph,
-            name: editName,
-            // image: userImage
+      imgRawResponse = (
+        await axios.get("http://127.0.0.1:5000/user/get_image", {
+          headers: {
+            Authorization: "Bearer " + props.token,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + props.token,
-            },
-          }
-        )
+        })
       ).data;
       //   console.log(rawResponse);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
+      if (error.response.status === 401) {
+        props.removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+        return error;
+      }
     }
-    console.log(rawResponse);
-    if (rawResponse.name) {
-      setUsername(rawResponse.name);
+    setUserImage(imgRawResponse);
+    setEditImage(imgRawResponse);
+    // console.log(imgRawResponse);
+    setLoading(false);
+    return imgRawResponse;
+  };
+  const updateUserProfile = async (e) => {
+    setLoading(true);
+    if(editName.length > 0 || editBiograph.length > 0 ){
+      try {
+        rawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/user/edit_profile",
+            {
+              biograph: editBiograph,
+              name: editName,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + props.token,
+              },
+            }
+          )
+        ).data;
+        //   console.log(rawResponse);
+      } catch (error) {
+        console.log(error);
+      }
+      console.log(rawResponse);
+      if (
+        rawResponse.msg_name &&
+        rawResponse.msg_name === "Name changed sucessfully!"
+      ) {
+        setUsername(editName);
+      }
+      if (
+        rawResponse.msg_biograph &&
+        rawResponse.msg_biograph === "Biograph changed sucessfully!"
+      ) {
+        setBiograph(editBiograph);
+      }
     }
-    setBiograph(editBiograph);
-    // setUsername(rawResponse.name);
+    setEditName("");
+    setEditBiograph("");
+    // console.log(userImage.substring(userImage.indexOf(",")+1,userImage.length))
+    let imgRawResponse;
+    if(editImage !== userImage){
+      try {
+        imgRawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/user/upload_image",
+            {
+              base64_image: editImage.substring(
+                editImage.indexOf(",") + 1,
+                editImage.length
+              ),
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + props.token,
+              },
+            }
+          )
+        ).data;
+        //   console.log(rawResponse);
+      } catch (error) {
+        console.log(error);
+      }
+      setUserImage(imgRawResponse.data);
+      // setEditImage(imgRawResponse.data);
+    }
+
     setShow(false);
+    setLoading(false);
     // return rawResponse;
   };
   useEffect(() => {
@@ -95,10 +164,9 @@ function User(props) {
     let file = e.target.files[0];
 
     reader.onloadend = () => {
-      setUserImage(reader.result);
-      console.log(reader.result);
+      setEditImage(reader.result);
+      // console.log(reader.result);
     };
-
     reader.readAsDataURL(file);
   };
   //Carousel
@@ -175,7 +243,7 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showIndicators={false}
+        showindicators="false"
       >
         {VisitedStoreList.reduce(
           (accumulator, currentValue, currentIndex, array) => {
@@ -185,8 +253,8 @@ function User(props) {
             return accumulator;
           },
           []
-        ).map((store) => (
-          <Carousel.Item>
+        ).map((store,index) => (
+          <Carousel.Item key={index}>
             <Stack direction="horizontal" className=" stack" gap={3}>
               {/* <div className='card'>
                                 <div className='card-body'>
@@ -292,7 +360,7 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showIndicators={false}
+        showindicators="false"
       >
         {VisitedStoreList.reduce(
           (accumulator, currentValue, currentIndex, array) => {
@@ -302,8 +370,8 @@ function User(props) {
             return accumulator;
           },
           []
-        ).map((store) => (
-          <Carousel.Item>
+        ).map((store,index) => (
+          <Carousel.Item key={index} >
             <Stack direction="horizontal" className=" stack" gap={3}>
               {/* <div className='card'>
                                 <div className='card-body'>
@@ -593,8 +661,8 @@ function User(props) {
                       className="value"
                       type="text"
                       placeholder="You can only changed your name once!"
-                      disabled="true"
-                      readOnly="true"
+                      disabled={true}
+                      readOnly={true}
                       style={{ backgroundColor: "#efeeee" }}
                     ></input>
                   )}
@@ -627,13 +695,27 @@ function User(props) {
                 {/* </form> */}
               </Modal.Body>
               <Modal.Footer>
+                {loading ? (
                 <button
-                  id="closebtn"
-                  variant="secondary"
-                  onClick={updateUserProfile}
-                >
-                  Finish Edition
-                </button>
+                id="closebtn"
+                variant="secondary"
+                disabled={true}
+                style={{backgroundColor:"rgb(239, 238, 238)",cursor: "not-allowed"}}
+              >
+              <div >
+                <MDBSpinner size="sm"/>Loading
+              </div>
+              </button>
+            ):
+            <button
+            id="closebtn"
+            variant="secondary"
+            onClick={updateUserProfile}
+          >
+            Finish Edition
+            </button>
+                }
+
               </Modal.Footer>
             </Modal>
             {/* {selectImage && (
@@ -642,7 +724,11 @@ function User(props) {
                                 <button onClick={() => setSelectImage(null)}>Remove</button>
                             </div>
                         )} */}
-            {userImage.length >= 1 ? (
+            {loading ? (
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%"}}>
+                <MDBSpinner />
+              </div>
+            ) : userImage ? (
               <img id="user-photo" alt="user" src={userImage} />
             ) : (
               <img
@@ -689,7 +775,7 @@ function User(props) {
                     <></>
                   ) : (
                     greenOptions.map((e, index) => (
-                      <div className="com">
+                      <div className="com" key={index}>
                         <img
                           className={index < 8 ? "badge_left" : "badge_right"}
                           title={e.title}
@@ -730,7 +816,7 @@ function User(props) {
                     <></>
                   ) : (
                     backpackItems.map((e, index) => (
-                      <div className="com">
+                      <div className="com" key={index}>
                         <img
                           className="equip"
                           title={e.title}

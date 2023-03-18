@@ -422,10 +422,12 @@ function Leaderboard() {
             <td>
               {/* <Badges /> */}
             </td>
+            <td/>
             <td>20</td>
             <td>
               <MDBBtn className='vst-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
-                <button className='vst-btn'  onClick={handleShow}>Visit</button>
+                {/* <button className='vst-btn'  onClick={handleShow}>Visit</button> */}
+                Visit
                 <Modal show={show} onHide={handleClose} size="xl" style={{padding:'0'}}>
                   <Modal.Header closeButton />
                   <Modal.Body>

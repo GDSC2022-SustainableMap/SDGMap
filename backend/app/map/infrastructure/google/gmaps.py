@@ -69,7 +69,7 @@ def display_photo(photo_reference, photo_height=400, photo_width=400):
     im.show()
 
 def find_place_detail(place_id):
-    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Cphoto%2Cformatted_phone_number%2Cgeometry&key={GOOGLE_PLACES_API_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name%2Ctypes%2Cphoto%2Cformatted_phone_number%2Cgeometry&key={GOOGLE_PLACES_API_KEY}"
     response = requests.post(url).json()
     return response
 
