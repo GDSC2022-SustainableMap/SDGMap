@@ -85,7 +85,7 @@ function NavBar(props) {
             <ul>
               <li>
                 <Link to="/sdgbook">
-                  <BsJournalBookmark size={18} /> SDGBook
+                  <BsJournalBookmark size={18} /> 徽章圖鑑
                 </Link>
               </li>
               <li>

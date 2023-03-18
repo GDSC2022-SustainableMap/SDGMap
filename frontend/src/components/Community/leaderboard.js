@@ -261,7 +261,7 @@ function FriendProfile() {
                   </div>
                   <div className='com'>
                     <img className="badge_right" title='蛋奶素' alt="蛋奶素" /*onClick={() => setBadge7(prevValue => prevValue + 1)}*/
-                      src={user.badge10badge7 > 0 ? require('../../Badge/t_ovolacto.png') : require('../../Badge/n_ovolacto.png')} />
+                      src={user.badge7 > 0 ? require('../../Badge/t_ovolacto.png') : require('../../Badge/n_ovolacto.png')} />
                     <span className='amount2'>{user.badge7}</span>
                   </div>
                   <div className='com'>
@@ -324,10 +324,55 @@ function FriendProfile() {
 }
 
 function Leaderboard() {
+  
   // Modal of VisitFriendProfile
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+  }
+  const search = [
+    { _id: 1, name: "xxx", data:{關懷弱勢:true, 友善環境:false, 食育教育:true, 公平交易:false, 在地食材:false, 有機小農:false, 蛋奶素:false, 寵物友善:false, 減塑:false, 公共議題分享:false, 流浪動物:false, 純素:false, 食農教育:false, 惜食不浪費:false, 創意料理:false, 創新蔬食:false, 源頭減量:false, 綠色採購:false,} },
+  ];
+  const UserRow = ({id, name, data})=>{
+    return (
+      <tr>
+        <td>{id}</td>
+        <td>
+          <div className='d-flex align-items-center'>
+            <img
+              src='https://mdbootstrap.com/img/new/avatars/8.jpg'
+              alt=''
+              style={{ width: '45px', height: '45px' }}
+              className='rounded-circle'
+            />
+            <div className='ms-3'>
+              <p className='fw-bold mb-1'>{name}</p>
+              <p className='text-muted mb-0'>UserMail</p>
+            </div>
+          </div>
+        </td>
+        <td>
+          <Badges data={data}/>
+        </td>
+        <td>20</td>
+        <td>
+          <MDBBtn color='secondary' rounded size='sm' onClick={FriendProfile}>
+            <button onClick={handleShow}>Visit</button>
+            <Modal show={show} onHide={handleClose} size='lg' style={{ padding: '0' }}>
+              <Modal.Header closeButton />
+              <Modal.Body>
+                <FriendProfile />
+              </Modal.Body >
+              <Modal.Footer>
+                <button className='ld-btn' onClick={handleClose}>離開</button>
+              </Modal.Footer>
+            </Modal>
+          </MDBBtn>
+        </td>
+      </tr>
+    )
+  }
   return (
     <div className='container-leaderboard'>
       <MDBTable align='middle' hover>
@@ -341,68 +386,9 @@ function Leaderboard() {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          <tr>
-            <td>1</td>
-            <td>
-              <div className='d-flex align-items-center'>
-                <img
-                  src='https://mdbootstrap.com/img/new/avatars/8.jpg'
-                  alt=''
-                  style={{ width: '45px', height: '45px' }}
-                  className='rounded-circle'
-                />
-                <div className='ms-3'>
-                  <p className='fw-bold mb-1'>User Name</p>
-                  <p className='text-muted mb-0'>UserID</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              {/* <Badges /> */}
-            </td>
-            <td/>
-            <td>20</td>
-            <td>
-              <MDBBtn className='green-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
-                <button onClick={handleShow}>Visit</button>
-                <Modal show={show} onHide={handleClose} size='lg' style={{ padding: '0' }}>
-                  <Modal.Header closeButton />
-                  <Modal.Body>
-                    <FriendProfile />
-                  </Modal.Body >
-                  <Modal.Footer>
-                    {/* <button className='ld-btn' onClick={handleClose}>Leave</button> */}
-                  </Modal.Footer>
-                </Modal>
-              </MDBBtn>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>
-              <div className='d-flex align-items-center'>
-                <img
-                  src='https://mdbootstrap.com/img/new/avatars/8.jpg'
-                  alt=''
-                  style={{ width: '45px', height: '45px' }}
-                  className='rounded-circle'
-                />
-                <div className='ms-3'>
-                  <p className='fw-bold mb-1'>User Name</p>
-                  <p className='text-muted mb-0'>UserID</p>
-                </div>
-              </div>
-            </td>
-            <td>
-              {/* <Badges /> */}
-            </td>
-            <td>20</td>
-            <td>
-              <MDBBtn color='secondary' rounded size='sm' onClick={FriendProfile}>
-                Visit
-              </MDBBtn>
-            </td>
-          </tr>
+          {search.map((item, index) => (
+            <UserRow key={index} name={item.name} id={item._id} data={item.data}></UserRow>
+          ))}
         </MDBTableBody>
       </MDBTable>
     </div>

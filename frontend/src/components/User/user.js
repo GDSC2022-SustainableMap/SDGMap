@@ -916,7 +916,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <CarouselOfVisitedStore />
+                  {/* <CarouselOfVisitedStore /> */}
                 </div>
               </div>
             </div>

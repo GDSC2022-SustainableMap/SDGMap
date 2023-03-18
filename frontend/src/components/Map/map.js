@@ -312,7 +312,8 @@ const SimpleMap = (props) => {
     return (
       <div className="card-map">
         <h6 className="card-header">
-          <b>{name}</b>
+          <div><b>{name}</b></div>
+          <div style={{marginLeft:'auto'}}>
           {liked > 0? (
             <MDBBtn
               size="sm"
@@ -340,6 +341,7 @@ const SimpleMap = (props) => {
               <MDBIcon far icon="star" />
             </MDBBtn>
           )}
+          </div>
         </h6>
         <div className="card-body">
           <Badges data={data} />
