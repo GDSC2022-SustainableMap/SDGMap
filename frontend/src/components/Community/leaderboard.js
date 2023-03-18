@@ -136,7 +136,7 @@ function FriendProfile() {
           <div>
             電話: 沒有這個資訊<br />
             價格: {p}<br />
-            <button className="card-button-green" variant="primary" onClick={handleShow}>More info</button>
+            <button className="card-button-green" variant="primary" onClick={handleShow}>更多資訊</button>
           </div>
         </div>
       );
@@ -192,11 +192,9 @@ function FriendProfile() {
 
   return (
     <div className='board-container'>
-      <div className='board-lb'>
-          <button id="addfriendbtn" onclick={AddFriend} alt="增加好友"><AiOutlineUserAdd size={25}/></button>
-          <button id="delfriendbtn" onclick={DelFriend} alt="刪除好友"><AiOutlineUserDelete size={25}/></button>
-          <div className='vircharacter'><img src={require('../../character/bear.gif')}></img></div>
-          <div style={{position:'absolute'}}><div className="circle" /></div>
+      <div style={{justifyContent:'right'}}>
+        <button id="addfriendbtn" onclick={AddFriend} name="增加好友"><AiOutlineUserAdd size={36} /></button>
+        <button id="delfriendbtn" onclick={DelFriend} name="刪除好友"><AiOutlineUserDelete size={36} /></button>
       </div>
       <div className='board-rb'>
         <div className='board-rtb'>
@@ -212,10 +210,6 @@ function FriendProfile() {
                 <label className='board-label'>朋友</label>
                 <p >{user.friends}</p>
               </div>
-              {/* <div className='pack'>
-                              <label className='user-label'>Coins</label>
-                              <p className='num'>0</p>
-                          </div> */}
             </div>
             <p className='biograph' resize='none'>{user.biograph}</p>
 
@@ -301,78 +295,22 @@ function FriendProfile() {
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingTwo">
                 <button className="accordion-button collapsed" id='f-btn2' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                  道具背包
+                  到訪店家
                 </button>
               </h2>
               <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                 <div className="accordion-body">
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip1(prevValue => prevValue + 1)}*/
-                      src={user.equip1 > 0 ? require('../../Equipment/banana.png') : require('../../Equipment/n_banana.png')} />
-                    <span className='amount1'>{user.equip1}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip2(prevValue => prevValue + 1)}*/
-                      src={user.equip2 > 0 ? require('../../Equipment/caterpillar.png') : require('../../Equipment/n_caterpillar.png')} />
-                    <span className='amount1'>{user.equip2}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip3(prevValue => prevValue + 1)}*/
-                      src={user.equip3 > 0 ? require('../../Equipment/the_egg.png') : require('../../Equipment/n_the_egg.png')} />
-                    <span className='amount1'>{user.equip3}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip4(prevValue => prevValue + 1)}*/
-                      src={user.equip4 > 0 ? require('../../Equipment/earthworm.png') : require('../../Equipment/n_earthworm.png')} />
-                    <span className='amount1'>{user.equip4}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip5(prevValue => prevValue + 1)}*/
-                      src={user.equip5 > 0 ? require('../../Equipment/honey.png') : require('../../Equipment/n_honey.png')} />
-                    <span className='amount1'>{user.equip5}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip6(prevValue => prevValue + 1)}*/
-                      src={user.equip6 > 0 ? require('../../Equipment/grape.png') : require('../../Equipment/n_grape.png')} />
-                    <span className='amount1'>{user.equip6}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip7(prevValue => prevValue + 1)}*/
-                      src={user.equip7 > 0 ? require('../../Equipment/nuts.png') : require('../../Equipment/n_nuts.png')} />
-                    <span className='amount1'>{user.equip7}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip8(prevValue => prevValue + 1)}*/
-                      src={user.equip8 > 0 ? require('../../Equipment/ant.png') : require('../../Equipment/n_ant.png')} />
-                    <span className='amount1'>{user.equip8}</span>
-                  </div>
-                  <div className='com'>
-                    <img className="equip" /*onClick={() => setEquip9(prevValue => prevValue + 1)}*/
-                      src={user.equip9 > 0 ? require('../../Equipment/red_fruit.png') : require('../../Equipment/n_red_fruit.png')} />
-                    <span className='amount1'>{user.equip9}</span>
-                  </div>
+                  <CarouselOfVisitedStore />
                 </div>
               </div>
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingThree">
                 <button className="accordion-button collapsed " id='f-btn3' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                  到訪過的店家
-                </button>
-              </h2>
-              <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingFour">
-                <button className="accordion-button collapsed" id='f-btn4' type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
                   收藏店家
                 </button>
               </h2>
-              <div id="flush-collapseFour" className="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+              <div id="flush-collapseThree" className="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                 <div className="accordion-body" id="accordion-body3">
                   <CarouselOfStoredStore />
                 </div>
@@ -399,7 +337,7 @@ function Leaderboard() {
             <th scope='col'>玩家</th>
             <th scope='col'>徽章</th>
             <th scope='col'>徽章數量</th>
-            <th scope='col'>了解</th>
+            <th scope='col'>了解更多</th>
           </tr>
         </MDBTableHead>
         <MDBTableBody>
@@ -425,17 +363,16 @@ function Leaderboard() {
             <td/>
             <td>20</td>
             <td>
-              <MDBBtn className='vst-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
-                {/* <button className='vst-btn'  onClick={handleShow}>Visit</button> */}
-                Visit
-                <Modal show={show} onHide={handleClose} size="xl" style={{padding:'0'}}>
+              <MDBBtn className='green-btn' color='secondary' rounded size='sm' onClick={FriendProfile}>
+                <button onClick={handleShow}>Visit</button>
+                <Modal show={show} onHide={handleClose} size='lg' style={{ padding: '0' }}>
                   <Modal.Header closeButton />
                   <Modal.Body>
                     <FriendProfile />
                   </Modal.Body >
                   <Modal.Footer>
-                      <button className='ld-btn' onClick={handleClose}>Leave</button>
-                    </Modal.Footer>
+                    {/* <button className='ld-btn' onClick={handleClose}>Leave</button> */}
+                  </Modal.Footer>
                 </Modal>
               </MDBBtn>
             </td>

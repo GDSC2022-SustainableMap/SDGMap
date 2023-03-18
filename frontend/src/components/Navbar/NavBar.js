@@ -71,6 +71,11 @@ function NavBar(props) {
                 </Link>
               </li>
               <li>
+                <Link to="/community">
+                  <HiOutlineUserGroup size={20} /> 社群
+                </Link>
+              </li>
+              <li>
                 <Link to="/user">
                   <BiUserCircle size={20} />
                 </Link>

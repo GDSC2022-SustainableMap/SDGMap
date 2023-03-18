@@ -802,7 +802,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  道具包
+                  到訪過的店家
                 </button>
               </h2>
               <div
@@ -812,21 +812,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  {loading ? (
-                    <></>
-                  ) : (
-                    backpackItems.map((e, index) => (
-                      <div className="com" key={index}>
-                        <img
-                          className="equip"
-                          title={e.title}
-                          alt={e.alt}
-                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
-                        />
-                        <span className="amount1">{parseInt(e.num)}</span>
-                      </div>
-                    ))
-                  )}
+                  <CarouselOfVisitedStore />
                 </div>
               </div>
             </div>
@@ -841,7 +827,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  到訪過的店家
+                  收藏店家
                 </button>
               </h2>
               <div
@@ -851,32 +837,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingFour">
-                <button
-                  className="accordion-button collapsed"
-                  id="btn4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFour"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseFour"
-                >
-                  收藏店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseFour"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingFour"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfStoredStore />
+                <CarouselOfStoredStore />
                 </div>
               </div>
             </div>
