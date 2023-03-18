@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import "./user.css";
 import { MDBSpinner } from "mdb-react-ui-kit";
 import axios from "axios";
+import useToken from "../../hooks/token";
 function User(props) {
   const navigate = useNavigate();
+  const { getToken, removeToken } = useToken();
   const [userImage, setUserImage] = useState([]);
   const [username, setUsername] = useState(null);
   const [numoffriend, setNumoffriend] = useState(null);
@@ -19,6 +21,8 @@ function User(props) {
   const [editName, setEditName] = useState("");
   const [editImage, setEditImage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userSave, setUserSave] = useState([]);
+  const [userPosition, setUserPosition] = useState([]);
   //Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -79,8 +83,41 @@ function User(props) {
     setEditImage(imgRawResponse);
     // console.log(imgRawResponse);
     setLoading(false);
-    return imgRawResponse;
+    return rawResponse;
+    
   };
+  let saveResponse
+  const fetchUserSave = async () => {
+    let t = getToken()
+    try {
+      setLoading(true);
+      saveResponse = (
+        await axios.get("http://127.0.0.1:5000/user/track_usersave", {
+          headers: {
+            Authorization: "Bearer " + t,
+          },
+        })
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+
+        return error;
+      }
+    }
+    setUserSave(Object.values(saveResponse.save_spots))
+    console.log(Object.values(saveResponse.save_spots));
+
+    setLoading(false);
+
+  };
+
+
+
   const updateUserProfile = async (e) => {
     setLoading(true);
     if(editName.length > 0 || editBiograph.length > 0 ){
@@ -151,12 +188,47 @@ function User(props) {
     setLoading(false);
     // return rawResponse;
   };
+
+  const showLocation = (position) => {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    // alert(
+    //   "Latitude: " +
+    //     position.coords.latitude +
+    //     "\nLongitude: " +
+    //     position.coords.longitude
+    // );
+    setUserPosition([latitude, longitude]);
+    console.log(userPosition);
+  };
+  const errorHandler = (err) => {
+    if (err.code === 1) {
+      alert("Error: Access is denied!");
+    } else if (err.code === 2) {
+      alert("Error: Position is unavailable!");
+    }
+  };
+
   useEffect(() => {
-    fetchUserProfile();
-
+    async function fetchAllData() {
+      await fetchUserProfile();
+      await fetchUserSave();
+    }
+    // fetchUserProfile();
+    // fetchUserSave();
+    fetchAllData();
+    if (navigator.geolocation) {
+      var options = { timeout: 60000 };
+      navigator.geolocation.getCurrentPosition(
+        showLocation,
+        errorHandler,
+        options
+      );
+    } else {
+      alert("Geolocation not supported by this browser.");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [])
   const handleImageChange = (e) => {
     e.preventDefault();
 
@@ -289,24 +361,13 @@ function User(props) {
 
   function CarouselOfStoredStore() {
     const [index, setIndex] = useState(0);
-    const [current, setCurrent] = useState(0);
+    // const [current, setCurrent] = useState(0);
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate }) => {
+
+    const InfoCard = ({ name, addr, price, rate,place_id }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -314,6 +375,47 @@ function User(props) {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+  
+            return error;
+          }
+        }
+        if(rawResponse.msg === 'You should come to this place to check in!'){
+          alert('You should come to this place to check in!');
+        }else if(rawResponse.msg === 'You have checked in successfully!'){
+          alert('You have checked in successfully!');
+        }
+        console.log(rawResponse);
+        setLoading(false);
+        return rawResponse;
+      };
+
+      
       return (
         <div className="card">
           <b>{name}</b>
@@ -345,7 +447,7 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>打卡</button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -362,7 +464,7 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {VisitedStoreList.reduce(
+        {userSave.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -389,6 +491,7 @@ function User(props) {
                 addr={store[0].formatted_address}
                 price={store[0].price_level}
                 rate={store[0].rating}
+                place_id={store[0].place_id}
               />
               <InfoCard
                 className="card-green card"
@@ -396,6 +499,7 @@ function User(props) {
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
+                place_id={store[0].place_id}
               />
             </Stack>
           </Carousel.Item>
@@ -411,7 +515,7 @@ function User(props) {
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
-      num: loading ? 0 : userData.badges.關懷弱勢,
+      num: loading && userData ? 0 : userData.badges.關懷弱勢,
     },
     {
       id: "envfriend",
@@ -649,7 +753,7 @@ function User(props) {
                 {/* <form className='user-form'> */}
                 <div className="user-form-group">
                   <label className="user-form-label">Name</label>
-                  {userData.change_name_chance >= 1 ? (
+                  {userData.change_name_chance && userData.change_name_chance >= 1 ? (
                     <input
                       className="value"
                       type="text"

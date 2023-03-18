@@ -8,7 +8,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 import datetime
 from app.membership.infrastructure import db
 from app.map.domain.spot import Spot
-import functools
+
 
 bp = Blueprint("main", __name__, url_prefix="/map")
 
@@ -400,7 +400,9 @@ def save_spot():
     receive = request.get_json()
     params = {"place_id": receive["place_id"]}
     current_user = get_jwt_identity()
-    gmap_result = find_place_detail(params["place_id"])
+    my_fields = ["place_id", "name", "formatted_address", "rating", "price_level"]
+    gmap_result = gmaps.place(place_id = params["place_id"], fields = my_fields,language="zh-tw")["result"]
+    gmaps
     current_save_count = (
         db.child("user_save")
         .child(current_user)
@@ -409,6 +411,7 @@ def save_spot():
         .val()
     ) if db.child("user_save").child(current_user).child("save_count").get().val() else 0
     print(current_save_count)
+    print(gmap_result)
     if gmap_result:
         # already have log, check if the place is already saved
         user_db = db.child("user_save").child(current_user).get().val()
@@ -424,7 +427,8 @@ def save_spot():
             db.child("user_save").child(current_user).set({"save_count": 0})
 
         user_save = Badge().get_user_save()
-        user_save["place_id"] = params["place_id"]
+        # user_save["place_id"] = params["place_id"]
+        user_save = gmap_result
         db.child("user_save").child(current_user).child(
             f"save{current_save_count}"
         ).update(user_save)
