@@ -22,6 +22,7 @@ function User(props) {
   const [editImage, setEditImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [userSave, setUserSave] = useState([]);
+  const [userLog, setUserLog] = useState([]);
   const [userPosition, setUserPosition] = useState([]);
   //Modal
   const [show, setShow] = useState(false);
@@ -110,13 +111,41 @@ function User(props) {
       }
     }
     setUserSave(Object.values(saveResponse.save_spots))
-    console.log(Object.values(saveResponse.save_spots));
+
 
     setLoading(false);
 
   };
 
+  let logResponse
+  const fetchUserLog = async () => {
+    let t = getToken()
+    try {
+      setLoading(true);
+      logResponse = (
+        await axios.get("http://127.0.0.1:5000/user/track_userlog", {
+          headers: {
+            Authorization: "Bearer " + t,
+          },
+        })
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
 
+        return error;
+      }
+    }
+    setUserLog(Object.values(logResponse)[0])
+
+
+    setLoading(false);
+
+  };
 
   const updateUserProfile = async (e) => {
     setLoading(true);
@@ -140,7 +169,7 @@ function User(props) {
       } catch (error) {
         console.log(error);
       }
-      console.log(rawResponse);
+
       if (
         rawResponse.msg_name &&
         rawResponse.msg_name === "Name changed sucessfully!"
@@ -199,7 +228,7 @@ function User(props) {
     //     position.coords.longitude
     // );
     setUserPosition([latitude, longitude]);
-    console.log(userPosition);
+
   };
   const errorHandler = (err) => {
     if (err.code === 1) {
@@ -213,6 +242,7 @@ function User(props) {
     async function fetchAllData() {
       await fetchUserProfile();
       await fetchUserSave();
+      await fetchUserLog();
     }
     // fetchUserProfile();
     // fetchUserSave();
@@ -248,20 +278,8 @@ function User(props) {
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate }) => {
+    const InfoCard = ({ name, addr, price, rate,phone,place_id }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -269,6 +287,45 @@ function User(props) {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+  
+            return error;
+          }
+        }
+        if(rawResponse.msg === 'You should come to this place to check in!'){
+          alert('You should come to this place to check in!');
+        }else if(rawResponse.msg === 'You have checked in successfully!'){
+          alert('You have checked in successfully!');
+        }
+
+        setLoading(false);
+        return rawResponse;
+      };
       return (
         <div className="card">
           <b>{name}</b>
@@ -277,7 +334,7 @@ function User(props) {
           <br />
           評分: {rate}&emsp;
           <div>
-            電話: 沒有這個資訊
+            電話: {phone}
             <br />
             價格: {p}
             <br />
@@ -295,12 +352,12 @@ function User(props) {
               <Modal.Body>
                 地址: {addr}
                 <br />
-                評分: {rate}&emsp; 電話: 沒有這個資訊
+                評分: {rate}&emsp; 電話: {phone}
                 <br />
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>打卡</button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -317,7 +374,7 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {VisitedStoreList.reduce(
+        {!loading && userLog.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -344,6 +401,8 @@ function User(props) {
                 addr={store[0].formatted_address}
                 price={store[0].price_level}
                 rate={store[0].rating}
+                phone={store[0].formatted_phone_number}
+                place_id={store[0].place_id}
               />
               <InfoCard
                 className="card-orange card"
@@ -351,6 +410,8 @@ function User(props) {
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
+                phone={store[1].formatted_phone_number}
+                place_id={store[1].place_id}
               />
             </Stack>
           </Carousel.Item>
@@ -367,7 +428,7 @@ function User(props) {
     };
 
 
-    const InfoCard = ({ name, addr, price, rate,place_id }) => {
+    const InfoCard = ({ name, addr, price, rate,place_id,phone }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -424,7 +485,7 @@ function User(props) {
           <br />
           評分: {rate}&emsp;
           <div>
-            電話: 沒有這個資訊
+            電話: {phone}
             <br />
             價格: {p}
             <br />
@@ -442,7 +503,7 @@ function User(props) {
               <Modal.Body>
                 地址: {addr}
                 <br />
-                評分: {rate}&emsp; 電話: 沒有這個資訊
+                評分: {rate}&emsp; 電話: {phone}
                 <br />
                 價格: {p}
               </Modal.Body>
@@ -464,11 +525,12 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {userSave.reduce(
+        {!loading && userSave.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
             }
+            console.log(accumulator)
             return accumulator;
           },
           []
@@ -492,15 +554,17 @@ function User(props) {
                 price={store[0].price_level}
                 rate={store[0].rating}
                 place_id={store[0].place_id}
-              />
+                phone={store[0].formatted_phone_number}
+              /> 
               <InfoCard
                 className="card-green card"
                 name={store[1].name}
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
-                place_id={store[0].place_id}
-              />
+                place_id={store[1].place_id}
+                phone={store[1].formatted_phone_number}
+              /> 
             </Stack>
           </Carousel.Item>
         ))}
@@ -906,7 +970,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  道具包
+                  到訪過的店家
                 </button>
               </h2>
               <div
@@ -916,21 +980,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  {loading ? (
-                    <></>
-                  ) : (
-                    backpackItems.map((e, index) => (
-                      <div className="com" key={index}>
-                        <img
-                          className="equip"
-                          title={e.title}
-                          alt={e.alt}
-                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
-                        />
-                        <span className="amount1">{parseInt(e.num)}</span>
-                      </div>
-                    ))
-                  )}
+                  <CarouselOfVisitedStore />
                 </div>
               </div>
             </div>
@@ -945,7 +995,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  到訪過的店家
+                  收藏店家
                 </button>
               </h2>
               <div
@@ -955,32 +1005,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingFour">
-                <button
-                  className="accordion-button collapsed"
-                  id="btn4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFour"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseFour"
-                >
-                  收藏店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseFour"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingFour"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfStoredStore />
+                <CarouselOfStoredStore />
                 </div>
               </div>
             </div>

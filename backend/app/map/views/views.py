@@ -343,14 +343,16 @@ def check_in_spot():
     }
 
     try:
-        gmap_result = find_place_detail(params["place_id"])
-        place_type = find_store_type(gmap_result["result"]["types"])
+        my_fields = ["place_id", "name", "formatted_address", "rating", "price_level","type","geometry","formatted_phone_number"]
+        gmap_result = gmaps.place(place_id = params["place_id"], fields = my_fields,language="zh-tw")["result"]
+        print(gmap_result)
+        place_type = find_store_type(gmap_result["types"])
 
         print(place_type)
         
         if gmap_result:
-            spot_lat = gmap_result["result"]["geometry"]["location"]["lat"]
-            spot_lng = gmap_result["result"]["geometry"]["location"]["lng"]
+            spot_lat = gmap_result["geometry"]["location"]["lat"]
+            spot_lng = gmap_result["geometry"]["location"]["lng"]
         # return gmap_result
 
         distance = getDistanceBetweenPointsNew(
@@ -371,12 +373,13 @@ def check_in_spot():
             else:
                 current_log_count = 0
                 db.child("user_log").child(current_user).set({"log_count": 0})    
-
+            log_dict = {k: v for k, v in gmap_result.items() if k not in  ["types","geometry"]}
             user_log = Badge().get_user_log()
+            user_log = log_dict
             user_log["user_name"] = db.child("users").child(current_user).get().val()["name"]
             user_log["time"] = str(datetime.datetime.now())
             user_log["place_id"] = params["place_id"]
-
+            print(user_log)
             if current_log_count:
                 db.child("user_log").child(current_user).child(place_type).child(f"log{current_log_count}").update(user_log)
             else:
@@ -391,6 +394,7 @@ def check_in_spot():
             return {"msg":"You have checked in successfully!"}
         else:
             return {"msg":"You should come to this place to check in!"}
+        return "as"
     except Exception as e:
         return e
 
@@ -400,7 +404,7 @@ def save_spot():
     receive = request.get_json()
     params = {"place_id": receive["place_id"]}
     current_user = get_jwt_identity()
-    my_fields = ["place_id", "name", "formatted_address", "rating", "price_level"]
+    my_fields = ["place_id", "name", "formatted_address", "rating", "price_level","formatted_phone_number"]
     gmap_result = gmaps.place(place_id = params["place_id"], fields = my_fields,language="zh-tw")["result"]
     gmaps
     current_save_count = (

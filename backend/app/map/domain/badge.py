@@ -23,14 +23,18 @@ class Badge():
         self.user_log: dict = {
             "user_name":"",
             "time" : "",
-            "place_id":""
+            "place_id":"",
+            "formatted_address":"",
+            "name":"",
+            "rating": float,
+            "formatted_phone_number":""
         }
         self.user_save: dict = {
             "place_id": "",
             "formatted_address":"",
             "name":"",
             "rating": float,
-            "phone_number":""
+            "formatted_phone_number":""
 
         }
     def get_badges(self):

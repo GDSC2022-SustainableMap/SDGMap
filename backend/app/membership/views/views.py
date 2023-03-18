@@ -5,6 +5,7 @@ from werkzeug.exceptions import InternalServerError
 from app.app import db, auth, storage
 from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
+from app.membership.domain.friend import Friend
 from app.app import firebase
 from app.membership.views.utils import base64_to_png
 Db = firebase.database()
@@ -142,10 +143,40 @@ def add_friend():
     """allow user to make friends, passint the friend's uuid to become friends"""
     receive = request.get_json()
 
-    result = userrepo.update(receive)
-    return result
+    messages = {}
+    if ("friend" in receive):
+        current_user = get_jwt_identity()
+        current_user_friend_num = db.child("users").child(current_user).get().val()["friends"]["friend_number"]
+        current_user_friend = db.child("users").child(current_user).get().val()["friends"]
 
-#I don't know what is this XD. Frank Hu
+        #確認是否有這個id的人
+        print(current_user)
+        friend = db.child("users").child(receive['friend']).get().val()
+        if (friend is None):
+            messages["msg"] = "This person does not exist!"
+            status = 204
+        friend_name = friend["name"]
+    
+        #確認是否重複加入好友
+        for key, value in current_user_friend.items():
+            if key != "friend_number":  
+                if current_user in value.values():
+                    messages["msg"] = "You have this frined already!"
+                    status = 502
+        #如果好友多餘20個就回報錯誤
+        if(current_user_friend_num >= 20):
+            messages["msg"] = "You can only have 20 frineds!"
+            status = 502
+        current_user_friend_num += 1
+        friend = Friend(receive['friend'],friend_name).info
+        # update new friend to firebase
+        db.child("users").child(current_user).child("friends").child("friend_" + f"{current_user_friend_num:02d}").set(friend)
+        db.child("users").child(current_user).child("friends").update({"friend_number":current_user_friend_num})
+
+        messages["msg"] = f"{receive['friend']} added as friend"
+        status = 201
+    return messages, status
+
 @bp.route("/track_userlog", methods=["GET","POST"])
 @jwt_required(True)
 def get_specific_userlog():
@@ -165,10 +196,19 @@ def get_specific_userlog():
     print(current_user)
     user_log = db.child("user_log").child(current_user).get().val()
     print(user_log)
+    obj = {"log_spots":[]}
     if(user_log):
-        return user_log
+        for key in user_log:
+            if (key == "log_count"):
+                continue
+            else:
+                for inner_key in user_log[key]:
+                    obj["log_spots"].append(user_log[key][inner_key])
+        print(obj)
+        return obj
     else:
-        return {"msg":"No userlog record!"},204
+        return {"msg":"No user_save record!"},204
+
 
 @bp.route("/track_usersave", methods=["GET","POST"])
 @jwt_required(True)
@@ -188,13 +228,14 @@ def get_specific_usersave():
     current_user = get_jwt_identity()
     print(current_user)
     user_save = db.child("user_save").child(current_user).get().val()
-    obj = {"save_spots_id":[],"save_spots":user_save}
+    obj = {"save_spots_id":[],"save_spots":[]}
     if(user_save):
         for key in user_save:
             if (key == "save_count"):
                 continue
             else:
                 obj["save_spots_id"].append(user_save[key]["place_id"])
+                obj["save_spots"].append(user_save[key])
         print(obj)
         return obj
     else:
@@ -225,7 +266,40 @@ def get_user_image():
     # return '<img src="{}">'.format(user_base64img)
     return jsonify(user_base64img)
 
-@bp.route("/leaderboard", methods=["POSTs"])
-@jwt_required()
+@bp.route("/leaderboard", methods=["GET"])
 def get_leaderboard():
-    pass
+    all_user = Db.child("users").get().val()
+    sorted_user = sorted(all_user.items(),key=lambda x: x[1]["coin"],reverse=True)
+
+
+    ordered_user = []
+    for i in sorted_user[:5]:
+        new_dict = {key:val for key, val in i[1].items() if key in  ["backpack","badges","biograph","coin","email","name"]}
+        
+        new_dict["friend_number"] = i[1]["friends"]["friend_number"]
+        user_log = db.child("user_log").child(i[0]).get().val()
+        # print(user_log)
+        log_obj = {"log_spots":[]}
+        if(user_log):
+            for key in user_log:
+                if (key == "log_count"):
+                    continue
+                else:
+                    for inner_key in user_log[key]:
+                        log_obj["log_spots"].append(user_log[key][inner_key])
+        print(log_obj)
+        user_save = db.child("user_save").child(i[0]).get().val()
+        save_obj = {"save_spots_id":[],"save_spots":[]}
+        if(user_save):
+            for key in user_save:
+                if (key == "save_count"):
+                    continue
+                else:
+                    save_obj["save_spots_id"].append(user_save[key]["place_id"])
+                    save_obj["save_spots"].append(user_save[key])
+            print(save_obj)
+        # print({"user_data":new_dict,"user_log":user_log,"user_save":user_save})
+        user_base64img = Db.child("profile_pics").child(i[0]).get().val()
+        ordered_user.append({"user_data":new_dict,"user_log":log_obj,"user_save":save_obj,"user_pic":user_base64img})
+
+    return {"users":ordered_user},201
