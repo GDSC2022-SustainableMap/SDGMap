@@ -1,5 +1,6 @@
 from numpy import sin, cos, arccos, pi, round
-
+from app.membership.infrastructure import db
+from app.map.domain.mapRepo import Badge
 def rad2deg(radians):
     degrees = radians * 180 / pi
     return degrees
@@ -30,3 +31,35 @@ def get_values(dl, values_list):
         map(lambda x: get_values(x, values_list), dl.values())
     elif isinstance(dl, list):
         map(lambda x: get_values(x, values_list), dl)
+
+def addBadge (place_id, current_user):
+    """ record the change in badges and coins """
+    try:
+        green_stores = db.child("green_stores").get().val()
+        for key in green_stores:
+            if (key == place_id):
+                a = db.child("green_stores").child(key).get().val()
+                badge_names = Badge().get_badges()
+                for i in range(18):
+                    user_score = db.child("users").child(current_user).child("coin").get().val()
+                    user_score += a[badge_names[i]]
+                    db.child("users").child(current_user).update({"coin": user_score})
+                    bdg_num = db.child("users").child(current_user).child("badges").child(badge_names[i]).get().val()
+                    bdg_num += a[badge_names[i]]
+                    bdg_num = db.child("users").child(current_user).child("badges").update({badge_names[i]: bdg_num})
+                return "check in successful"
+        return "This store is not green"
+    except Exception as e:
+        return e
+    
+def find_store_type(types_of_store):
+    if "restaurant" in types_of_store:
+        return "Restaurant"
+    elif "cafe" in types_of_store:
+        return "CoffeeShop"
+    elif "bar" in types_of_store:
+        return "Bar"
+    elif "bakery" in types_of_store:
+        return "Bakery"
+    else:
+        return "Tent"

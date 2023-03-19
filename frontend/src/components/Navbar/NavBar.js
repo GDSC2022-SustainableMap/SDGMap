@@ -43,7 +43,7 @@ function NavBar(props) {
       </div>
       <div className="container">
         <div className="main_list" id="mainListDiv">
-          {props.token ? (
+          {props.token != null ? (
             <ul>
               <li>
                 <Link to="/map">
@@ -60,11 +60,6 @@ function NavBar(props) {
                   <AiOutlineHome size={20} /> 道具商店
                 </Link>
               </li>
-              <li onClick={handleLogout}>
-                <Link to="/">
-                  <VscSignIn size={20} /> 登出
-                </Link>
-              </li>
               <li>
                 <Link to="/community">
                   <HiOutlineUserGroup size={20} /> 社群
@@ -72,12 +67,22 @@ function NavBar(props) {
               </li>
               <li>
                 <Link to="/user">
-                  <BiUserCircle size={20} />
+                  <BiUserCircle size={20} /> 個人檔案
+                </Link>
+              </li>
+              <li onClick={handleLogout}>
+                <Link to="/">
+                  <VscSignIn size={20} /> 登出
                 </Link>
               </li>
             </ul>
           ) : (
             <ul>
+              <li>
+                <Link to="/sdgbook">
+                  <BsJournalBookmark size={18} /> 徽章圖鑑
+                </Link>
+              </li>
               <li>
                 <Link to="/map">
                   <ImMap2 size={20} /> 地圖

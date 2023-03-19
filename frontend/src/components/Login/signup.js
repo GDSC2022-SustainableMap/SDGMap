@@ -10,7 +10,7 @@ function Signup() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [birthday, setBirthday] = useState("");
+  const [birthday, setBirthday] = useState();
   const [region, setRegion] = useState("");
 
   let rawResponse;
@@ -23,8 +23,7 @@ function Signup() {
           userName: userName,
           email: email,
           password: password,
-          birthday: birthday,
-          region: region,
+          birthday: birthday
         })
       ).data;
       alert("Resgister successfully! Jumping to sign in page.");
@@ -82,10 +81,12 @@ function Signup() {
               <label className="login-label">Birth</label>
 
               <DatePicker
-                onChange={(dateString) => {
+                onChange={(_,dateString) => {
                   setBirthday(dateString);
+                  // console.log(date,dateString);
                 }}
                 style={{ width: "100%" }}
+                format="YYYY-MM-DD"
                 locale={locale}
               />
             </div>

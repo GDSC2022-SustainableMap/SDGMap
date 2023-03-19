@@ -19,6 +19,7 @@ class Config(object):
     USER_DB_CONFIG = json.loads(os.environ.get("USER_DB_CONFIG"))
     #set secret key
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
+    JWT_ACCESS_TOKEN_EXPIRES_HOURS = os.environ.get("JWT_ACCESS_TOKEN_EXPIRES_HOURS")
 
 class ProductionConfig(Config):
     FLASK_ENV = 'production'
