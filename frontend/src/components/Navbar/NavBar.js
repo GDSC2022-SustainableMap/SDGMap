@@ -60,6 +60,11 @@ function NavBar(props) {
                   <AiOutlineHome size={20} /> 道具商店
                 </Link>
               </li>
+              <li>
+                <Link to="/community">
+                  <HiOutlineUserGroup size={20} /> 社群
+                </Link>
+              </li>
               <li onClick={handleLogout}>
                 <Link to="/">
                   <VscSignIn size={20} /> 登出
@@ -80,7 +85,7 @@ function NavBar(props) {
             <ul>
               <li>
                 <Link to="/sdgbook">
-                  <BsJournalBookmark size={18} /> SDGBook
+                  <BsJournalBookmark size={18} /> 徽章圖鑑
                 </Link>
               </li>
               <li>

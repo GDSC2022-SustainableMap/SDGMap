@@ -12,13 +12,17 @@ import { MDBBtn, MDBIcon, MDBSpinner} from "mdb-react-ui-kit";
 import Badges from "../Badge/badge";
 import { useNavigate } from "react-router-dom";
 import useToken from "../../hooks/token";
+import { InputNumber, Space } from 'antd';
 import greenOptions from "./greepOptions";
 // Map
 const SimpleMap = (props) => {
   const { getToken, removeToken } = useToken();
   const navigate = useNavigate();
   const [places, setPlaces] = useState([]);
+  // for search
   const [inputText, setInputText] = useState("");
+  const [inputlat, setInputLat] = useState('24.801782469353366');
+  const [inputlng, setInputLng] = useState('120.97158829660658');
   const [searchType, setSearchType] = useState("Name");
   // 建立 state，供地圖本身做參考，以改變地圖視角
   const [currentCenter, setCurrentCenter] = useState(props.center);
@@ -113,8 +117,8 @@ const SimpleMap = (props) => {
       console.log(newData);
       rawResponse = (
         await axios.post("http://127.0.0.1:5000/map/radius_search", {
-          lat: parseFloat(inputText.split(",")[0]),
-          lng: parseFloat(inputText.split(",")[1]),
+          lat: parseFloat(inputlat),
+          lng: parseFloat(inputlng),
           //Condition has not implemented in frontend.
           condition: newData,
         })
@@ -308,7 +312,8 @@ const SimpleMap = (props) => {
     return (
       <div className="card-map">
         <h6 className="card-header">
-          <b>{name}</b>
+          <div><b>{name}</b></div>
+          <div style={{marginLeft:'auto'}}>
           {liked > 0? (
             <MDBBtn
               size="sm"
@@ -336,6 +341,7 @@ const SimpleMap = (props) => {
               <MDBIcon far icon="star" />
             </MDBBtn>
           )}
+          </div>
         </h6>
         <div className="card-body">
           <Badges data={data} />
@@ -378,7 +384,6 @@ const SimpleMap = (props) => {
                   loading? <MDBSpinner size='sm'/>:<BsFillPinMapFill />
                 }
               Check In
-
               </Button>
               <Button variant="secondary" onClick={handleClose}>
                 OK
@@ -467,6 +472,8 @@ const SimpleMap = (props) => {
     setCheckBoxValue(e);
     console.log(e);
   };
+  
+
   return (
     <Layout className="layout">
       <Content style={{ height: "92.5vh" }}>
@@ -517,41 +524,40 @@ const SimpleMap = (props) => {
               </div>
             ) : (
               <div>
-                <div style={{ paddingTop: "50px" }}>
+                <Space>
                   搜尋方式
-                  <div>
-                    <Select
-                      defaultValue="Name"
-                      value={searchType}
-                      onChange={(e) => {
-                        setSearchType(e);
-                      }}
-                    >
-                      {SearchType.map((item, id) => (
-                        <Option key={id} value={item}>
-                          {item}
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-                <Input.Group compact style={{ paddingTop: "10px" }}>
-                  <div style={{ paddingTop: "10px" }}>
-                    Name / Location
-                    <div>
-                      <Input
-                        style={{ width: "90%" }}
-                        onChange={(e) => {
-                          setInputText(e.target.value);
-                        }}
-                        placeholder="墨咖啡/24.801,120.971"
-                      />
-                    </div>
-                  </div>
-                </Input.Group>
+                  <Select
+                    defaultValue="Name"
+                    value={searchType}
+                    onChange={(e) => {
+                      setSearchType(e);
+                    }}
+                  >
+                    {SearchType.map((item, id) => (
+                      <Option key={id} value={item}>
+                        {item}
+                      </Option>
+                    ))}
+                  </Select>
+                </Space>
+                
 
                 {searchType === "Location" ? (
                   <div>
+                    <div style={{ paddingTop: "10px" }}></div>
+                    <Space>
+                        <InputNumber style={{width: 170,}} min={-90} max={90} value={inputlat} step="0.000000000000001" placeholder='24.801782469353366' onChange={setInputLat} stringMode/>
+                        <InputNumber style={{width: 180,}} min={-180} max={180} value={inputlng} step="0.0000000000000001" placeholder='120.97158829660658' onChange={setInputLng} stringMode/>
+                        {/* <Button
+                          type="primary"
+                          onClick={() => {
+                            setInputLat(24.801782469353366);
+                            setInputLng(120.97158829660658);
+                          }}
+                        >
+                          Reset
+                        </Button> */}
+                      </Space>
                     <div style={{ paddingTop: "10px" }}>店家條件:</div>
                     <Checkbox.Group
                       style={{ paddingTop: "10px" }}
@@ -561,10 +567,9 @@ const SimpleMap = (props) => {
                     <div style={{ paddingTop: "10px" }}>
                       永續指標:
                       {[
-                        [0, 4],
-                        [4, 8],
-                        [8, 12],
-                        [12, 16],
+                        [0, 6],
+                        [6, 12],
+                        [12, 18],
                       ].map((e,index) => (
                         <div className="badges" style={{ display: "flex" }} key={index}>
                           {greenOptions.slice(e[0], e[1]).map((e,index) => (
@@ -588,7 +593,22 @@ const SimpleMap = (props) => {
                     </div>
                   </div>
                 ) : (
-                  <></>
+                  <div>
+                    <Input.Group compact style={{ paddingTop: "10px" }}>
+                      <div style={{ paddingTop: "10px" }}>
+                        Name / Location
+                        <div>
+                          <Input
+                            style={{ width: "90%" }}
+                            onChange={(e) => {
+                              setInputText(e.target.value);
+                            }}
+                            placeholder="墨咖啡/24.801,120.971"
+                          />
+                        </div>
+                      </div>
+                    </Input.Group>
+                  </div>
                 )}
 
                 <div
@@ -619,7 +639,7 @@ const SimpleMap = (props) => {
                     rowKey={(_, index) => index}
                     columns={columns}
                     dataSource={places}
-                    pagination={{ pageSize: 5 }}
+                    pagination={{ pageSize: 2 }}
                     scroll={{ y: 170 }}
                     onRow={(record, rowIndex) => {
                       return {

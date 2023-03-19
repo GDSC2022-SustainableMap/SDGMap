@@ -57,7 +57,40 @@ function SearchFriends() {
 
     return rawResponse;
   };
-
+    const UserRow = ({id,data})=>{
+        return (
+            <tr>
+            <td>1</td>
+            <td>
+              <div className="d-flex align-items-center">
+                <img
+                  src={
+                    data.user_pic
+                      ? data.user_pic
+                      : require("./user-icon.png")
+                  }
+                  alt=""
+                  style={{ width: "45px", height: "45px" }}
+                  className="rounded-circle"
+                />
+                <div className="ms-3">
+                  <p className="fw-bold mb-1">
+                    {data.user_data.name}
+                  </p>
+                  <p className="text-muted mb-0">
+                    {data.user_data.email}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td>
+              <MDBBtn color="secondary" rounded size="sm">
+                Visit
+              </MDBBtn>
+            </td>
+          </tr>
+        )
+    }
   return (
     <div className="container-searchfriends">
       <MDBInputGroup>
@@ -81,36 +114,7 @@ function SearchFriends() {
           </MDBTableHead>
           <MDBTableBody>
             {!loading && searchData ? (
-              <tr>
-                <td>1</td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={
-                        searchData.user_pic
-                          ? searchData.user_pic
-                          : require("./user-icon.png")
-                      }
-                      alt=""
-                      style={{ width: "45px", height: "45px" }}
-                      className="rounded-circle"
-                    />
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">
-                        {searchData.user_data.name}
-                      </p>
-                      <p className="text-muted mb-0">
-                        {searchData.user_data.email}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <MDBBtn color="secondary" rounded size="sm">
-                    Visit
-                  </MDBBtn>
-                </td>
-              </tr>
+                <UserRow data={searchData}/>
             ) : (
               <></>
             )}

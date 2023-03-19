@@ -17,7 +17,6 @@ import useToken from "../../hooks/token";
 import { useNavigate } from "react-router-dom";
 
 function FriendProfile(data) {
-  const [user, setUser] = useState(data);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -569,12 +568,11 @@ function FriendProfile(data) {
 }
 
 function Leaderboard() {
+  
   // Modal of VisitFriendProfile
-  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
 
   let rawResponse;
   //search by 名字, ex: 墨咖啡
@@ -599,6 +597,35 @@ function Leaderboard() {
     fetchLeaderBoard();
   }, []);
 
+  const UserRow = ({id, data})=>{
+    return (
+      <tr key={id}>
+      <td>{id + 1}</td>
+      <td>
+        <div className="d-flex align-items-center">
+          <img
+            src={data.user_pic ? data.user_pic : require("./user-icon.png")}
+            alt=""
+            style={{ width: "45px", height: "45px" }}
+            className="rounded-circle"
+          />
+          <div className="ms-3">
+            <p className="fw-bold mb-1">{data.user_data.name}</p>
+            <p className="text-muted mb-0">{data.user_data.email}</p>
+          </div>
+        </div>
+      </td>
+      <td>
+        <Badges data={data.user_data.badges} />
+      </td>
+      <td>{data.user_data.coin}</td>
+      <td>
+        <FriendProfile data={data} />
+      </td>
+      <td />
+    </tr>
+    )
+  }
   return (
     <div className="container-leaderboard">
       <MDBTable align="middle" hover>
@@ -613,33 +640,9 @@ function Leaderboard() {
         </MDBTableHead>
         <MDBTableBody>
           {leaderboardData &&
-            leaderboardData.map((e, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={e.user_pic ? e.user_pic : require("./user-icon.png")}
-                      alt=""
-                      style={{ width: "45px", height: "45px" }}
-                      className="rounded-circle"
-                    />
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">{e.user_data.name}</p>
-                      <p className="text-muted mb-0">{e.user_data.email}</p>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <Badges data={e.user_data.badges} />
-                </td>
-                <td>{e.user_data.coin}</td>
-                <td>
-                  <FriendProfile data={e} />
-                </td>
-                <td />
-              </tr>
-            ))}
+            leaderboardData.map((item, index) => (
+            <UserRow key={index} id={index} data={item}></UserRow>
+          ))}
         </MDBTableBody>
       </MDBTable>
     </div>

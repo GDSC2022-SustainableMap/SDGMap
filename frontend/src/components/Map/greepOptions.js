@@ -21,6 +21,13 @@ const greenOptions = [
       img_for_false: require("../../Badge/n_foodeduc.png"),
     },
     {
+      id: "freetrade",
+      title: "公平交易",
+      alt: "公平交易",
+      img_for_true: require("../../Badge/t_freetrade.png"),
+      img_for_false: require("../../Badge/n_freetrade.png"),
+    },
+    {
       id: "localgred",
       title: "在地食材",
       alt: "在地食材",
@@ -54,6 +61,13 @@ const greenOptions = [
       alt: "減塑",
       img_for_true: require("../../Badge/t_noplastic.png"),
       img_for_false: require("../../Badge/n_noplastic.png"),
+    },
+    {
+      id: "publicissue",
+      title: "公共議題分享",
+      alt: "公共議題分享",
+      img_for_true: require("../../Badge/t_publicissue.png"),
+      img_for_false: require("../../Badge/n_publicissue.png"),
     },
     {
       id: "stray",
@@ -110,7 +124,7 @@ const greenOptions = [
       alt: "綠色採購",
       img_for_true: require("../../Badge/t_greenprocurement.png"),
       img_for_false: require("../../Badge/n_greenprocurement.png"),
-    },
+    },    
   ];
 
 
