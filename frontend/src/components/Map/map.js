@@ -547,28 +547,27 @@ const SimpleMap = (props) => {
               </div>
             ) : (
               <div>
-                <div style={{ paddingTop: "50px" }}>
+                <Space>
                   搜尋方式
-                  <div>
-                    <Select
-                      defaultValue="Name"
-                      value={searchType}
-                      onChange={(e) => {
-                        setSearchType(e);
-                      }}
-                    >
-                      {SearchType.map((item, id) => (
-                        <Option key={id} value={item}>
-                          {item}
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
+                  <Select
+                    defaultValue="Name"
+                    value={searchType}
+                    onChange={(e) => {
+                      setSearchType(e);
+                    }}
+                  >
+                    {SearchType.map((item, id) => (
+                      <Option key={id} value={item}>
+                        {item}
+                      </Option>
+                    ))}
+                  </Select>
+                </Space>
                 
 
                 {searchType === "Location" ? (
                   <div>
+                    <div style={{ paddingTop: "10px" }}></div>
                     <Space>
                         <InputNumber style={{width: 170,}} min={-90} max={90} value={inputlat} step="0.000000000000001" placeholder='24.801782469353366' onChange={setInputLat} stringMode/>
                         <InputNumber style={{width: 180,}} min={-180} max={180} value={inputlng} step="0.0000000000000001" placeholder='120.97158829660658' onChange={setInputLng} stringMode/>
@@ -663,7 +662,7 @@ const SimpleMap = (props) => {
                     rowKey={(_, index) => index}
                     columns={columns}
                     dataSource={places}
-                    pagination={{ pageSize: 5 }}
+                    pagination={{ pageSize: 2 }}
                     scroll={{ y: 170 }}
                     onRow={(record, rowIndex) => {
                       return {
