@@ -123,7 +123,7 @@ function SearchFriends() {
                 </div>
               </div>:
               searchData && 
-              <div><UserRow data={searchData}/></div>   
+              <UserRow data={searchData}/>   
             }
             </MDBTableBody>
         </MDBTable>
