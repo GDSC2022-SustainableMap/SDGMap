@@ -5,26 +5,36 @@ import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import { BsFillPinMapFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
+import { MDBSpinner } from "mdb-react-ui-kit";
 import axios from "axios";
+import useToken from "../../hooks/token";
 function User(props) {
   const navigate = useNavigate();
+  const { getToken, removeToken } = useToken();
   const [userImage, setUserImage] = useState([]);
   const [username, setUsername] = useState(null);
   const [numoffriend, setNumoffriend] = useState(null);
   const [numofcoin, setNumofcoin] = useState(null);
   const [biograph, setBiograph] = useState(null);
   const [userData, setUserData] = useState({});
-  const [editBiograph, setEditBiograph] = useState();
-  const [editName, setEditName] = useState();
+  const [editBiograph, setEditBiograph] = useState("");
+  const [editName, setEditName] = useState("");
+  const [editImage, setEditImage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userSave, setUserSave] = useState([]);
+  const [userPosition, setUserPosition] = useState([]);
   //Modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setEditImage(userImage);
+  };
 
   let rawResponse;
   const fetchUserProfile = async (e) => {
     try {
+      setLoading(true);
       rawResponse = (
         await axios.get("http://127.0.0.1:5000/user/profile", {
           headers: {
@@ -49,45 +59,176 @@ function User(props) {
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
     console.log(rawResponse);
-    setLoading(false);
-    return rawResponse;
-  };
-  const updateUserProfile = async (e) => {
+
+    let imgRawResponse;
     try {
-      rawResponse = (
-        await axios.post(
-          "http://127.0.0.1:5000/user/edit_profile",
-          {
-            biograph: editBiograph,
-            name: editName,
-            // image: userImage
+      imgRawResponse = (
+        await axios.get("http://127.0.0.1:5000/user/get_image", {
+          headers: {
+            Authorization: "Bearer " + props.token,
           },
-          {
-            headers: {
-              Authorization: "Bearer " + props.token,
-            },
-          }
-        )
+        })
       ).data;
       //   console.log(rawResponse);
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
+      if (error.response.status === 401) {
+        props.removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+        return error;
+      }
     }
-    console.log(rawResponse);
-    if (rawResponse.name) {
-      setUsername(rawResponse.name);
+    setUserImage(imgRawResponse);
+    setEditImage(imgRawResponse);
+    // console.log(imgRawResponse);
+    setLoading(false);
+    return rawResponse;
+    
+  };
+  let saveResponse
+  const fetchUserSave = async () => {
+    let t = getToken()
+    try {
+      setLoading(true);
+      saveResponse = (
+        await axios.get("http://127.0.0.1:5000/user/track_usersave", {
+          headers: {
+            Authorization: "Bearer " + t,
+          },
+        })
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+
+        return error;
+      }
     }
-    setBiograph(editBiograph);
-    // setUsername(rawResponse.name);
+    setUserSave(Object.values(saveResponse.save_spots))
+    console.log(Object.values(saveResponse.save_spots));
+
+    setLoading(false);
+
+  };
+
+
+
+  const updateUserProfile = async (e) => {
+    setLoading(true);
+    if(editName.length > 0 || editBiograph.length > 0 ){
+      try {
+        rawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/user/edit_profile",
+            {
+              biograph: editBiograph,
+              name: editName,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + props.token,
+              },
+            }
+          )
+        ).data;
+        //   console.log(rawResponse);
+      } catch (error) {
+        console.log(error);
+      }
+      console.log(rawResponse);
+      if (
+        rawResponse.msg_name &&
+        rawResponse.msg_name === "Name changed sucessfully!"
+      ) {
+        setUsername(editName);
+      }
+      if (
+        rawResponse.msg_biograph &&
+        rawResponse.msg_biograph === "Biograph changed sucessfully!"
+      ) {
+        setBiograph(editBiograph);
+      }
+    }
+    setEditName("");
+    setEditBiograph("");
+    // console.log(userImage.substring(userImage.indexOf(",")+1,userImage.length))
+    let imgRawResponse;
+    if(editImage !== userImage){
+      try {
+        imgRawResponse = (
+          await axios.post(
+            "http://127.0.0.1:5000/user/upload_image",
+            {
+              base64_image: editImage.substring(
+                editImage.indexOf(",") + 1,
+                editImage.length
+              ),
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + props.token,
+              },
+            }
+          )
+        ).data;
+        //   console.log(rawResponse);
+      } catch (error) {
+        console.log(error);
+      }
+      setUserImage(imgRawResponse.data);
+      // setEditImage(imgRawResponse.data);
+    }
+
     setShow(false);
+    setLoading(false);
     // return rawResponse;
   };
+
+  const showLocation = (position) => {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+    // alert(
+    //   "Latitude: " +
+    //     position.coords.latitude +
+    //     "\nLongitude: " +
+    //     position.coords.longitude
+    // );
+    setUserPosition([latitude, longitude]);
+    console.log(userPosition);
+  };
+  const errorHandler = (err) => {
+    if (err.code === 1) {
+      alert("Error: Access is denied!");
+    } else if (err.code === 2) {
+      alert("Error: Position is unavailable!");
+    }
+  };
+
   useEffect(() => {
-    fetchUserProfile();
-
+    async function fetchAllData() {
+      await fetchUserProfile();
+      await fetchUserSave();
+    }
+    // fetchUserProfile();
+    // fetchUserSave();
+    fetchAllData();
+    if (navigator.geolocation) {
+      var options = { timeout: 60000 };
+      navigator.geolocation.getCurrentPosition(
+        showLocation,
+        errorHandler,
+        options
+      );
+    } else {
+      alert("Geolocation not supported by this browser.");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  }, [])
   const handleImageChange = (e) => {
     e.preventDefault();
 
@@ -95,10 +236,9 @@ function User(props) {
     let file = e.target.files[0];
 
     reader.onloadend = () => {
-      setUserImage(reader.result);
-      console.log(reader.result);
+      setEditImage(reader.result);
+      // console.log(reader.result);
     };
-
     reader.readAsDataURL(file);
   };
   //Carousel
@@ -175,7 +315,7 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showIndicators={false}
+        showindicators="false"
       >
         {VisitedStoreList.reduce(
           (accumulator, currentValue, currentIndex, array) => {
@@ -185,8 +325,8 @@ function User(props) {
             return accumulator;
           },
           []
-        ).map((store) => (
-          <Carousel.Item>
+        ).map((store,index) => (
+          <Carousel.Item key={index}>
             <Stack direction="horizontal" className=" stack" gap={3}>
               {/* <div className='card'>
                                 <div className='card-body'>
@@ -221,24 +361,13 @@ function User(props) {
 
   function CarouselOfStoredStore() {
     const [index, setIndex] = useState(0);
-    const [current, setCurrent] = useState(0);
+    // const [current, setCurrent] = useState(0);
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate }) => {
+
+    const InfoCard = ({ name, addr, price, rate,place_id }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -246,6 +375,47 @@ function User(props) {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+  
+            return error;
+          }
+        }
+        if(rawResponse.msg === 'You should come to this place to check in!'){
+          alert('You should come to this place to check in!');
+        }else if(rawResponse.msg === 'You have checked in successfully!'){
+          alert('You have checked in successfully!');
+        }
+        console.log(rawResponse);
+        setLoading(false);
+        return rawResponse;
+      };
+
+      
       return (
         <div className="card">
           <b>{name}</b>
@@ -277,7 +447,7 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>打卡</button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -292,9 +462,9 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showIndicators={false}
+        showindicators="false"
       >
-        {VisitedStoreList.reduce(
+        {userSave.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -302,8 +472,8 @@ function User(props) {
             return accumulator;
           },
           []
-        ).map((store) => (
-          <Carousel.Item>
+        ).map((store,index) => (
+          <Carousel.Item key={index} >
             <Stack direction="horizontal" className=" stack" gap={3}>
               {/* <div className='card'>
                                 <div className='card-body'>
@@ -321,6 +491,7 @@ function User(props) {
                 addr={store[0].formatted_address}
                 price={store[0].price_level}
                 rate={store[0].rating}
+                place_id={store[0].place_id}
               />
               <InfoCard
                 className="card-green card"
@@ -328,6 +499,7 @@ function User(props) {
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
+                place_id={store[0].place_id}
               />
             </Stack>
           </Carousel.Item>
@@ -343,7 +515,7 @@ function User(props) {
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
-      num: loading ? 0 : userData.badges.關懷弱勢,
+      num: loading && userData ? 0 : userData.badges.關懷弱勢,
     },
     {
       id: "envfriend",
@@ -581,7 +753,7 @@ function User(props) {
                 {/* <form className='user-form'> */}
                 <div className="user-form-group">
                   <label className="user-form-label">Name</label>
-                  {userData.change_name_chance >= 1 ? (
+                  {userData.change_name_chance && userData.change_name_chance >= 1 ? (
                     <input
                       className="value"
                       type="text"
@@ -593,8 +765,8 @@ function User(props) {
                       className="value"
                       type="text"
                       placeholder="You can only changed your name once!"
-                      disabled="true"
-                      readOnly="true"
+                      disabled={true}
+                      readOnly={true}
                       style={{ backgroundColor: "#efeeee" }}
                     ></input>
                   )}
@@ -627,13 +799,27 @@ function User(props) {
                 {/* </form> */}
               </Modal.Body>
               <Modal.Footer>
+                {loading ? (
                 <button
-                  id="closebtn"
-                  variant="secondary"
-                  onClick={updateUserProfile}
-                >
-                  Finish Edition
-                </button>
+                id="closebtn"
+                variant="secondary"
+                disabled={true}
+                style={{backgroundColor:"rgb(239, 238, 238)",cursor: "not-allowed"}}
+              >
+              <div >
+                <MDBSpinner size="sm"/>Loading
+              </div>
+              </button>
+            ):
+            <button
+            id="closebtn"
+            variant="secondary"
+            onClick={updateUserProfile}
+          >
+            Finish Edition
+            </button>
+                }
+
               </Modal.Footer>
             </Modal>
             {/* {selectImage && (
@@ -642,7 +828,11 @@ function User(props) {
                                 <button onClick={() => setSelectImage(null)}>Remove</button>
                             </div>
                         )} */}
-            {userImage.length >= 1 ? (
+            {loading ? (
+              <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%"}}>
+                <MDBSpinner />
+              </div>
+            ) : userImage ? (
               <img id="user-photo" alt="user" src={userImage} />
             ) : (
               <img
@@ -689,7 +879,7 @@ function User(props) {
                     <></>
                   ) : (
                     greenOptions.map((e, index) => (
-                      <div className="com">
+                      <div className="com" key={index}>
                         <img
                           className={index < 8 ? "badge_left" : "badge_right"}
                           title={e.title}
@@ -716,7 +906,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  道具包
+                  到訪過的店家
                 </button>
               </h2>
               <div
@@ -726,21 +916,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  {loading ? (
-                    <></>
-                  ) : (
-                    backpackItems.map((e, index) => (
-                      <div className="com">
-                        <img
-                          className="equip"
-                          title={e.title}
-                          alt={e.alt}
-                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
-                        />
-                        <span className="amount1">{parseInt(e.num)}</span>
-                      </div>
-                    ))
-                  )}
+                  {/* <CarouselOfVisitedStore /> */}
                 </div>
               </div>
             </div>
@@ -755,7 +931,7 @@ function User(props) {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  到訪過的店家
+                  收藏店家
                 </button>
               </h2>
               <div
@@ -765,32 +941,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingFour">
-                <button
-                  className="accordion-button collapsed"
-                  id="btn4"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseFour"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseFour"
-                >
-                  收藏店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseFour"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingFour"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfStoredStore />
+                <CarouselOfStoredStore />
                 </div>
               </div>
             </div>

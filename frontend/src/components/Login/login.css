@@ -70,10 +70,11 @@
     color: #A3BB98;
 }
 
-.btn{
+.green-btn{
     background-color: #61C0BF;
     border: none;
     color: #ffffff;
+    padding: 2%;
 }
 
 #logout-btn, #google-btn {

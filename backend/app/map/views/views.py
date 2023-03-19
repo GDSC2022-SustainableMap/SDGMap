@@ -8,7 +8,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 import datetime
 from app.membership.infrastructure import db
 from app.map.domain.spot import Spot
-import functools
+
 
 bp = Blueprint("main", __name__, url_prefix="/map")
 
@@ -121,11 +121,12 @@ def get_spot_from_radius():
             obj.update(result[0])
 
     for obj in gmap_raw:
-        green_result = db.child("green_stores").child(obj["place_id"]).get().val()
-        if green_result:
-            obj = dict(list(obj.items()) + list(green_result.items()))
         spot = Spot.fromdict(obj)
         obj.update(spot.get_attribute())
+        green_result = db.child("green_stores").child(obj["place_id"]).get().val()
+        if green_result:
+            obj_new = dict(list(obj.items()) + list(green_result.items()))
+            obj.update(obj_new)
 
     def compare(
         ObjA,
@@ -151,7 +152,6 @@ def get_spot_from_radius():
         foodagricultureeducation
     ):
         scoreA = 0
-
         if wifi and ObjA["wifi"] > 2.5:
             scoreA += 1
         if socket and ObjA["socket"] =="yes":
@@ -162,7 +162,7 @@ def get_spot_from_radius():
             scoreA += 1
         if creativecuisine and ObjA["創意料理"] == 1:
             scoreA += 1
-        if creativevegetarian and ObjA["創意蔬食"] == 1:
+        if creativevegetarian and ObjA["創新蔬食"] == 1:
             scoreA += 1
         if envfriend and ObjA["友善環境"] == 1:
             scoreA += 1
@@ -192,7 +192,7 @@ def get_spot_from_radius():
             scoreA += 1
         if foodagricultureeducation and ObjA["食農教育"] == 1:
             scoreA += 1
-  
+        print(scoreA)
         return scoreA
 
     # filtered_gmap = filter_condition(gmap_raw,"wifi" in params["condition"].values(),"socket" in params["condition"].values(),"limited_time" in params["condition"].values(),"open_now" in params["condition"].values())
@@ -221,8 +221,9 @@ def get_spot_from_radius():
             "foodeduc" in params["condition"].values(),
             "foodagricultureeducation" in params["condition"].values(),
         ),
+        reverse = True
     )
-
+    print(sorted_map)
     return sorted_map
 
 
@@ -323,6 +324,11 @@ def get_spot_arbitrary():
         obj["distance"] = -obj["distance"]
     return gmap_raw
 
+@bp.route("/find_place_result", methods=["POST"])
+def find_format():
+    receive = request.get_json()
+    gmap_result = find_place_detail(receive["place_id"])
+    return gmap_result
 
 # check if the user is in the correct distance from the spot
 @bp.route("/check_in", methods=["POST"])
@@ -337,8 +343,11 @@ def check_in_spot():
     }
 
     try:
-        # gmap_result = place_name_search(params)["candidates"][0]
         gmap_result = find_place_detail(params["place_id"])
+        place_type = find_store_type(gmap_result["result"]["types"])
+
+        print(place_type)
+        
         if gmap_result:
             spot_lat = gmap_result["result"]["geometry"]["location"]["lat"]
             spot_lng = gmap_result["result"]["geometry"]["location"]["lng"]
@@ -352,39 +361,33 @@ def check_in_spot():
         )
         current_user = get_jwt_identity()
         print(current_user)
-        current_log_count = current_log_count = (
-            db.child("user_log")
-            .child(current_user)
-            .child("log_count")
-            .get()
-            .val()
-        )
+        current_log_count = db.child("user_log").child(current_user).child("log_count").get().val()
         if distance < params["scope"]:
+
             # already have log
-            if db.child("user_log").child(current_user).get().val():
+            if current_log_count:
                 pass
             # not yet have log
             else:
-                db.child("user_log").child(current_user).set({"log_count": 0})
+                current_log_count = 0
+                db.child("user_log").child(current_user).set({"log_count": 0})    
 
             user_log = Badge().get_user_log()
-            user_log["user_id"] = current_user
+            user_log["user_name"] = db.child("users").child(current_user).get().val()["name"]
             user_log["time"] = str(datetime.datetime.now())
             user_log["place_id"] = params["place_id"]
 
-            # db.child("user_log").child(f"log{current_log_count}").set(user_log)
-            db.child("user_log").child(current_user).child(
-                f"log{current_log_count}"
-            ).update(user_log)
+            if current_log_count:
+                db.child("user_log").child(current_user).child(place_type).child(f"log{current_log_count}").update(user_log)
+            else:
+                db.child("user_log").child(current_user).child(place_type).child(f"log{current_log_count}").set(user_log)
 
             current_log_count += 1
-            db.child("user_log").child(current_user).update(
-                {"log_count": current_log_count}
-            )
+            db.child("user_log").child(current_user).update({"log_count": current_log_count})
 
-            # # record the badges and coins obtained
-            a = addBadge(params["place_id"], current_user)
-            print(a)
+            # record the badges and coins obtained
+            addBadge(params["place_id"], current_user)
+            
             return {"msg":"You have checked in successfully!"}
         else:
             return {"msg":"You should come to this place to check in!"}
@@ -397,14 +400,18 @@ def save_spot():
     receive = request.get_json()
     params = {"place_id": receive["place_id"]}
     current_user = get_jwt_identity()
-    gmap_result = find_place_detail(params["place_id"])
+    my_fields = ["place_id", "name", "formatted_address", "rating", "price_level"]
+    gmap_result = gmaps.place(place_id = params["place_id"], fields = my_fields,language="zh-tw")["result"]
+    gmaps
     current_save_count = (
         db.child("user_save")
         .child(current_user)
         .child("save_count")
         .get()
         .val()
-    )
+    ) if db.child("user_save").child(current_user).child("save_count").get().val() else 0
+    print(current_save_count)
+    print(gmap_result)
     if gmap_result:
         # already have log, check if the place is already saved
         user_db = db.child("user_save").child(current_user).get().val()
@@ -414,13 +421,14 @@ def save_spot():
                 if save_log == None:
                     continue
                 if db.child("user_save").child(current_user).child(f"save{i}").get().val()["place_id"] == params["place_id"]:
-                    return "place already saved"
+                    return {"msg":"place already saved"}
         # not yet have log
         else:
             db.child("user_save").child(current_user).set({"save_count": 0})
 
         user_save = Badge().get_user_save()
-        user_save["place_id"] = params["place_id"]
+        # user_save["place_id"] = params["place_id"]
+        user_save = gmap_result
         db.child("user_save").child(current_user).child(
             f"save{current_save_count}"
         ).update(user_save)
@@ -430,9 +438,9 @@ def save_spot():
             {"save_count": current_save_count}
         )
 
-        return f'{params["place_id"]} saved, {current_save_count}'
+        return {"msg":f'{params["place_id"]} saved, {current_save_count}'},201
     else:
-        return "this place doesn't exist"
+        return {"msg":"this place doesn't exist"}
     
 @bp.route("/delete_saved_store", methods=["POST"])
 @jwt_required()
@@ -453,9 +461,12 @@ def delete_store():
             continue
         if (save_log["place_id"] == params["place_id"]):
             db.child("user_save").child(current_user).child(f"save{i}").remove()
+            current_user_save_count -= 1
+            print(current_user_save_count)
+            db.child("user_save").child(current_user).update({"save_count": current_user_save_count})
             break
 
-    return "done"
+    return {"msg":f'{params["place_id"]} deleted, {current_user_save_count}'},201
         
 @bp.route("/get_references_from_spot", methods=["POST"])
 def get_references_from_spot():

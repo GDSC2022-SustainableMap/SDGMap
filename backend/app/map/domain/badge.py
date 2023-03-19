@@ -21,12 +21,17 @@ class Badge():
             "食農教育"
         ]
         self.user_log: dict = {
-            "user_id":"",
+            "user_name":"",
             "time" : "",
-            "place_id": ""
+            "place_id":""
         }
         self.user_save: dict = {
-            "place_id": ""
+            "place_id": "",
+            "formatted_address":"",
+            "name":"",
+            "rating": float,
+            "phone_number":""
+
         }
     def get_badges(self):
         return self.badges
