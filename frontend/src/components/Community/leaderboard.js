@@ -37,7 +37,6 @@ function FriendProfile() {
       setIndex(selectedIndex);
     };
     const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
       { _id: 1, name: "abc" },
       { _id: 2, name: "def" },
       { _id: 3, name: "ghi" },
@@ -76,27 +75,42 @@ function FriendProfile() {
         {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
           if (currentIndex % 2 === 0) {
             accumulator.push(array.slice(currentIndex, currentIndex + 2));
+          } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length-1) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 1));
           }
           return accumulator;
         }, [])
           .map((store) => (
-            <Carousel.Item >
-              <Stack direction="horizontal" className=" stack" gap={3}>
-                <InfoCard className="card-orange card"
-                  name={store[0].name}
-                  addr={store[0].formatted_address}
-                  price={store[0].price_level}
-                  rate={store[0].rating}
-                />
-                <InfoCard className="card-orange card"
-                  name={store[1].name}
-                  addr={store[1].formatted_address}
-                  price={store[1].price_level}
-                  rate={store[1].rating}
-                />
-              </Stack>
-            </Carousel.Item>
-          ))}
+            store.length === 2 ? (
+              <Carousel.Item >
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                  <InfoCard className="card-orange card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                  />
+
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
@@ -107,7 +121,6 @@ function FriendProfile() {
       setIndex(selectedIndex);
     };
     const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
       { _id: 1, name: "abc" },
       { _id: 2, name: "def" },
       { _id: 3, name: "ghi" },
@@ -146,37 +159,41 @@ function FriendProfile() {
         {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
           if (currentIndex % 2 === 0) {
             accumulator.push(array.slice(currentIndex, currentIndex + 2));
+          } else if (currentIndex % 2 === 1 && currentIndex+2 > array.length && currentIndex < array.length-1) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 1));
           }
           return accumulator;
         }, [])
           .map((store) => (
-            <Carousel.Item >
-              <Stack direction="horizontal" className=" stack" gap={3}>
-                {/* <div className='card'>
-                              <div className='card-body'>
-                                  <h5 className='card-title'>{store._id}</h5>
-                                  <hr className='carousel-hline'/>
-                                  <div className='card-text'>
-                                      {store.text}!
-                                  </div>
-                                  <button variant="primary">Go somewhere</button>
-                              </div>
-                          </div> */}
-                <InfoCard className="card-green card"
-                  name={store[0].name}
-                  addr={store[0].formatted_address}
-                  price={store[0].price_level}
-                  rate={store[0].rating}
-                />
-                <InfoCard className="card-green card"
-                  name={store[1].name}
-                  addr={store[1].formatted_address}
-                  price={store[1].price_level}
-                  rate={store[1].rating}
-                />
-              </Stack>
-            </Carousel.Item>
-          ))}
+            store.length == 2 ? (
+              <Carousel.Item >
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                  <InfoCard className="card-green card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
@@ -192,7 +209,7 @@ function FriendProfile() {
 
   return (
     <div className='board-container'>
-      <div style={{justifyContent:'right'}}>
+      <div style={{ justifyContent: 'right' }}>
         <button id="addfriendbtn" onclick={AddFriend} name="增加好友"><AiOutlineUserAdd size={36} /></button>
         <button id="delfriendbtn" onclick={DelFriend} name="刪除好友"><AiOutlineUserDelete size={36} /></button>
       </div>
@@ -228,7 +245,7 @@ function FriendProfile() {
                 </button>
               </h2>
               <div id="flush-collapseOne" className="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                <div className="accordion-body">
+                <div className="accordion-body" id="accordion-body1">
                   <div className='com'>
                     <img className="badge_left" title='關懷弱勢' alt="關懷弱勢"
                       src={user.badge1 > 0 ? require('../../Badge/t_careweak.png') : require('../../Badge/n_careweak.png')} />
@@ -299,7 +316,7 @@ function FriendProfile() {
                 </button>
               </h2>
               <div id="flush-collapseTwo" className="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                <div className="accordion-body">
+                <div className="accordion-body" id="accordion-body2">
                   <CarouselOfVisitedStore />
                 </div>
               </div>

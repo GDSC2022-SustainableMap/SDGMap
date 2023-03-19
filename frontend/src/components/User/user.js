@@ -182,50 +182,46 @@ function User(props) {
       );
     };
     return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showIndicators={false}
-      >
-        {VisitedStoreList.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            return accumulator;
-          },
-          []
-        ).map((store) => (
-          <Carousel.Item>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-orange card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-              />
-              <InfoCard
-                className="card-orange card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
+        {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
+          if (currentIndex % 2 === 0) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 2));
+          } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length-1) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 1));
+          }
+          return accumulator;
+        }, [])
+          .map((store) => (
+            store.length === 2 ? (
+              <Carousel.Item >
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                  <InfoCard className="card-orange card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                  />
+
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
@@ -237,7 +233,6 @@ function User(props) {
       setIndex(selectedIndex);
     };
     const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
       { _id: 1, name: "abc" },
       { _id: 2, name: "def" },
       { _id: 3, name: "ghi" },
@@ -299,50 +294,45 @@ function User(props) {
       );
     };
     return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showIndicators={false}
-      >
-        {VisitedStoreList.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            return accumulator;
-          },
-          []
-        ).map((store) => (
-          <Carousel.Item>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-green card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-              />
-              <InfoCard
-                className="card-green card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
+        {VisitedStoreList.reduce((accumulator, currentValue, currentIndex, array) => {
+          if (currentIndex % 2 === 0) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 2));
+          } else if (currentIndex % 2 === 1 && currentIndex+2 > array.length && currentIndex < array.length-1) {
+            accumulator.push(array.slice(currentIndex, currentIndex + 1));
+          }
+          return accumulator;
+        }, [])
+          .map((store) => (
+            store.length == 2 ? (
+              <Carousel.Item >
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                  <InfoCard className="card-green card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
