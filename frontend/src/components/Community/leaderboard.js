@@ -13,13 +13,16 @@ import Badges from "../Badge/badge";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
 import "./leaderboard.css";
 import axios from "axios";
+import useToken from "../../hooks/token";
+import { useNavigate } from "react-router-dom";
 
 function FriendProfile(data) {
   const [user, setUser] = useState(data);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  
+  const { getToken, removeToken } = useToken();
+  const navigate = useNavigate();
   // Modal of Edition
   // const [show, setShow] = useState(false);
 
@@ -32,20 +35,8 @@ function FriendProfile(data) {
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate,phone }) => {
+    const InfoCard = ({ name, addr, price, rate, phone }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -83,38 +74,38 @@ function FriendProfile(data) {
         variant="dark"
         showindicators="false"
       >
-        {data&&data.data.user_log.log_spots.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            return accumulator;
-          },
-          []
-        ).map((store, index) => (
-          <Carousel.Item key={index}>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              <InfoCard
-                className="card-orange card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                phone={store[0].formatted_phone_number}
-                place_id={store[0].place_id}
-              />
-              <InfoCard
-                className="card-orange card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                phone={store[1].formatted_phone_number}
-                place_id={store[1].place_id}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+        {data &&
+          data.data.user_log.log_spots
+            .reduce((accumulator, currentValue, currentIndex, array) => {
+              if (currentIndex % 2 === 0) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              }
+              return accumulator;
+            }, [])
+            .map((store, index) => (
+              <Carousel.Item key={index}>
+                <Stack direction="horizontal" className=" stack" gap={3}>
+                  <InfoCard
+                    className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    phone={store[0].formatted_phone_number}
+                    place_id={store[0].place_id}
+                  />
+                  <InfoCard
+                    className="card-orange card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                    phone={store[1].formatted_phone_number}
+                    place_id={store[1].place_id}
+                  />
+                </Stack>
+              </Carousel.Item>
+            ))}
       </Carousel>
     );
   }
@@ -124,20 +115,8 @@ function FriendProfile(data) {
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate,phone }) => {
+    const InfoCard = ({ name, addr, price, rate, phone }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -145,6 +124,7 @@ function FriendProfile(data) {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+
       return (
         <div className="card">
           <b>{name}</b>
@@ -175,18 +155,18 @@ function FriendProfile(data) {
         variant="dark"
         showindicators="false"
       >
-        {data&&data.data.user_save.save_spots.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            return accumulator;
-          },
-          []
-        ).map((store) => (
-          <Carousel.Item>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
+        {data &&
+          data.data.user_save.save_spots
+            .reduce((accumulator, currentValue, currentIndex, array) => {
+              if (currentIndex % 2 === 0) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              }
+              return accumulator;
+            }, [])
+            .map((store) => (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={3}>
+                  {/* <div className='card'>
                               <div className='card-body'>
                                   <h5 className='card-title'>{store._id}</h5>
                                   <hr className='carousel-hline'/>
@@ -196,37 +176,107 @@ function FriendProfile(data) {
                                   <button variant="primary">Go somewhere</button>
                               </div>
                           </div> */}
-              <InfoCard
-                className="card-green card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                place_id={store[0].place_id}
-                phone={store[0].formatted_phone_number}
-              />
-              <InfoCard
-                className="card-green card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                place_id={store[1].place_id}
-                phone={store[1].formatted_phone_number}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+                  <InfoCard
+                    className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    place_id={store[0].place_id}
+                    phone={store[0].formatted_phone_number}
+                  />
+                  <InfoCard
+                    className="card-green card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                    place_id={store[1].place_id}
+                    phone={store[1].formatted_phone_number}
+                  />
+                </Stack>
+              </Carousel.Item>
+            ))}
       </Carousel>
     );
   }
   // Add Friend
-  const AddFriend = () => {
-    console.log(data.data.user_log.log_spots);
-  }
+
+  const AddFriend = async () => {
+    let rawResponse;
+    let t = getToken();
+    try {
+      rawResponse = (
+        await axios.post(
+          "http://127.0.0.1:5000/user/add_friend",
+          {
+            friend_email: data.data.user_data.email,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + t,
+            },
+          }
+        )
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if(error.response.status === 502){
+        alert(error.response.data.msg);
+      }
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+
+        return error;
+      }
+    }
+    alert(rawResponse.msg);
+    console.log(rawResponse);
+    return rawResponse;
+  };
 
   //Delete Friend
-  function DelFriend() {}
+  const DelFriend = async() => {
+    let rawResponse;
+    let t = getToken();
+    try {
+      rawResponse = (
+        await axios.post(
+          "http://127.0.0.1:5000/user/delete_friend",
+          {
+            friend_email: data.data.user_data.email,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + t,
+            },
+          }
+        )
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if(error.response.status === 502){
+        alert(error.response.data.msg);
+      }
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
+
+        return error;
+      }
+    }
+    if(rawResponse){
+      alert(rawResponse.msg);
+      console.log(rawResponse);
+    }
+
+    return rawResponse;
+  }
   const greenOptions = [
     {
       id: "careforweak",
@@ -358,157 +408,163 @@ function FriendProfile(data) {
     },
   ];
   return (
-
     <div>
-        <MDBBtn
-  className="green-btn"
-  color="secondary"
-  rounded
-  size="sm"
-  onClick={handleShow}
->
-  Visit
-  </MDBBtn>
-  <Modal
-    show={show}
-    onHide={handleClose}
-    size="lg"
-    style={{ padding: "0" }}
-  >
-    <Modal.Header closeButton />
-    <Modal.Body>
-    <div className="board-container">
-      <div style={{ justifyContent: "right" }}>
-        <button id="addfriendbtn" onClick={AddFriend} name="增加好友">
-          <AiOutlineUserAdd size={36} />
-        </button>
-        <button id="delfriendbtn" onClick={DelFriend} name="刪除好友">
-          <AiOutlineUserDelete size={36} />
-        </button>
-      </div>
-      <div className="board-rb">
-        <div className="board-rtb">
-          <div className="board-rtlb">
-            <div className="line">
-              <div className="pack">
-                <label className="board-label">名字</label>
-                <p>{data.data.user_data.name}</p>
-              </div>
+      <MDBBtn
+        className="green-btn"
+        color="secondary"
+        rounded
+        size="sm"
+        onClick={handleShow}
+      >
+        Visit
+      </MDBBtn>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="lg"
+        style={{ padding: "0" }}
+      >
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <div className="board-container">
+            <div style={{ justifyContent: "right" }}>
+              <button id="addfriendbtn" onClick={AddFriend} name="增加好友">
+                <AiOutlineUserAdd size={36} />
+              </button>
+              <button id="delfriendbtn" onClick={DelFriend} name="刪除好友">
+                <AiOutlineUserDelete size={36} />
+              </button>
             </div>
-            <div className="line">
-              <div className="pack">
-                <label className="board-label">朋友</label>
-                <p>{data.data.user_data.friend_number}</p>
-              </div>
-            </div>
-            <p className="biograph" resize="none">
-              {data.data.user_data.biograph}
-            </p>
-          </div>
+            <div className="board-rb">
+              <div className="board-rtb">
+                <div className="board-rtlb">
+                  <div className="line">
+                    <div className="pack">
+                      <label className="board-label">名字</label>
+                      <p>{data.data.user_data.name}</p>
+                    </div>
+                  </div>
+                  <div className="line">
+                    <div className="pack">
+                      <label className="board-label">朋友</label>
+                      <p>{data.data.user_data.friend_number}</p>
+                    </div>
+                  </div>
+                  <p className="biograph" resize="none">
+                    {data.data.user_data.biograph}
+                  </p>
+                </div>
 
-          <div className="board-rtrb">
-            <img id="user-photo" alt="user" src={data.data.user_pic? data.data.user_pic : require("./user-icon.png")} />
-          </div>
-        </div>
-        <div className="board-rbb">
-          <div className="accordion accordion-flush">
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingOne">
-                <button
-                  className="accordion-button collapsed"
-                  id="f-btn1"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseOne"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseOne"
-                >
-                  永續發展徽章收集
-                </button>
-              </h2>
-              <div
-                id="flush-collapseOne"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingOne"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body">
-                {
-                    greenOptions.map((e, index) => (
-                      <div className="com" key={index}>
-                        <img
-                          className={index < 8 ? "badge_left" : "badge_right"}
-                          title={e.title}
-                          alt={e.alt}
-                          src={e.num > 0 ? e.img_for_true : e.img_for_false}
-                        />
-                        <span className={index < 8 ? "amount1" : "amount2"}>
-                          {e.num}
-                        </span>
+                <div className="board-rtrb">
+                  <img
+                    id="user-photo"
+                    alt="user"
+                    src={
+                      data.data.user_pic
+                        ? data.data.user_pic
+                        : require("./user-icon.png")
+                    }
+                  />
+                </div>
+              </div>
+              <div className="board-rbb">
+                <div className="accordion accordion-flush">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingOne">
+                      <button
+                        className="accordion-button collapsed"
+                        id="f-btn1"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseOne"
+                      >
+                        永續發展徽章收集
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseOne"
+                      className="accordion-collapse collapse"
+                      aria-labelledby="flush-headingOne"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body">
+                        {greenOptions.map((e, index) => (
+                          <div className="com" key={index}>
+                            <img
+                              className={
+                                index < 8 ? "badge_left" : "badge_right"
+                              }
+                              title={e.title}
+                              alt={e.alt}
+                              src={e.num > 0 ? e.img_for_true : e.img_for_false}
+                            />
+                            <span className={index < 8 ? "amount1" : "amount2"}>
+                              {e.num}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    ))
-                  }
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingTwo">
-                <button
-                  className="accordion-button collapsed"
-                  id="f-btn2"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseTwo"
-                >
-                  到訪店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingTwo"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body">
-                  <CarouselOfVisitedStore />
-                </div>
-              </div>
-            </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="flush-headingThree">
-                <button
-                  className="accordion-button collapsed "
-                  id="f-btn3"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseThree"
-                >
-                  收藏店家
-                </button>
-              </h2>
-              <div
-                id="flush-collapseThree"
-                className="accordion-collapse collapse"
-                aria-labelledby="flush-headingThree"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div className="accordion-body" id="accordion-body3">
-                  <CarouselOfStoredStore />
+                    </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingTwo">
+                      <button
+                        className="accordion-button collapsed"
+                        id="f-btn2"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseTwo"
+                      >
+                        到訪店家
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseTwo"
+                      className="accordion-collapse collapse"
+                      aria-labelledby="flush-headingTwo"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body">
+                        <CarouselOfVisitedStore />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="flush-headingThree">
+                      <button
+                        className="accordion-button collapsed "
+                        id="f-btn3"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree"
+                        aria-expanded="false"
+                        aria-controls="flush-collapseThree"
+                      >
+                        收藏店家
+                      </button>
+                    </h2>
+                    <div
+                      id="flush-collapseThree"
+                      className="accordion-collapse collapse"
+                      aria-labelledby="flush-headingThree"
+                      data-bs-parent="#accordionFlushExample"
+                    >
+                      <div className="accordion-body" id="accordion-body3">
+                        <CarouselOfStoredStore />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Modal.Body>
+      </Modal>
     </div>
-  </Modal.Body>
-  </Modal>
-    </div>
-
   );
 }
 
@@ -556,33 +612,34 @@ function Leaderboard() {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          {leaderboardData && leaderboardData.map((e, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>
-                <div className="d-flex align-items-center">
-                  <img
-                    src={e.user_pic? e.user_pic : require("./user-icon.png")}
-                    alt=""
-                    style={{ width: "45px", height: "45px" }}
-                    className="rounded-circle"
-                  />
-                  <div className="ms-3">
-                    <p className="fw-bold mb-1">{e.user_data.name}</p>
-                    <p className="text-muted mb-0">{e.user_data.email}</p>
+          {leaderboardData &&
+            leaderboardData.map((e, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={e.user_pic ? e.user_pic : require("./user-icon.png")}
+                      alt=""
+                      style={{ width: "45px", height: "45px" }}
+                      className="rounded-circle"
+                    />
+                    <div className="ms-3">
+                      <p className="fw-bold mb-1">{e.user_data.name}</p>
+                      <p className="text-muted mb-0">{e.user_data.email}</p>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>
-                <Badges data={e.user_data.badges} />
-              </td>
-              <td>{e.user_data.coin}</td>
-              <td>
-                <FriendProfile data={e}/>
-              </td>
-              <td />
-            </tr>
-          ))}
+                </td>
+                <td>
+                  <Badges data={e.user_data.badges} />
+                </td>
+                <td>{e.user_data.coin}</td>
+                <td>
+                  <FriendProfile data={e} />
+                </td>
+                <td />
+              </tr>
+            ))}
         </MDBTableBody>
       </MDBTable>
     </div>

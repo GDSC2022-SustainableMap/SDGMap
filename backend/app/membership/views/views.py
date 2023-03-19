@@ -7,7 +7,7 @@ from app.membership.domain.register_form import RegisterForm
 from app.membership.infrastructure import UserRepo
 from app.membership.domain.friend import Friend
 from app.app import firebase
-from app.membership.views.utils import base64_to_png
+from app.membership.views.utils import *
 Db = firebase.database()
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required
@@ -142,40 +142,88 @@ def delete():
 def add_friend():
     """allow user to make friends, passint the friend's uuid to become friends"""
     receive = request.get_json()
-
+    current_user = get_jwt_identity()
     messages = {}
-    if ("friend" in receive):
+    if ("friend_email" in receive):
         current_user = get_jwt_identity()
+        friend_id = email_to_userid(receive['friend_email'])
+        print(friend_id)
+        #確認是否是加自己
+        if(friend_id == current_user):
+            messages["msg"] = "Cannot add yourself!"
+            status = 502
+            return messages, status
         current_user_friend_num = db.child("users").child(current_user).get().val()["friends"]["friend_number"]
         current_user_friend = db.child("users").child(current_user).get().val()["friends"]
 
         #確認是否有這個id的人
         print(current_user)
-        friend = db.child("users").child(receive['friend']).get().val()
+        friend = db.child("users").child(friend_id).get().val()
+        print(friend)
         if (friend is None):
             messages["msg"] = "This person does not exist!"
             status = 204
         friend_name = friend["name"]
     
         #確認是否重複加入好友
+        # print(current_user_friend.items())
         for key, value in current_user_friend.items():
-            if key != "friend_number":  
-                if current_user in value.values():
+            if key != "friend_number":
+                print(value)
+                if friend_id in value.values():
                     messages["msg"] = "You have this frined already!"
                     status = 502
+                    return messages, status
         #如果好友多餘20個就回報錯誤
         if(current_user_friend_num >= 20):
             messages["msg"] = "You can only have 20 frineds!"
             status = 502
+            return messages, status
         current_user_friend_num += 1
-        friend = Friend(receive['friend'],friend_name).info
+        friend = Friend(friend_id,friend_name).info
         # update new friend to firebase
-        db.child("users").child(current_user).child("friends").child("friend_" + f"{current_user_friend_num:02d}").set(friend)
+        db.child("users").child(current_user).child("friends").child("friend_" + f"{current_user_friend_num}").set(friend)
         db.child("users").child(current_user).child("friends").update({"friend_number":current_user_friend_num})
 
-        messages["msg"] = f"{receive['friend']} added as friend"
+        messages["msg"] = f"{receive['friend_email']} added as friend"
         status = 201
-    return messages, status
+        return messages, status
+    return messages
+
+@bp.route("/delete_friend", methods=["POST"])
+@jwt_required()
+def delete_friend():
+    receive = request.get_json()
+    params = {"user_email": receive['friend_email']}
+    current_user = get_jwt_identity()
+    friend_id = email_to_userid(params["user_email"])
+    current_user_friend_count = (
+                db.child("users")
+                .child(current_user)
+                .child("friends")
+                .child("friend_number")
+                .get()
+                .val()
+            )
+    if(current_user == friend_id):
+        return {"msg":f"You cannot delete youself! Current friend number:{current_user_friend_count}"},502
+    
+    friends = db.child("users").child(current_user).child("friends").get().val()
+
+    for key,val in friends.items():
+
+        if(key == "friend_number"):
+            continue
+        if (val["user_id"] == friend_id):
+            friend_key = key[7:]
+
+            db.child("users").child(current_user).child("friends").child(f"friend_{friend_key}").remove()
+            current_user_friend_count -= 1
+
+            db.child("users").child(current_user).child("friends").update({"friend_number": current_user_friend_count})
+            return {"msg":f'{params["user_email"]} deleted!  Current friend number:{current_user_friend_count}'},201
+    return {"msg":f"This friend dos not exists! Current friend number:{current_user_friend_count}"},502
+    
 
 @bp.route("/track_userlog", methods=["GET","POST"])
 @jwt_required(True)
@@ -303,3 +351,43 @@ def get_leaderboard():
         ordered_user.append({"user_data":new_dict,"user_log":log_obj,"user_save":save_obj,"user_pic":user_base64img})
 
     return {"users":ordered_user},201
+
+@bp.route("/search", methods=["POST"])
+def search():
+    receive = request.get_json()
+    params = {"user_email": receive['search_email']}
+    # current_user = get_jwt_identity()
+    search_id = email_to_userid(params["user_email"])
+    try:
+        search_data = userrepo.read({"user_id":search_id})
+        # print(search_data)
+
+        new_dict = {key:val for key, val in search_data.items() if key in  ["backpack","badges","biograph","coin","email","name"]}
+        new_dict["friend_number"] = search_data["friends"]["friend_number"]
+        # print(search_data["friends"]["friend_number"])
+        user_log = db.child("user_log").child(search_id).get().val()
+        # print(user_log)
+        log_obj = {"log_spots":[]}
+        if(user_log):
+            for key in user_log:
+                if (key == "log_count"):
+                    continue
+                else:
+                    for inner_key in user_log[key]:
+                        log_obj["log_spots"].append(user_log[key][inner_key])
+        print(log_obj)
+        user_save = db.child("user_save").child(search_id).get().val()
+        save_obj = {"save_spots_id":[],"save_spots":[]}
+        if(user_save):
+            for key in user_save:
+                if (key == "save_count"):
+                    continue
+                else:
+                    save_obj["save_spots_id"].append(user_save[key]["place_id"])
+                    save_obj["save_spots"].append(user_save[key])
+            print(save_obj)
+        # print({"user_data":new_dict,"user_log":user_log,"user_save":user_save})
+        user_base64img = Db.child("profile_pics").child(search_id).get().val()
+        return {"msg":"Find user!","result":{"user_data":new_dict,"user_log":log_obj,"user_save":save_obj,"user_pic":user_base64img}},201
+    except:
+        return {"msg":"Cannot find the user!"},502

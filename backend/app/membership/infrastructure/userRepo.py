@@ -63,6 +63,8 @@ class UserRepo():
         if db.child("users").child(receive['user_id']).get().val():
             print(db.child("users").child(receive['user_id']).get().val())
             return db.child("users").child(receive['user_id']).get().val()
+        else:
+            return None
 
 
 
