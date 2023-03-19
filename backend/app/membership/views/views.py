@@ -313,7 +313,6 @@ def get_user_image():
     # }
     current_user = get_jwt_identity()
     user_base64img = Db.child("profile_pics").child(current_user).get().val()
-    # return '<img src="{}">'.format(user_base64img)
     return jsonify(user_base64img)
 
 @bp.route("/leaderboard", methods=["GET"])
@@ -393,3 +392,4 @@ def search():
         return {"msg":"Find user!","result":{"user_data":new_dict,"user_log":log_obj,"user_save":save_obj,"user_pic":user_base64img}},201
     except:
         return {"msg":"Cannot find the user!"},502
+

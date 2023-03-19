@@ -2,7 +2,7 @@ from flask import request
 from app.map.infrastructure.google.gmaps import *
 from app.map.infrastructure.cafenomad.cafenomad import *
 from app.map.views.utils import *
-from app.map.domain.badge import Badge
+from app.map.domain.mapRepo import Badge, recent_log
 from flask import Blueprint
 from flask_jwt_extended import get_jwt_identity, jwt_required
 import datetime
@@ -281,7 +281,6 @@ def find_format():
     gmap_result = find_place_detail(receive["place_id"])
     return gmap_result
 
-
 # check if the user is in the correct distance from the spot
 @bp.route("/check_in", methods=["POST"])
 @jwt_required()
@@ -326,11 +325,11 @@ def check_in_spot():
         )
         current_user = get_jwt_identity()
         print(current_user)
-        current_log_count = (
-            db.child("user_log").child(current_user).child("log_count").get().val()
-        )
-        if distance < params["scope"]:
 
+        current_log_count = db.child("user_log").child(place_type).child(current_user).child("log_count").get().val()
+        recent_count = db.child("user_recent_log").child(current_user).child("log_count").get().val()
+
+        if distance < params["scope"]:
             # already have log
             if current_log_count:
                 pass
@@ -338,9 +337,23 @@ def check_in_spot():
             else:
                 current_log_count = 0
                 db.child("user_log").child(current_user).set({"log_count": 0})
+
             log_dict = {
                 k: v for k, v in gmap_result.items() if k not in ["types", "geometry"]
             }
+
+            db.child("user_log").child(place_type).child(current_user).set({"log_count": 0})
+            db.child("user_log").child(place_type).child(current_user).child("log_count").get().val()
+
+            # already have log
+            if recent_count:
+                pass
+            # not yet have log
+            else:
+                db.child("user_recent_log").child(current_user).set({"log_count": 0})
+                db.child("user_recent_log").child(current_user).child("log_count").get().val()
+            
+
             user_log = Badge().get_user_log()
             user_log = log_dict
             user_log["user_name"] = (
@@ -349,6 +362,10 @@ def check_in_spot():
             user_log["time"] = str(datetime.datetime.now())
             user_log["place_id"] = params["place_id"]
             print(user_log)
+            rec_log = recent_log(store_name = gmap_result["result"]["name"], store_id = params["place_id"]).get_recent_log()
+           
+            print(rec_log)
+
             if current_log_count:
                 db.child("user_log").child(current_user).child(place_type).child(
                     f"log{current_log_count}"
@@ -358,10 +375,17 @@ def check_in_spot():
                     f"log{current_log_count}"
                 ).set(user_log)
 
+            if recent_count:
+                db.child("user_recent_log").child(current_user).child(f"log{current_log_count}").update(rec_log)
+            else:
+                db.child("user_recent_log").child(current_user).child(f"log{current_log_count}").set(rec_log)
+
             current_log_count += 1
-            db.child("user_log").child(current_user).update(
-                {"log_count": current_log_count}
-            )
+
+            recent_count += 1
+            recent_count = recent_count % 5
+            db.child("user_log").child(place_type).child(current_user).update({"log_count": current_log_count})
+            db.child("user_recent_log").child(current_user).update({"log_count": recent_count})
 
             # record the badges and coins obtained
             addBadge(params["place_id"], current_user)
@@ -492,3 +516,11 @@ def get_photo_from_reference():
     return get_photo_from_a_reference(
         params["reference"], params["maxwidth"], params["maxheight"]
     )
+
+@bp.route("/get_friend",  methods=["POST"])
+@jwt_required()
+def query_friends():
+   current_user = get_jwt_identity()
+   friends = db.child("users").child(current_user).child("friends").get().val()
+   print(friends)
+   return friends
