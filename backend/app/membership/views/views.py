@@ -70,6 +70,7 @@ def login():
         receive = request.get_json()
         try:
             user = auth.sign_in_with_email_and_password(receive["email"], receive["password"])
+            print(f"user: {user}")
             # Remember which user has logged in
             access_token = create_access_token(identity=user["localId"])
 
