@@ -393,7 +393,7 @@ function User(props) {
                     direction="horizontal"
                     className=" stack"
                     gap={4}
-                    style={{ margin: " 0 4%" }}
+                    style={{ margin: " 0 2%" }}
                   >
                     <InfoCard
                       className="card-orange card"
@@ -421,7 +421,7 @@ function User(props) {
                     direction="horizontal"
                     className=" stack"
                     gap={4}
-                    style={{ margin: " 0 4%" }}
+                    style={{ margin: " 0 2%" }}
                   >
                     <InfoCard
                       className="card-orange card"
@@ -567,7 +567,7 @@ function User(props) {
                     direction="horizontal"
                     className=" stack"
                     gap={4}
-                    style={{ margin: " 0 4%" }}
+                    style={{ margin: " 0 2%" }}
                   >
                     <InfoCard
                       className="card-green card"
@@ -595,7 +595,7 @@ function User(props) {
                     direction="horizontal"
                     className=" stack"
                     gap={4}
-                    style={{ margin: " 0 4%" }}
+                    style={{ margin: " 0 2%" }}
                   >
                     <InfoCard
                       className="card-green card"
@@ -1010,7 +1010,7 @@ function User(props) {
                 aria-labelledby="flush-headingOne"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div className="accordion-body">
+                <div className="accordion-body" id="accordion-body1">
                   {loading ? (
                     <></>
                   ) : (
@@ -1051,7 +1051,7 @@ function User(props) {
                 aria-labelledby="flush-headingTwo"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div className="accordion-body">
+                <div className="accordion-body" id="accordion-body2">
                   <CarouselOfVisitedStore />
                 </div>
               </div>

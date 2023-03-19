@@ -57,7 +57,7 @@ function FriendProfile(data) {
             <br />
             <button
               className="card-button-orange"
-              variant="primary"
+              // variant="primary"
               onClick={handleShow}
             >
               More info
@@ -80,7 +80,7 @@ function FriendProfile(data) {
           .map((store, index) => (
             store.length === 2 ? (
               <Carousel.Item key={index}>
-                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 2%"}}>
                   <InfoCard className="card-orange card"
                     name={store[0].name}
                     addr={store[0].formatted_address}
@@ -103,7 +103,7 @@ function FriendProfile(data) {
               </Carousel.Item>
             ) : (
               <Carousel.Item>
-                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 2%"}}>
                   <InfoCard className="card-orange card"
                     name={store[0].name}
                     addr={store[0].formatted_address}
@@ -148,7 +148,7 @@ function FriendProfile(data) {
             <br />
             <button
               className="card-button-green"
-              variant="primary"
+              // variant="primary"
               onClick={handleShow}
             >
               更多資訊
@@ -171,7 +171,7 @@ function FriendProfile(data) {
           .map((store) => (
             store.length == 2 ? (
               <Carousel.Item >
-                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 2%"}}>
                   <InfoCard className="card-green card"
                     name={store[0].name}
                     addr={store[0].formatted_address}
@@ -192,7 +192,7 @@ function FriendProfile(data) {
               </Carousel.Item>
             ) : (
               <Carousel.Item>
-                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 4%"}}>
+                <Stack direction="horizontal" className=" stack" gap={4} style={{margin:" 0 2%"}}>
                   <InfoCard className="card-green card"
                     name={store[0].name}
                     addr={store[0].formatted_address}
@@ -512,7 +512,7 @@ function FriendProfile(data) {
                       aria-labelledby="flush-headingOne"
                       data-bs-parent="#accordionFlushExample"
                     >
-                      <div className="accordion-body">
+                      <div className="accordion-body" id="accordion-body1">
                         {greenOptions.map((e, index) => (
                           <div className="com" key={index}>
                             <img
@@ -551,7 +551,7 @@ function FriendProfile(data) {
                       aria-labelledby="flush-headingTwo"
                       data-bs-parent="#accordionFlushExample"
                     >
-                      <div className="accordion-body">
+                      <div className="accordion-body" id="accordion-body2">
                         <CarouselOfVisitedStore />
                       </div>
                     </div>
