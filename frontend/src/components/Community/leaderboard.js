@@ -278,12 +278,28 @@ function FriendProfile(data) {
   }
   const greenOptions = [
     {
+      id: "publicissue",
+      title: "公共議題分享",
+      alt: "公共議題分享",
+      img_for_true: require("../../Badge/t_publicissue.png"),
+      img_for_false: require("../../Badge/n_publicissue.png"),
+      num: !data ? 0 : data.data.user_data.badges.publicissue,
+    },
+    {
+      id: "freetrade",
+      title: "公平交易",
+      alt: "公平交易",
+      img_for_true: require("../../Badge/t_freetrade.png"),
+      img_for_false: require("../../Badge/n_freetrade.png"),
+      num: !data ? 0 : data.data.user_data.badges.freetrade,
+    },
+    {
       id: "careforweak",
       title: "關懷弱勢",
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
-      num: !data ? 0 : data.data.user_data.badges.關懷弱勢,
+      num: !data ? 0 : data.data.user_data.badges.careforweak,
     },
     {
       id: "envfriend",
@@ -291,7 +307,7 @@ function FriendProfile(data) {
       alt: "友善環境",
       img_for_true: require("../../Badge/t_envfriend.png"),
       img_for_false: require("../../Badge/n_envfriend.png"),
-      num: !data ? 0 : data.data.user_data.badges.友善環境,
+      num: !data ? 0 : data.data.user_data.badges.envfriend,
     },
     {
       id: "foodeduc",
@@ -299,7 +315,7 @@ function FriendProfile(data) {
       alt: "食育教育",
       img_for_true: require("../../Badge/t_foodeduc.png"),
       img_for_false: require("../../Badge/n_foodeduc.png"),
-      num: !data ? 0 : data.data.user_data.badges.食育教育,
+      num: !data ? 0 : data.data.user_data.badges.foodeduc,
     },
     {
       id: "localgred",
@@ -307,7 +323,7 @@ function FriendProfile(data) {
       alt: "在地食材",
       img_for_true: require("../../Badge/t_localgred.png"),
       img_for_false: require("../../Badge/n_localgred.png"),
-      num: !data ? 0 : data.data.user_data.badges.在地食材,
+      num: !data ? 0 : data.data.user_data.badges.localgred,
     },
     {
       id: "organic",
@@ -315,7 +331,7 @@ function FriendProfile(data) {
       alt: "有機小農",
       img_for_true: require("../../Badge/t_organic.png"),
       img_for_false: require("../../Badge/n_organic.png"),
-      num: !data ? 0 : data.data.user_data.badges.有機小農,
+      num: !data ? 0 : data.data.user_data.badges.organic,
     },
     {
       id: "ovolacto",
@@ -323,7 +339,7 @@ function FriendProfile(data) {
       alt: "蛋奶素",
       img_for_true: require("../../Badge/t_ovolacto.png"),
       img_for_false: require("../../Badge/n_ovolacto.png"),
-      num: !data ? 0 : data.data.user_data.badges.蛋奶素,
+      num: !data ? 0 : data.data.user_data.badges.ovolacto,
     },
     {
       id: "petfriend",
@@ -331,7 +347,7 @@ function FriendProfile(data) {
       alt: "寵物友善",
       img_for_true: require("../../Badge/t_petfriend.png"),
       img_for_false: require("../../Badge/n_petfriend.png"),
-      num: !data ? 0 : data.data.user_data.badges.寵物友善,
+      num: !data ? 0 : data.data.user_data.badges.petfriend,
     },
     {
       id: "noplastic",
@@ -339,7 +355,7 @@ function FriendProfile(data) {
       alt: "減塑",
       img_for_true: require("../../Badge/t_noplastic.png"),
       img_for_false: require("../../Badge/n_noplastic.png"),
-      num: !data ? 0 : data.data.user_data.badges.減塑,
+      num: !data ? 0 : data.data.user_data.badges.noplastic,
     },
     {
       id: "stray",
@@ -347,7 +363,7 @@ function FriendProfile(data) {
       alt: "流浪動物",
       img_for_true: require("../../Badge/t_stray.png"),
       img_for_false: require("../../Badge/n_stray.png"),
-      num: !data ? 0 : data.data.user_data.badges.流浪動物,
+      num: !data ? 0 : data.data.user_data.badges.stray,
     },
     {
       id: "vegetarianism",
@@ -355,7 +371,7 @@ function FriendProfile(data) {
       alt: "純素",
       img_for_true: require("../../Badge/t_vegetarianism.png"),
       img_for_false: require("../../Badge/n_vegetarianism.png"),
-      num: !data ? 0 : data.data.user_data.badges.純素,
+      num: !data ? 0 : data.data.user_data.badges.vegetarianism,
     },
     {
       id: "foodagricultureeducation",
@@ -363,7 +379,7 @@ function FriendProfile(data) {
       alt: "食農教育",
       img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
       img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
-      num: !data ? 0 : data.data.user_data.badges.食農教育,
+      num: !data ? 0 : data.data.user_data.badges.foodagricultureeducation,
     },
     {
       id: "appreciatefood",
@@ -371,7 +387,7 @@ function FriendProfile(data) {
       alt: "惜食不浪費",
       img_for_true: require("../../Badge/t_appreciatefood.png"),
       img_for_false: require("../../Badge/n_appreciatefood.png"),
-      num: !data ? 0 : data.data.user_data.badges.惜食不浪費,
+      num: !data ? 0 : data.data.user_data.badges.appreciatefood,
     },
     {
       id: "creativecuisine",
@@ -379,7 +395,7 @@ function FriendProfile(data) {
       alt: "創意料理",
       img_for_true: require("../../Badge/t_creativecuisine.png"),
       img_for_false: require("../../Badge/n_creativecuisine.png"),
-      num: !data ? 0 : data.data.user_data.badges.創意料理,
+      num: !data ? 0 : data.data.user_data.badges.creativecuisine,
     },
     {
       id: "creativevegetarian",
@@ -387,7 +403,7 @@ function FriendProfile(data) {
       alt: "創新蔬食",
       img_for_true: require("../../Badge/t_creativevegetarian.png"),
       img_for_false: require("../../Badge/n_creativevegetarian.png"),
-      num: !data ? 0 : data.data.user_data.badges.創新蔬食,
+      num: !data ? 0 : data.data.user_data.badges.creativevegetarian,
     },
     {
       id: "sourcereduction",
@@ -395,7 +411,7 @@ function FriendProfile(data) {
       alt: "源頭減量",
       img_for_true: require("../../Badge/t_sourcereduction.png"),
       img_for_false: require("../../Badge/n_sourcereduction.png"),
-      num: !data ? 0 : data.data.user_data.badges.源頭減量,
+      num: !data ? 0 : data.data.user_data.badges.sourcereduction,
     },
     {
       id: "greenprocurement",
@@ -403,7 +419,7 @@ function FriendProfile(data) {
       alt: "綠色採購",
       img_for_true: require("../../Badge/t_greenprocurement.png"),
       img_for_false: require("../../Badge/n_greenprocurement.png"),
-      num: !data ? 0 : data.data.user_data.badges.綠色採購,
+      num: !data ? 0 : data.data.user_data.badges.greenprocurement,
     },
   ];
   return (

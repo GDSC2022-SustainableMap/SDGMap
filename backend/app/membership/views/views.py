@@ -108,8 +108,10 @@ def get_profile():
     current_user = get_jwt_identity()
     receive = {'user_id':current_user}
     result = userrepo.read(receive)
-
-    return result
+    new_dict = {key:val for key, val in result.items() if key in  ["backpack","badges","biograph","coin","email","name"]}
+    new_dict["friend_number"] = result["friends"]["friend_number"]
+    print(new_dict)
+    return new_dict
     
 @bp.route("/reset_password", methods=["POST"])
 @jwt_required()
@@ -285,9 +287,9 @@ def get_specific_usersave():
                 obj["save_spots_id"].append(user_save[key]["place_id"])
                 obj["save_spots"].append(user_save[key])
         print(obj)
-        return obj
+        return obj,201
     else:
-        return {"msg":"No user_save record!"},204
+        return obj,201
 
 
 @bp.route("/upload_image", methods=["GET", "POST"])

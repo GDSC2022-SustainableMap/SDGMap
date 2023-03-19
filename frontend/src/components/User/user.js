@@ -56,7 +56,7 @@ function User(props) {
     }
     setUserData(rawResponse);
     setUsername(rawResponse.name);
-    setNumoffriend(rawResponse.friends.friend_number);
+    setNumoffriend(rawResponse.friend_number);
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
     console.log(rawResponse);
@@ -110,6 +110,7 @@ function User(props) {
         return error;
       }
     }
+    console.log(saveResponse);
     setUserSave(Object.values(saveResponse.save_spots))
 
 
@@ -374,7 +375,7 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {!loading && userLog.reduce(
+        {!loading&&userLog && userLog.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -525,7 +526,7 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {!loading && userSave.reduce(
+        {!loading &&userSave && userSave.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -574,12 +575,28 @@ function User(props) {
 
   const greenOptions = [
     {
+      id: "publicissue",
+      title: "公共議題分享",
+      alt: "公共議題分享",
+      img_for_true: require("../../Badge/t_publicissue.png"),
+      img_for_false: require("../../Badge/n_publicissue.png"),
+      num: loading && userData ? 0 : userData.badges.publicissue,
+    },
+    {
+      id: "freetrade",
+      title: "公平交易",
+      alt: "公平交易",
+      img_for_true: require("../../Badge/t_freetrade.png"),
+      img_for_false: require("../../Badge/n_freetrade.png"),
+      num: loading && userData ? 0 : userData.badges.freetrade,
+    },
+    {
       id: "careforweak",
       title: "關懷弱勢",
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
-      num: loading && userData ? 0 : userData.badges.關懷弱勢,
+      num: loading && userData ? 0 : userData.badges.careforweak,
     },
     {
       id: "envfriend",
@@ -587,7 +604,7 @@ function User(props) {
       alt: "友善環境",
       img_for_true: require("../../Badge/t_envfriend.png"),
       img_for_false: require("../../Badge/n_envfriend.png"),
-      num: loading ? 0 : userData.badges.友善環境,
+      num: loading ? 0 : userData.badges.envfriend,
     },
     {
       id: "foodeduc",
@@ -595,7 +612,7 @@ function User(props) {
       alt: "食育教育",
       img_for_true: require("../../Badge/t_foodeduc.png"),
       img_for_false: require("../../Badge/n_foodeduc.png"),
-      num: loading ? 0 : userData.badges.食育教育,
+      num: loading ? 0 : userData.badges.foodeduc,
     },
     {
       id: "localgred",
@@ -603,7 +620,7 @@ function User(props) {
       alt: "在地食材",
       img_for_true: require("../../Badge/t_localgred.png"),
       img_for_false: require("../../Badge/n_localgred.png"),
-      num: loading ? 0 : userData.badges.在地食材,
+      num: loading ? 0 : userData.badges.localgred,
     },
     {
       id: "organic",
@@ -611,7 +628,7 @@ function User(props) {
       alt: "有機小農",
       img_for_true: require("../../Badge/t_organic.png"),
       img_for_false: require("../../Badge/n_organic.png"),
-      num: loading ? 0 : userData.badges.有機小農,
+      num: loading ? 0 : userData.badges.organic,
     },
     {
       id: "ovolacto",
@@ -619,7 +636,7 @@ function User(props) {
       alt: "蛋奶素",
       img_for_true: require("../../Badge/t_ovolacto.png"),
       img_for_false: require("../../Badge/n_ovolacto.png"),
-      num: loading ? 0 : userData.badges.蛋奶素,
+      num: loading ? 0 : userData.badges.ovolacto,
     },
     {
       id: "petfriend",
@@ -627,7 +644,7 @@ function User(props) {
       alt: "寵物友善",
       img_for_true: require("../../Badge/t_petfriend.png"),
       img_for_false: require("../../Badge/n_petfriend.png"),
-      num: loading ? 0 : userData.badges.寵物友善,
+      num: loading ? 0 : userData.badges.petfriend,
     },
     {
       id: "noplastic",
@@ -635,7 +652,7 @@ function User(props) {
       alt: "減塑",
       img_for_true: require("../../Badge/t_noplastic.png"),
       img_for_false: require("../../Badge/n_noplastic.png"),
-      num: loading ? 0 : userData.badges.減塑,
+      num: loading ? 0 : userData.badges.noplastic,
     },
     {
       id: "stray",
@@ -643,7 +660,7 @@ function User(props) {
       alt: "流浪動物",
       img_for_true: require("../../Badge/t_stray.png"),
       img_for_false: require("../../Badge/n_stray.png"),
-      num: loading ? 0 : userData.badges.流浪動物,
+      num: loading ? 0 : userData.badges.stray,
     },
     {
       id: "vegetarianism",
@@ -651,7 +668,7 @@ function User(props) {
       alt: "純素",
       img_for_true: require("../../Badge/t_vegetarianism.png"),
       img_for_false: require("../../Badge/n_vegetarianism.png"),
-      num: loading ? 0 : userData.badges.純素,
+      num: loading ? 0 : userData.badges.vegetarianism,
     },
     {
       id: "foodagricultureeducation",
@@ -659,7 +676,7 @@ function User(props) {
       alt: "食農教育",
       img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
       img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
-      num: loading ? 0 : userData.badges.食農教育,
+      num: loading ? 0 : userData.badges.foodagricultureeducation,
     },
     {
       id: "appreciatefood",
@@ -667,7 +684,7 @@ function User(props) {
       alt: "惜食不浪費",
       img_for_true: require("../../Badge/t_appreciatefood.png"),
       img_for_false: require("../../Badge/n_appreciatefood.png"),
-      num: loading ? 0 : userData.badges.惜食不浪費,
+      num: loading ? 0 : userData.badges.appreciatefood,
     },
     {
       id: "creativecuisine",
@@ -675,7 +692,7 @@ function User(props) {
       alt: "創意料理",
       img_for_true: require("../../Badge/t_creativecuisine.png"),
       img_for_false: require("../../Badge/n_creativecuisine.png"),
-      num: loading ? 0 : userData.badges.創意料理,
+      num: loading ? 0 : userData.badges.creativecuisine,
     },
     {
       id: "creativevegetarian",
@@ -683,7 +700,7 @@ function User(props) {
       alt: "創新蔬食",
       img_for_true: require("../../Badge/t_creativevegetarian.png"),
       img_for_false: require("../../Badge/n_creativevegetarian.png"),
-      num: loading ? 0 : userData.badges.創新蔬食,
+      num: loading ? 0 : userData.badges.creativevegetarian,
     },
     {
       id: "sourcereduction",
@@ -691,7 +708,7 @@ function User(props) {
       alt: "源頭減量",
       img_for_true: require("../../Badge/t_sourcereduction.png"),
       img_for_false: require("../../Badge/n_sourcereduction.png"),
-      num: loading ? 0 : userData.badges.源頭減量,
+      num: loading ? 0 : userData.badges.sourcereduction,
     },
     {
       id: "greenprocurement",
@@ -699,7 +716,7 @@ function User(props) {
       alt: "綠色採購",
       img_for_true: require("../../Badge/t_greenprocurement.png"),
       img_for_false: require("../../Badge/n_greenprocurement.png"),
-      num: loading ? 0 : userData.badges.綠色採購,
+      num: loading ? 0 : userData.badges.greenprocurement,
     },
   ];
   const backpackItems = [

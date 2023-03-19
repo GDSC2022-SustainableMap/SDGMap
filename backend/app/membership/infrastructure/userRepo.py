@@ -9,7 +9,7 @@ import time
 class UserRepo():
 
     def __init__(self, ) -> None:
-        self._context = db.child("users")
+        self._context = db
         
 
     def create(self, receive:dict) -> User:
@@ -26,7 +26,7 @@ class UserRepo():
         data = user.get_attribute()
         unity_data = unity.get_attribute()
         # print(data)
-        db.child(user_id).set(data)
+        db.child("users").child(user_id).set(data)
         db.child("users_unity").child(user_id).set(unity_data)
         return user
     

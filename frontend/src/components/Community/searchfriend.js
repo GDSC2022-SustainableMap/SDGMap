@@ -95,7 +95,7 @@ function SearchFriends() {
     <div className="container-searchfriends">
       <MDBInputGroup>
         <MDBInput
-          label="Search User By Name"
+          label="Search User By E-Mail"
           onChange={(e) => setSearchText(e.target.value)}
         />
         <MDBBtn rippleColor="dark" color="info" onClick={searchUser}>
