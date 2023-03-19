@@ -22,7 +22,7 @@ class UserRepo():
             password=receive['password'],
             user_id=user_id
         )
-        unity = user_unity()
+        unity = user_unity(name = receive['userName'], password = receive['password'])
         data = user.get_attribute()
         unity_data = unity.get_attribute()
         # print(data)

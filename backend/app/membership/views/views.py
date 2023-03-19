@@ -185,6 +185,7 @@ def add_profile_image():
 
 @bp.route("/get_image", methods=["GET", "POST"])
 def get_user_image():
+    """ Get profile image of the designated user. """
     submit = request.get_json()
     params = {
         "user_uuid": submit["user_uuid"]
@@ -193,7 +194,7 @@ def get_user_image():
     return '<img src="{}">'.format(user_base64img)
     return jsonify(user_base64img)
 
-@bp.route("/leaderboard", methods=["POSTs"])
+@bp.route("/my_friends", methods=["POSTs"])
 @jwt_required()
 def get_leaderboard():
     pass
