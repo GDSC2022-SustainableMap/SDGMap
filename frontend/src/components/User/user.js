@@ -85,11 +85,10 @@ function User(props) {
     // console.log(imgRawResponse);
     setLoading(false);
     return rawResponse;
-    
   };
-  let saveResponse
+  let saveResponse;
   const fetchUserSave = async () => {
-    let t = getToken()
+    let t = getToken();
     try {
       setLoading(true);
       saveResponse = (
@@ -111,16 +110,14 @@ function User(props) {
       }
     }
     console.log(saveResponse);
-    setUserSave(Object.values(saveResponse.save_spots))
-
+    setUserSave(Object.values(saveResponse.save_spots));
 
     setLoading(false);
-
   };
 
-  let logResponse
+  let logResponse;
   const fetchUserLog = async () => {
-    let t = getToken()
+    let t = getToken();
     try {
       setLoading(true);
       logResponse = (
@@ -141,16 +138,14 @@ function User(props) {
         return error;
       }
     }
-    setUserLog(Object.values(logResponse)[0])
-
+    setUserLog(Object.values(logResponse)[0]);
 
     setLoading(false);
-
   };
 
   const updateUserProfile = async (e) => {
     setLoading(true);
-    if(editName.length > 0 || editBiograph.length > 0 ){
+    if (editName.length > 0 || editBiograph.length > 0) {
       try {
         rawResponse = (
           await axios.post(
@@ -188,7 +183,7 @@ function User(props) {
     setEditBiograph("");
     // console.log(userImage.substring(userImage.indexOf(",")+1,userImage.length))
     let imgRawResponse;
-    if(editImage !== userImage){
+    if (editImage !== userImage) {
       try {
         imgRawResponse = (
           await axios.post(
@@ -229,7 +224,6 @@ function User(props) {
     //     position.coords.longitude
     // );
     setUserPosition([latitude, longitude]);
-
   };
   const errorHandler = (err) => {
     if (err.code === 1) {
@@ -259,7 +253,7 @@ function User(props) {
       alert("Geolocation not supported by this browser.");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
   const handleImageChange = (e) => {
     e.preventDefault();
 
@@ -280,7 +274,7 @@ function User(props) {
       setIndex(selectedIndex);
     };
 
-    const InfoCard = ({ name, addr, price, rate,phone,place_id }) => {
+    const InfoCard = ({ name, addr, price, rate, phone, place_id }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -314,14 +308,14 @@ function User(props) {
             removeToken();
             alert("Token expired or you have not logined! Please login again!");
             navigate("/signin");
-  
+
             return error;
           }
         }
-        if(rawResponse.msg === 'You should come to this place to check in!'){
-          alert('You should come to this place to check in!');
-        }else if(rawResponse.msg === 'You have checked in successfully!'){
-          alert('You have checked in successfully!');
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
         }
 
         setLoading(false);
@@ -358,7 +352,9 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary" onClick={handleCheckin}>打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>
+                  打卡
+                </button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -373,50 +369,73 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showindicators="false"
+        showIndicators={false}
       >
-        {!loading&&userLog && userLog.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            return accumulator;
-          },
-          []
-        ).map((store,index) => (
-          <Carousel.Item key={index}>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-orange card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                phone={store[0].formatted_phone_number}
-                place_id={store[0].place_id}
-              />
-              <InfoCard
-                className="card-orange card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                phone={store[1].formatted_phone_number}
-                place_id={store[1].place_id}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+        {!loading &&
+          userLog &&
+          userLog
+            .reduce((accumulator, currentValue, currentIndex, array) => {
+              if (currentIndex % 2 === 0) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              } else if (
+                currentIndex % 2 === 1 &&
+                currentIndex + 2 > array.length &&
+                currentIndex < array.length - 1
+              ) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 1));
+              }
+              return accumulator;
+            }, [])
+            .map((store) =>
+              store.length === 2 ? (
+                <Carousel.Item>
+                  <Stack
+                    direction="horizontal"
+                    className=" stack"
+                    gap={4}
+                    style={{ margin: " 0 4%" }}
+                  >
+                    <InfoCard
+                      className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                    />
+                    <InfoCard
+                      className="card-orange card"
+                      name={store[1].name}
+                      addr={store[1].formatted_address}
+                      price={store[1].price_level}
+                      rate={store[1].rating}
+                      phone={store[1].formatted_phone_number}
+                      place_id={store[1].place_id}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item>
+                  <Stack
+                    direction="horizontal"
+                    className=" stack"
+                    gap={4}
+                    style={{ margin: " 0 4%" }}
+                  >
+                    <InfoCard
+                      className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      place_id={store[0].place_id}
+                      phone={store[0].formatted_phone_number}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              )
+            )}
       </Carousel>
     );
   }
@@ -428,8 +447,7 @@ function User(props) {
       setIndex(selectedIndex);
     };
 
-
-    const InfoCard = ({ name, addr, price, rate,place_id,phone }) => {
+    const InfoCard = ({ name, addr, price, rate, place_id, phone }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -463,21 +481,20 @@ function User(props) {
             removeToken();
             alert("Token expired or you have not logined! Please login again!");
             navigate("/signin");
-  
+
             return error;
           }
         }
-        if(rawResponse.msg === 'You should come to this place to check in!'){
-          alert('You should come to this place to check in!');
-        }else if(rawResponse.msg === 'You have checked in successfully!'){
-          alert('You have checked in successfully!');
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
         }
         console.log(rawResponse);
         setLoading(false);
         return rawResponse;
       };
 
-      
       return (
         <div className="card">
           <b>{name}</b>
@@ -509,7 +526,9 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary" onClick={handleCheckin}>打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>
+                  打卡
+                </button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -524,51 +543,73 @@ function User(props) {
         activeIndex={index}
         onSelect={handleSelect}
         variant="dark"
-        showindicators="false"
+        showIndicators={false}
       >
-        {!loading &&userSave && userSave.reduce(
-          (accumulator, currentValue, currentIndex, array) => {
-            if (currentIndex % 2 === 0) {
-              accumulator.push(array.slice(currentIndex, currentIndex + 2));
-            }
-            console.log(accumulator)
-            return accumulator;
-          },
-          []
-        ).map((store,index) => (
-          <Carousel.Item key={index} >
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-green card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                place_id={store[0].place_id}
-                phone={store[0].formatted_phone_number}
-              /> 
-              <InfoCard
-                className="card-green card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                place_id={store[1].place_id}
-                phone={store[1].formatted_phone_number}
-              /> 
-            </Stack>
-          </Carousel.Item>
-        ))}
+        {!loading &&
+          userSave &&
+          userSave
+            .reduce((accumulator, currentValue, currentIndex, array) => {
+              if (currentIndex % 2 === 0) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              } else if (
+                currentIndex % 2 === 1 &&
+                currentIndex + 2 > array.length &&
+                currentIndex < array.length - 1
+              ) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 1));
+              }
+              return accumulator;
+            }, [])
+            .map((store) =>
+              store.length == 2 ? (
+                <Carousel.Item>
+                  <Stack
+                    direction="horizontal"
+                    className=" stack"
+                    gap={4}
+                    style={{ margin: " 0 4%" }}
+                  >
+                    <InfoCard
+                      className="card-green card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      place_id={store[0].place_id}
+                      phone={store[0].formatted_phone_number}
+                    />
+                    <InfoCard
+                      className="card-green card"
+                      name={store[1].name}
+                      addr={store[1].formatted_address}
+                      price={store[1].price_level}
+                      rate={store[1].rating}
+                      place_id={store[1].place_id}
+                      phone={store[1].formatted_phone_number}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item>
+                  <Stack
+                    direction="horizontal"
+                    className=" stack"
+                    gap={4}
+                    style={{ margin: " 0 4%" }}
+                  >
+                    <InfoCard
+                      className="card-green card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      place_id={store[0].place_id}
+                      phone={store[0].formatted_phone_number}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              )
+            )}
       </Carousel>
     );
   }
@@ -796,7 +837,10 @@ function User(props) {
   return (
     <div className="user-container">
       <div className="user-lb">
-        <img className='vircharacter'src={require('../../character/bear.gif')}></img>
+        <img
+          className="vircharacter"
+          src={require("../../character/bear.gif")}
+        ></img>
       </div>
       <div className="user-rb">
         <div className="user-rtb">
@@ -834,7 +878,8 @@ function User(props) {
                 {/* <form className='user-form'> */}
                 <div className="user-form-group">
                   <label className="user-form-label">Name</label>
-                  {userData.change_name_chance && userData.change_name_chance >= 1 ? (
+                  {userData.change_name_chance &&
+                  userData.change_name_chance >= 1 ? (
                     <input
                       className="value"
                       type="text"
@@ -881,26 +926,29 @@ function User(props) {
               </Modal.Body>
               <Modal.Footer>
                 {loading ? (
-                <button
-                id="closebtn"
-                variant="secondary"
-                disabled={true}
-                style={{backgroundColor:"rgb(239, 238, 238)",cursor: "not-allowed"}}
-              >
-              <div >
-                <MDBSpinner size="sm"/>Loading
-              </div>
-              </button>
-            ):
-            <button
-            id="closebtn"
-            variant="secondary"
-            onClick={updateUserProfile}
-          >
-            Finish Edition
-            </button>
-                }
-
+                  <button
+                    id="closebtn"
+                    variant="secondary"
+                    disabled={true}
+                    style={{
+                      backgroundColor: "rgb(239, 238, 238)",
+                      cursor: "not-allowed",
+                    }}
+                  >
+                    <div>
+                      <MDBSpinner size="sm" />
+                      Loading
+                    </div>
+                  </button>
+                ) : (
+                  <button
+                    id="closebtn"
+                    variant="secondary"
+                    onClick={updateUserProfile}
+                  >
+                    Finish Edition
+                  </button>
+                )}
               </Modal.Footer>
             </Modal>
             {/* {selectImage && (
@@ -910,7 +958,14 @@ function User(props) {
                             </div>
                         )} */}
             {loading ? (
-              <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%"}}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                }}
+              >
                 <MDBSpinner />
               </div>
             ) : userImage ? (
@@ -1022,7 +1077,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body" id="accordion-body3">
-                <CarouselOfStoredStore />
+                  <CarouselOfStoredStore />
                 </div>
               </div>
             </div>

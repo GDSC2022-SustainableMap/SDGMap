@@ -19,25 +19,6 @@
     overflow: auto;
 }
 
-#addfriendbtn {
-    border: solid 2px #ba8d33;
-    border-radius: 20%;
-    margin-right: 2%; 
-    justify-content: right;
-    background-color: #fffef9;
-    color: #ba8d33;
-    z-index: 100;
-}
-
-#delfriendbtn {
-    justify-content: right;
-    border: solid 2px #ba8d33;
-    border-radius: 20%;
-    background-color: #fffef9;
-    color: #ba8d33;
-    z-index: 100;
-}
-
 .ld-btn {
     background-color: #1d751c;
     color: #ffffff;
@@ -325,5 +306,4 @@
     margin: 0;
     padding: 0;
     width: 25%;
-
 } 
