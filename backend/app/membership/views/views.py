@@ -317,6 +317,7 @@ def get_user_image():
     return jsonify(user_base64img)
 
 @bp.route("/leaderboard", methods=["GET"])
+@jwt_required()
 def get_leaderboard():
     all_user = Db.child("users").get().val()
     sorted_user = sorted(all_user.items(),key=lambda x: x[1]["coin"],reverse=True)
