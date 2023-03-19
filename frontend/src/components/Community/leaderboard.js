@@ -8,6 +8,7 @@ import {
   MDBTable,
   MDBTableHead,
   MDBTableBody,
+  MDBSpinner,
 } from "mdb-react-ui-kit";
 import Badges from "../Badge/badge";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
@@ -655,7 +656,15 @@ function Leaderboard() {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          {leaderboardData &&
+          {loading ? 
+            <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+              <div>
+              <MDBSpinner className='mx-2' color='info'>
+                <span className='visually-hidden'>Loading...</span>
+              </MDBSpinner>
+              </div>
+            </div>:
+            leaderboardData &&
             leaderboardData.map((item, index) => (
             <UserRow key={index} id={index} data={item}></UserRow>
           ))}

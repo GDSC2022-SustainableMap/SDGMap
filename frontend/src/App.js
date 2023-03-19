@@ -19,7 +19,7 @@ function App() {
     <div className="App">
       <NavBar token={token} removeToken={removeToken}/>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<Map token={token} removeToken={removeToken}/>} />
         <Route exact path="/map" element={<Map token={token} removeToken={removeToken}/>} />
         <Route exact path="/sdgbook" element={<Book />} />
         <Route exact path="/user" element={<User token={token} removeToken={removeToken}/>} />

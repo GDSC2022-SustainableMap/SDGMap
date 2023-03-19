@@ -6,6 +6,7 @@ import {
   MDBTable,
   MDBTableHead,
   MDBTableBody,
+  MDBSpinner,
 } from "mdb-react-ui-kit";
 import { useState } from "react";
 import useToken from "../../hooks/token";
@@ -113,12 +114,18 @@ function SearchFriends() {
             </tr>
           </MDBTableHead>
           <MDBTableBody>
-            {!loading && searchData ? (
-                <UserRow data={searchData}/>
-            ) : (
-              <></>
-            )}
-          </MDBTableBody>
+            {loading ? 
+              <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                <div>
+                <MDBSpinner className='mx-2' color='info'>
+                  <span className='visually-hidden'>Loading...</span>
+                </MDBSpinner>
+                </div>
+              </div>:
+              searchData && 
+              <div><UserRow data={searchData}/></div>   
+            }
+            </MDBTableBody>
         </MDBTable>
       </div>
     </div>

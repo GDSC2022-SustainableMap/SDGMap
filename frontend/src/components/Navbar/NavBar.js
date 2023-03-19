@@ -32,7 +32,7 @@ function NavBar(props) {
       });
     props.removeToken();
     alert("Logout successfully! Jumping to main page.");
-    navigate("/");
+    navigate("/map");
 
     return rawResponse;
   };
@@ -53,11 +53,6 @@ function NavBar(props) {
               <li>
                 <Link to="/sdgbook">
                   <BsJournalBookmark size={18} /> 徽章圖鑑
-                </Link>
-              </li>
-              <li>
-                <Link to="/">
-                  <AiOutlineHome size={20} /> 道具商店
                 </Link>
               </li>
               <li>
