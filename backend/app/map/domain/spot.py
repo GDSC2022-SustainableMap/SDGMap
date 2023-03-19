@@ -11,22 +11,24 @@ class Spot(object):
             "rating",
             "user_ratings_total",
             "socket",
-            "創意料理",
-            "創新蔬食",
-            "友善環境",
-            "在地食材",
-            "寵物友善",
-            "惜食不浪費",
-            "有機小農",
-            "流浪動物",
-            "減塑",
-            "源頭減量",
-            "純素",
-            "綠色採購",
-            "蛋奶素",
-            "關懷弱勢",
-            "食育教育",
-            "食農教育",
+            "publicissue",
+            "freetrade",
+            "creativecuisine",
+            "creativevegetarian",
+            "envfriend",
+            "localgred",
+            "petfriend",
+            "appreciatefood",
+            "organic",
+            "stray",
+            "noplastic",
+            "sourcereduction",
+            "vegetarianism",
+            "greenprocurement",
+            "ovolacto",
+            "careforweak",
+            "foodeduc",
+            "foodagricultureeducation"
             "cheap",
             "music",
             "quiet",
@@ -52,22 +54,24 @@ class Spot(object):
         price_level= None,
         rating= None,
         user_ratings_total= None,
-        創意料理= None,
-        創新蔬食= None,
-        友善環境= None,
-        在地食材= None,
-        寵物友善= None,
-        惜食不浪費= None,
-        有機小農= None,
-        流浪動物= None,
-        減塑= None,
-        源頭減量= None,
-        純素= None,
-        綠色採購= None,
-        蛋奶素= None,
-        關懷弱勢= None,
-        食育教育= None,
-        食農教育= None,
+        publicissue= None,
+        freetrade= None,
+        creativecuisine= None,
+        creativevegetarian= None,
+        envfriend= None,
+        localgred= None,
+        petfriend= None,
+        appreciatefood= None,
+        organic= None,
+        stray= None,
+        noplastic= None,
+        sourcereduction= None,
+        vegetarianism= None,
+        greenprocurement= None,
+        ovolacto=None,
+        careforweak= None,
+        foodeduc= None,
+        foodagricultureeducation=None,
         cheap= None,
         limited_time= None,
         music= None,
@@ -101,40 +105,44 @@ class Spot(object):
             self.rating: float = rating
         else:
             self.rating = 2.5
-        if 創意料理 is not None:
-            self.創意料理= 創意料理 
-            self.創新蔬食= 創新蔬食 
-            self.友善環境= 友善環境 
-            self.在地食材= 在地食材 
-            self.寵物友善= 寵物友善 
-            self.惜食不浪費= 惜食不浪費 
-            self.有機小農= 有機小農 
-            self.流浪動物= 流浪動物
-            self.減塑= 減塑
-            self.源頭減量= 源頭減量
-            self.純素= 純素
-            self.綠色採購= 綠色採購
-            self.蛋奶素= 蛋奶素
-            self.關懷弱勢= 關懷弱勢
-            self.食育教育= 食育教育
-            self.食農教育= 食農教育
+        if publicissue is not None:
+            self.publicissue = publicissue
+            self.freetrade = freetrade
+            self.creativecuisine= creativecuisine 
+            self.creativevegetarian= creativevegetarian 
+            self.envfriend= envfriend 
+            self.organic= organic 
+            self.localgred= localgred 
+            self.petfriend= petfriend 
+            self.appreciatefood= appreciatefood 
+            self.stray= stray
+            self.noplastic= noplastic
+            self.sourcereduction= sourcereduction
+            self.vegetarianism= vegetarianism
+            self.greenprocurement= greenprocurement
+            self.ovolacto= ovolacto
+            self.careforweak= careforweak
+            self.foodeduc= foodeduc
+            self.foodagricultureeducation= foodagricultureeducation
         else :
-            self.創意料理= 0
-            self.創新蔬食= 0
-            self.友善環境= 0
-            self.在地食材= 0
-            self.寵物友善= 0
-            self.惜食不浪費= 0
-            self.有機小農= 0
-            self.流浪動物= 0
-            self.減塑= 0
-            self.源頭減量= 0
-            self.純素= 0
-            self.綠色採購= 0
-            self.蛋奶素= 0
-            self.關懷弱勢= 0
-            self.食育教育= 0
-            self.食農教育= 0
+            self.publicissue = 0
+            self.freetrade = 0
+            self.creativecuisine= 0 
+            self.creativevegetarian= 0 
+            self.envfriend= 0 
+            self.organic= 0 
+            self.localgred= 0 
+            self.petfriend= 0 
+            self.appreciatefood= 0 
+            self.stray= 0
+            self.noplastic= 0
+            self.sourcereduction= 0
+            self.vegetarianism= 0
+            self.greenprocurement= 0
+            self.ovolacto= 0
+            self.careforweak= 0
+            self.foodeduc= 0
+            self.foodagricultureeducation= 0
         if cheap is not None:
             self.cheap= cheap
             self.music= music

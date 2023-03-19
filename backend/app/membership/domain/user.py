@@ -16,24 +16,24 @@ class User():
         self.rating_count: int = 0
         self.visited_count: int = 0
         self.badges: dict = {
-            "公共議題分享":0,
-            "公平交易":0,
-            "創意料理":0,
-            "創新蔬食":0,
-            "友善環境":0,
-            "在地食材":0,
-            "寵物友善":0,
-            "惜食不浪費":0,
-            "有機小農":0,
-            "流浪動物":0,
-            "減塑":0,
-            "源頭減量":0,
-            "純素":0,
-            "綠色採購":0,
-            "蛋奶素":0,
-            "關懷弱勢":0,
-            "食育教育":0,
-            "食農教育":0
+            "publicissue":0,
+            "freetrade":0,
+            "creativecuisine":0,
+            "creativevegetarian":0,
+            "envfriend":0,
+            "localgred":0,
+            "petfriend":0,
+            "appreciatefood":0,
+            "organic":0,
+            "stray":0,
+            "noplastic":0,
+            "sourcereduction":0,
+            "vegetarianism":0,
+            "greenprocurement":0,
+            "ovolacto":0,
+            "careforweak":0,
+            "foodeduc":0,
+            "foodagricultureeducation":0
         }
         self.backpack: dict = {
             "banana":0,

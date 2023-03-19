@@ -22,6 +22,7 @@ function User(props) {
   const [editImage, setEditImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [userSave, setUserSave] = useState([]);
+  const [userLog, setUserLog] = useState([]);
   const [userPosition, setUserPosition] = useState([]);
   //Modal
   const [show, setShow] = useState(false);
@@ -55,7 +56,7 @@ function User(props) {
     }
     setUserData(rawResponse);
     setUsername(rawResponse.name);
-    setNumoffriend(rawResponse.friends.friend_number);
+    setNumoffriend(rawResponse.friend_number);
     setNumofcoin(rawResponse.coin);
     setBiograph(rawResponse.biograph);
     console.log(rawResponse);
@@ -109,14 +110,43 @@ function User(props) {
         return error;
       }
     }
+    console.log(saveResponse);
     setUserSave(Object.values(saveResponse.save_spots))
-    console.log(Object.values(saveResponse.save_spots));
+
 
     setLoading(false);
 
   };
 
+  let logResponse
+  const fetchUserLog = async () => {
+    let t = getToken()
+    try {
+      setLoading(true);
+      logResponse = (
+        await axios.get("http://127.0.0.1:5000/user/track_userlog", {
+          headers: {
+            Authorization: "Bearer " + t,
+          },
+        })
+      ).data;
+      //   console.log(rawResponse);
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        removeToken();
+        alert("Token expired! Please login again!");
+        navigate("/");
 
+        return error;
+      }
+    }
+    setUserLog(Object.values(logResponse)[0])
+
+
+    setLoading(false);
+
+  };
 
   const updateUserProfile = async (e) => {
     setLoading(true);
@@ -140,7 +170,7 @@ function User(props) {
       } catch (error) {
         console.log(error);
       }
-      console.log(rawResponse);
+
       if (
         rawResponse.msg_name &&
         rawResponse.msg_name === "Name changed sucessfully!"
@@ -199,7 +229,7 @@ function User(props) {
     //     position.coords.longitude
     // );
     setUserPosition([latitude, longitude]);
-    console.log(userPosition);
+
   };
   const errorHandler = (err) => {
     if (err.code === 1) {
@@ -213,6 +243,7 @@ function User(props) {
     async function fetchAllData() {
       await fetchUserProfile();
       await fetchUserSave();
+      await fetchUserLog();
     }
     // fetchUserProfile();
     // fetchUserSave();
@@ -248,20 +279,8 @@ function User(props) {
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-    const VisitedStoreList = [
-      { _id: 1, name: "xxx" },
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "def" },
-      { _id: 3, name: "ghi" },
-      { _id: 4, name: "jkl" },
-      { _id: 5, name: "mno" },
-      { _id: 6, name: "pqr" },
-      { _id: 7, name: "stu" },
-      { _id: 8, name: "vwx" },
-      { _id: 9, name: "yza" },
-    ];
 
-    const InfoCard = ({ name, addr, price, rate }) => {
+    const InfoCard = ({ name, addr, price, rate,phone,place_id }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -269,6 +288,45 @@ function User(props) {
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+  
+            return error;
+          }
+        }
+        if(rawResponse.msg === 'You should come to this place to check in!'){
+          alert('You should come to this place to check in!');
+        }else if(rawResponse.msg === 'You have checked in successfully!'){
+          alert('You have checked in successfully!');
+        }
+
+        setLoading(false);
+        return rawResponse;
+      };
       return (
         <div className="card">
           <b>{name}</b>
@@ -277,7 +335,7 @@ function User(props) {
           <br />
           評分: {rate}&emsp;
           <div>
-            電話: 沒有這個資訊
+            電話: {phone}
             <br />
             價格: {p}
             <br />
@@ -295,12 +353,12 @@ function User(props) {
               <Modal.Body>
                 地址: {addr}
                 <br />
-                評分: {rate}&emsp; 電話: 沒有這個資訊
+                評分: {rate}&emsp; 電話: {phone}
                 <br />
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary">打卡</button>
+                <button variant="secondary" onClick={handleCheckin}>打卡</button>
                 <button variant="secondary" onClick={handleClose}>
                   關閉頁面
                 </button>
@@ -317,7 +375,7 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {VisitedStoreList.reduce(
+        {!loading&&userLog && userLog.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
@@ -344,6 +402,8 @@ function User(props) {
                 addr={store[0].formatted_address}
                 price={store[0].price_level}
                 rate={store[0].rating}
+                phone={store[0].formatted_phone_number}
+                place_id={store[0].place_id}
               />
               <InfoCard
                 className="card-orange card"
@@ -351,6 +411,8 @@ function User(props) {
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
+                phone={store[1].formatted_phone_number}
+                place_id={store[1].place_id}
               />
             </Stack>
           </Carousel.Item>
@@ -367,7 +429,7 @@ function User(props) {
     };
 
 
-    const InfoCard = ({ name, addr, price, rate,place_id }) => {
+    const InfoCard = ({ name, addr, price, rate,place_id,phone }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
@@ -424,7 +486,7 @@ function User(props) {
           <br />
           評分: {rate}&emsp;
           <div>
-            電話: 沒有這個資訊
+            電話: {phone}
             <br />
             價格: {p}
             <br />
@@ -442,7 +504,7 @@ function User(props) {
               <Modal.Body>
                 地址: {addr}
                 <br />
-                評分: {rate}&emsp; 電話: 沒有這個資訊
+                評分: {rate}&emsp; 電話: {phone}
                 <br />
                 價格: {p}
               </Modal.Body>
@@ -464,11 +526,12 @@ function User(props) {
         variant="dark"
         showindicators="false"
       >
-        {userSave.reduce(
+        {!loading &&userSave && userSave.reduce(
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
             }
+            console.log(accumulator)
             return accumulator;
           },
           []
@@ -492,15 +555,17 @@ function User(props) {
                 price={store[0].price_level}
                 rate={store[0].rating}
                 place_id={store[0].place_id}
-              />
+                phone={store[0].formatted_phone_number}
+              /> 
               <InfoCard
                 className="card-green card"
                 name={store[1].name}
                 addr={store[1].formatted_address}
                 price={store[1].price_level}
                 rate={store[1].rating}
-                place_id={store[0].place_id}
-              />
+                place_id={store[1].place_id}
+                phone={store[1].formatted_phone_number}
+              /> 
             </Stack>
           </Carousel.Item>
         ))}
@@ -510,12 +575,28 @@ function User(props) {
 
   const greenOptions = [
     {
+      id: "publicissue",
+      title: "公共議題分享",
+      alt: "公共議題分享",
+      img_for_true: require("../../Badge/t_publicissue.png"),
+      img_for_false: require("../../Badge/n_publicissue.png"),
+      num: loading && userData ? 0 : userData.badges.publicissue,
+    },
+    {
+      id: "freetrade",
+      title: "公平交易",
+      alt: "公平交易",
+      img_for_true: require("../../Badge/t_freetrade.png"),
+      img_for_false: require("../../Badge/n_freetrade.png"),
+      num: loading && userData ? 0 : userData.badges.freetrade,
+    },
+    {
       id: "careforweak",
       title: "關懷弱勢",
       alt: "關懷弱勢",
       img_for_true: require("../../Badge/t_careforweak.png"),
       img_for_false: require("../../Badge/n_careforweak.png"),
-      num: loading && userData ? 0 : userData.badges.關懷弱勢,
+      num: loading && userData ? 0 : userData.badges.careforweak,
     },
     {
       id: "envfriend",
@@ -523,7 +604,7 @@ function User(props) {
       alt: "友善環境",
       img_for_true: require("../../Badge/t_envfriend.png"),
       img_for_false: require("../../Badge/n_envfriend.png"),
-      num: loading ? 0 : userData.badges.友善環境,
+      num: loading ? 0 : userData.badges.envfriend,
     },
     {
       id: "foodeduc",
@@ -531,7 +612,7 @@ function User(props) {
       alt: "食育教育",
       img_for_true: require("../../Badge/t_foodeduc.png"),
       img_for_false: require("../../Badge/n_foodeduc.png"),
-      num: loading ? 0 : userData.badges.食育教育,
+      num: loading ? 0 : userData.badges.foodeduc,
     },
     {
       id: "localgred",
@@ -539,7 +620,7 @@ function User(props) {
       alt: "在地食材",
       img_for_true: require("../../Badge/t_localgred.png"),
       img_for_false: require("../../Badge/n_localgred.png"),
-      num: loading ? 0 : userData.badges.在地食材,
+      num: loading ? 0 : userData.badges.localgred,
     },
     {
       id: "organic",
@@ -547,7 +628,7 @@ function User(props) {
       alt: "有機小農",
       img_for_true: require("../../Badge/t_organic.png"),
       img_for_false: require("../../Badge/n_organic.png"),
-      num: loading ? 0 : userData.badges.有機小農,
+      num: loading ? 0 : userData.badges.organic,
     },
     {
       id: "ovolacto",
@@ -555,7 +636,7 @@ function User(props) {
       alt: "蛋奶素",
       img_for_true: require("../../Badge/t_ovolacto.png"),
       img_for_false: require("../../Badge/n_ovolacto.png"),
-      num: loading ? 0 : userData.badges.蛋奶素,
+      num: loading ? 0 : userData.badges.ovolacto,
     },
     {
       id: "petfriend",
@@ -563,7 +644,7 @@ function User(props) {
       alt: "寵物友善",
       img_for_true: require("../../Badge/t_petfriend.png"),
       img_for_false: require("../../Badge/n_petfriend.png"),
-      num: loading ? 0 : userData.badges.寵物友善,
+      num: loading ? 0 : userData.badges.petfriend,
     },
     {
       id: "noplastic",
@@ -571,7 +652,7 @@ function User(props) {
       alt: "減塑",
       img_for_true: require("../../Badge/t_noplastic.png"),
       img_for_false: require("../../Badge/n_noplastic.png"),
-      num: loading ? 0 : userData.badges.減塑,
+      num: loading ? 0 : userData.badges.noplastic,
     },
     {
       id: "stray",
@@ -579,7 +660,7 @@ function User(props) {
       alt: "流浪動物",
       img_for_true: require("../../Badge/t_stray.png"),
       img_for_false: require("../../Badge/n_stray.png"),
-      num: loading ? 0 : userData.badges.流浪動物,
+      num: loading ? 0 : userData.badges.stray,
     },
     {
       id: "vegetarianism",
@@ -587,7 +668,7 @@ function User(props) {
       alt: "純素",
       img_for_true: require("../../Badge/t_vegetarianism.png"),
       img_for_false: require("../../Badge/n_vegetarianism.png"),
-      num: loading ? 0 : userData.badges.純素,
+      num: loading ? 0 : userData.badges.vegetarianism,
     },
     {
       id: "foodagricultureeducation",
@@ -595,7 +676,7 @@ function User(props) {
       alt: "食農教育",
       img_for_true: require("../../Badge/t_foodagricultureeducation.png"),
       img_for_false: require("../../Badge/n_foodagricultureeducation.png"),
-      num: loading ? 0 : userData.badges.食農教育,
+      num: loading ? 0 : userData.badges.foodagricultureeducation,
     },
     {
       id: "appreciatefood",
@@ -603,7 +684,7 @@ function User(props) {
       alt: "惜食不浪費",
       img_for_true: require("../../Badge/t_appreciatefood.png"),
       img_for_false: require("../../Badge/n_appreciatefood.png"),
-      num: loading ? 0 : userData.badges.惜食不浪費,
+      num: loading ? 0 : userData.badges.appreciatefood,
     },
     {
       id: "creativecuisine",
@@ -611,7 +692,7 @@ function User(props) {
       alt: "創意料理",
       img_for_true: require("../../Badge/t_creativecuisine.png"),
       img_for_false: require("../../Badge/n_creativecuisine.png"),
-      num: loading ? 0 : userData.badges.創意料理,
+      num: loading ? 0 : userData.badges.creativecuisine,
     },
     {
       id: "creativevegetarian",
@@ -619,7 +700,7 @@ function User(props) {
       alt: "創新蔬食",
       img_for_true: require("../../Badge/t_creativevegetarian.png"),
       img_for_false: require("../../Badge/n_creativevegetarian.png"),
-      num: loading ? 0 : userData.badges.創新蔬食,
+      num: loading ? 0 : userData.badges.creativevegetarian,
     },
     {
       id: "sourcereduction",
@@ -627,7 +708,7 @@ function User(props) {
       alt: "源頭減量",
       img_for_true: require("../../Badge/t_sourcereduction.png"),
       img_for_false: require("../../Badge/n_sourcereduction.png"),
-      num: loading ? 0 : userData.badges.源頭減量,
+      num: loading ? 0 : userData.badges.sourcereduction,
     },
     {
       id: "greenprocurement",
@@ -635,7 +716,7 @@ function User(props) {
       alt: "綠色採購",
       img_for_true: require("../../Badge/t_greenprocurement.png"),
       img_for_false: require("../../Badge/n_greenprocurement.png"),
-      num: loading ? 0 : userData.badges.綠色採購,
+      num: loading ? 0 : userData.badges.greenprocurement,
     },
   ];
   const backpackItems = [
@@ -916,7 +997,7 @@ function User(props) {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  {/* <CarouselOfVisitedStore /> */}
+                  <CarouselOfVisitedStore />
                 </div>
               </div>
             </div>

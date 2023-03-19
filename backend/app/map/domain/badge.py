@@ -1,36 +1,40 @@
 class Badge():
     def __init__(self) -> None:
         self.badges: list = [
-            "公共議題分享",
-            "公平交易",
-            "創意料理",
-            "創新蔬食",
-            "友善環境",
-            "在地食材",
-            "寵物友善",
-            "惜食不浪費",
-            "有機小農",
-            "流浪動物",
-            "減塑",
-            "源頭減量",
-            "純素",
-            "綠色採購",
-            "蛋奶素",
-            "關懷弱勢",
-            "食育教育",
-            "食農教育"
+            "publicissue",
+            "freetrade",
+            "creativecuisine",
+            "creativevegetarian",
+            "envfriend",
+            "localgred",
+            "petfriend",
+            "appreciatefood",
+            "organic",
+            "stray",
+            "noplastic",
+            "sourcereduction",
+            "vegetarianism",
+            "greenprocurement",
+            "ovolacto",
+            "careforweak",
+            "foodeduc",
+            "foodagricultureeducation"
         ]
         self.user_log: dict = {
             "user_name":"",
             "time" : "",
-            "place_id":""
+            "place_id":"",
+            "formatted_address":"",
+            "name":"",
+            "rating": float,
+            "formatted_phone_number":""
         }
         self.user_save: dict = {
             "place_id": "",
             "formatted_address":"",
             "name":"",
             "rating": float,
-            "phone_number":""
+            "formatted_phone_number":""
 
         }
     def get_badges(self):

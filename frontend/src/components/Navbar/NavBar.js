@@ -65,19 +65,14 @@ function NavBar(props) {
                   <HiOutlineUserGroup size={20} /> 社群
                 </Link>
               </li>
+              <li>
+                <Link to="/user">
+                  <BiUserCircle size={20} /> 個人檔案
+                </Link>
+              </li>
               <li onClick={handleLogout}>
                 <Link to="/">
                   <VscSignIn size={20} /> 登出
-                </Link>
-              </li>
-              <li>
-                <Link to="/community">
-                  <HiOutlineUserGroup size={20} /> 社群
-                </Link>
-              </li>
-              <li>
-                <Link to="/user">
-                  <BiUserCircle size={20} />
                 </Link>
               </li>
             </ul>
