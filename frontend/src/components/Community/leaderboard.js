@@ -584,7 +584,7 @@ function FriendProfile(data) {
 }
 
 function Leaderboard() {
-  
+  const { getToken, removeToken } = useToken();
   // Modal of VisitFriendProfile
   const [loading, setLoading] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState();
@@ -595,7 +595,12 @@ function Leaderboard() {
   const fetchLeaderBoard = async () => {
     try {
       setLoading(true);
-      rawResponse = (await axios.get("http://127.0.0.1:5000/user/leaderboard"))
+      let t = getToken()
+      rawResponse = (await axios.get("http://127.0.0.1:5000/user/leaderboard",{
+        headers: {
+          Authorization: "Bearer " + t,
+        },
+      }))
         .data;
     } catch (e) {
       console.error(e);
