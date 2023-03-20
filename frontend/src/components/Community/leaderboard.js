@@ -25,7 +25,6 @@ function FriendProfile(data) {
   const navigate = useNavigate();
   // Modal of Edition
   // const [show, setShow] = useState(false);
-
   // const handleShow = () => setShow(true);
 
   // Carousel1
@@ -79,33 +78,49 @@ function FriendProfile(data) {
             .reduce((accumulator, currentValue, currentIndex, array) => {
               if (currentIndex % 2 === 0) {
                 accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length - 1) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 1));
               }
               return accumulator;
             }, [])
             .map((store, index) => (
-              <Carousel.Item key={index}>
-                <Stack direction="horizontal" className=" stack" gap={3}>
-                  <InfoCard
-                    className="card-orange card"
-                    name={store[0].name}
-                    addr={store[0].formatted_address}
-                    price={store[0].price_level}
-                    rate={store[0].rating}
-                    phone={store[0].formatted_phone_number}
-                    place_id={store[0].place_id}
-                  />
-                  <InfoCard
-                    className="card-orange card"
-                    name={store[1].name}
-                    addr={store[1].formatted_address}
-                    price={store[1].price_level}
-                    rate={store[1].rating}
-                    phone={store[1].formatted_phone_number}
-                    place_id={store[1].place_id}
-                  />
-                </Stack>
-              </Carousel.Item>
-            ))}
+              store.length === 2 ? (
+                <Carousel.Item key={index}>
+                  <Stack direction="horizontal" className=" stack" gap={4} >
+                    <InfoCard className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                    />
+                    <InfoCard
+                      className="card-orange card"
+                      name={store[1].name}
+                      addr={store[1].formatted_address}
+                      price={store[1].price_level}
+                      rate={store[1].rating}
+                      phone={store[1].formatted_phone_number}
+                      place_id={store[1].place_id}
+                    />
+
+                  </Stack>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item>
+                  <Stack direction="horizontal" className=" stack" gap={4} >
+                    <InfoCard className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              )))}
       </Carousel>
     );
   }
@@ -160,43 +175,49 @@ function FriendProfile(data) {
             .reduce((accumulator, currentValue, currentIndex, array) => {
               if (currentIndex % 2 === 0) {
                 accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length - 1) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 1));
               }
               return accumulator;
             }, [])
-            .map((store) => (
-              <Carousel.Item>
-                <Stack direction="horizontal" className=" stack" gap={3}>
-                  {/* <div className='card'>
-                              <div className='card-body'>
-                                  <h5 className='card-title'>{store._id}</h5>
-                                  <hr className='carousel-hline'/>
-                                  <div className='card-text'>
-                                      {store.text}!
-                                  </div>
-                                  <button variant="primary">Go somewhere</button>
-                              </div>
-                          </div> */}
-                  <InfoCard
-                    className="card-green card"
-                    name={store[0].name}
-                    addr={store[0].formatted_address}
-                    price={store[0].price_level}
-                    rate={store[0].rating}
-                    place_id={store[0].place_id}
-                    phone={store[0].formatted_phone_number}
-                  />
-                  <InfoCard
-                    className="card-green card"
-                    name={store[1].name}
-                    addr={store[1].formatted_address}
-                    price={store[1].price_level}
-                    rate={store[1].rating}
-                    place_id={store[1].place_id}
-                    phone={store[1].formatted_phone_number}
-                  />
-                </Stack>
-              </Carousel.Item>
-            ))}
+            .map((store, index) => (
+              store.length === 2 ? (
+                <Carousel.Item key={index}>
+                  <Stack direction="horizontal" className=" stack" gap={4}>
+                    <InfoCard className="card-green card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                    />
+                    <InfoCard
+                      className="card-green card"
+                      name={store[1].name}
+                      addr={store[1].formatted_address}
+                      price={store[1].price_level}
+                      rate={store[1].rating}
+                      phone={store[1].formatted_phone_number}
+                      place_id={store[1].place_id}
+                    />
+  
+                  </Stack>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item>
+                  <Stack direction="horizontal" className=" stack" gap={4}>
+                    <InfoCard className="card-green card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              )))}
       </Carousel>
     );
   }
@@ -222,7 +243,7 @@ function FriendProfile(data) {
       //   console.log(rawResponse);
     } catch (error) {
       console.log(error.response);
-      if(error.response.status === 502){
+      if (error.response.status === 502) {
         alert(error.response.data.msg);
       }
       if (error.response.status === 401) {
@@ -239,7 +260,7 @@ function FriendProfile(data) {
   };
 
   //Delete Friend
-  const DelFriend = async() => {
+  const DelFriend = async () => {
     let rawResponse;
     let t = getToken();
     try {
@@ -259,7 +280,7 @@ function FriendProfile(data) {
       //   console.log(rawResponse);
     } catch (error) {
       console.log(error.response);
-      if(error.response.status === 502){
+      if (error.response.status === 502) {
         alert(error.response.data.msg);
       }
       if (error.response.status === 401) {
@@ -270,7 +291,7 @@ function FriendProfile(data) {
         return error;
       }
     }
-    if(rawResponse){
+    if (rawResponse) {
       alert(rawResponse.msg);
       console.log(rawResponse);
     }
@@ -585,7 +606,7 @@ function FriendProfile(data) {
 }
 
 function Leaderboard() {
-  
+
   // Modal of VisitFriendProfile
   const [loading, setLoading] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState();
@@ -614,37 +635,37 @@ function Leaderboard() {
     fetchLeaderBoard();
   }, []);
 
-  const UserRow = ({id, data})=>{
+  const UserRow = ({ id, data }) => {
     return (
       <tr key={id}>
-      <td>{id + 1}</td>
-      <td>
-        <div className="d-flex align-items-center">
-          <img
-            src={data.user_pic ? data.user_pic : require("./user-icon.png")}
-            alt=""
-            style={{ width: "45px", height: "45px" }}
-            className="rounded-circle"
-          />
-          <div className="ms-3">
-            <p className="fw-bold mb-1">{data.user_data.name}</p>
-            <p className="text-muted mb-0">{data.user_data.email}</p>
+        <td>{id + 1}</td>
+        <td>
+          <div className="d-flex align-items-center">
+            <img
+              src={data.user_pic ? data.user_pic : require("./user-icon.png")}
+              alt=""
+              style={{ width: "45px", height: "45px" }}
+              className="rounded-circle"
+            />
+            <div className="ms-3">
+              <p className="fw-bold mb-1">{data.user_data.name}</p>
+              <p className="text-muted mb-0">{data.user_data.email}</p>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>
-        <Badges data={data.user_data.badges} />
-      </td>
-      <td>{data.user_data.coin}</td>
-      <td>
-        <FriendProfile data={data} />
-      </td>
-      <td />
-    </tr>
+        </td>
+        <td>
+          <Badges data={data.user_data.badges} />
+        </td>
+        <td>{data.user_data.coin}</td>
+        <td>
+          <FriendProfile data={data} />
+        </td>
+        <td />
+      </tr>
     )
   }
   return (
-    <div className="container-leaderboard">
+    <div className="leaderboard-container">
       <MDBTable align="middle" hover>
         <MDBTableHead>
           <tr>
@@ -656,18 +677,18 @@ function Leaderboard() {
           </tr>
         </MDBTableHead>
         <MDBTableBody>
-          {loading ? 
-            <div style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+          {loading ?
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div>
-              <MDBSpinner className='mx-2' color='info'>
-                <span className='visually-hidden'>Loading...</span>
-              </MDBSpinner>
+                <MDBSpinner className='mx-2' color='info'>
+                  <span className='visually-hidden'>Loading...</span>
+                </MDBSpinner>
               </div>
-            </div>:
+            </div> :
             leaderboardData &&
             leaderboardData.map((item, index) => (
-            <UserRow key={index} id={index} data={item}></UserRow>
-          ))}
+              <UserRow key={index} id={index} data={item}></UserRow>
+            ))}
         </MDBTableBody>
       </MDBTable>
     </div>

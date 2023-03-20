@@ -1,5 +1,6 @@
-.leaderboard-container {
+.board-container {
     display: flex;
+    justify-content: center;
     position: relative;
     flex-direction: column;
     padding: 5vh 0.2vw;
@@ -9,32 +10,13 @@
     position: relative;
     justify-content: center;
     /* margin: 5vh 8vw; */
-    padding: 5vh 1vw;
+    padding: 5vh 0vw;
     height: 80vh;
     width: 90%;
     background-color: #fffef9;
     /* box-shadow: #00000029 1px 1px 10px; */
     border-radius: 8%;
     overflow: auto;
-}
-
-#addfriendbtn {
-    border: solid 2px #ba8d33;
-    border-radius: 20%;
-    margin-right: 2%; 
-    justify-content: right;
-    background-color: #fffef9;
-    color: #ba8d33;
-    z-index: 100;
-}
-
-#delfriendbtn {
-    justify-content: right;
-    border: solid 2px #ba8d33;
-    border-radius: 20%;
-    background-color: #fffef9;
-    color: #ba8d33;
-    z-index: 100;
 }
 
 .ld-btn {
@@ -204,12 +186,15 @@
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
-    background-color: #fcf7e2;
+    padding: 3.2vh 2.4vw;
+    margin: 0;
 }
 
-#accordion-body3 {
-    padding: 0.4vh 0;
-    margin: 0;
+#accordion-body2 {
+    background-color: #fcf7e2;
+}
+#accordion-body3, #accordion-body1 {
+    padding: 3.2vh 2.4vw;
     background-color: #fffef9;
 }
 
@@ -260,7 +245,7 @@
 
 /* ----- visited store collection ----- */
 .stack {
-    padding: 0 1.4vw;
+    padding: 0 1vw;
     justify-content: center;
     align-items: center;
 }
@@ -281,7 +266,6 @@
 .card-green {
     background-color: #f5fff5;
 }
-
 .card-button-orange {
     background-color: #f9e79d;
     border: none;
@@ -289,7 +273,6 @@
     border-radius: 20%;
     color: #ba8d33;
 }
-
 .card-button-green {
     background-color: #b5d0b5ee;
     border: none;
@@ -312,6 +295,7 @@
     position: absolute;
     left: 0;
     margin: 0;
+    padding: 0;
     width: 20%;
 } 
 
@@ -319,5 +303,6 @@
     position: absolute;
     right: 0;
     margin: 0;
+    padding: 0;
     width: 25%;
 } 

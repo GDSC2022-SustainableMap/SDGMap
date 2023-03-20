@@ -379,44 +379,49 @@ function User(props) {
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
+            } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length-1) {
+              accumulator.push(array.slice(currentIndex, currentIndex + 1));
             }
             return accumulator;
-          },
-          []
-        ).map((store,index) => (
-          <Carousel.Item key={index}>
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-orange card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                phone={store[0].formatted_phone_number}
-                place_id={store[0].place_id}
-              />
-              <InfoCard
-                className="card-orange card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                phone={store[1].formatted_phone_number}
-                place_id={store[1].place_id}
-              />
-            </Stack>
-          </Carousel.Item>
-        ))}
+          },[])
+          .map((store, index) => (
+            store.length === 2 ? (
+              <Carousel.Item key={index}>
+                <Stack direction="horizontal" className=" stack" gap={4} >
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    phone={store[0].formatted_phone_number}
+                    place_id={store[0].place_id}
+                  />
+                  <InfoCard
+                    className="card-orange card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                    phone={store[1].formatted_phone_number}
+                    place_id={store[1].place_id}
+                  />
+
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4} >
+                  <InfoCard className="card-orange card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    phone={store[0].formatted_phone_number}
+                    place_id={store[0].place_id}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
@@ -530,45 +535,50 @@ function User(props) {
           (accumulator, currentValue, currentIndex, array) => {
             if (currentIndex % 2 === 0) {
               accumulator.push(array.slice(currentIndex, currentIndex + 2));
+            } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length-1) {
+              accumulator.push(array.slice(currentIndex, currentIndex + 1));
             }
             console.log(accumulator)
             return accumulator;
-          },
-          []
-        ).map((store,index) => (
-          <Carousel.Item key={index} >
-            <Stack direction="horizontal" className=" stack" gap={3}>
-              {/* <div className='card'>
-                                <div className='card-body'>
-                                    <h5 className='card-title'>{store._id}</h5>
-                                    <hr className='carousel-hline'/>
-                                    <div className='card-text'>
-                                        {store.text}!
-                                    </div>
-                                    <button variant="primary">Go somewhere</button>
-                                </div>
-                            </div> */}
-              <InfoCard
-                className="card-green card"
-                name={store[0].name}
-                addr={store[0].formatted_address}
-                price={store[0].price_level}
-                rate={store[0].rating}
-                place_id={store[0].place_id}
-                phone={store[0].formatted_phone_number}
-              /> 
-              <InfoCard
-                className="card-green card"
-                name={store[1].name}
-                addr={store[1].formatted_address}
-                price={store[1].price_level}
-                rate={store[1].rating}
-                place_id={store[1].place_id}
-                phone={store[1].formatted_phone_number}
-              /> 
-            </Stack>
-          </Carousel.Item>
-        ))}
+          },[])
+          .map((store, index) => (
+            store.length === 2 ? (
+              <Carousel.Item key={index}>
+                <Stack direction="horizontal" className=" stack" gap={4}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    phone={store[0].formatted_phone_number}
+                    place_id={store[0].place_id}
+                  />
+                  <InfoCard
+                    className="card-green card"
+                    name={store[1].name}
+                    addr={store[1].formatted_address}
+                    price={store[1].price_level}
+                    rate={store[1].rating}
+                    phone={store[1].formatted_phone_number}
+                    place_id={store[1].place_id}
+                  />
+
+                </Stack>
+              </Carousel.Item>
+            ) : (
+              <Carousel.Item>
+                <Stack direction="horizontal" className=" stack" gap={4}>
+                  <InfoCard className="card-green card"
+                    name={store[0].name}
+                    addr={store[0].formatted_address}
+                    price={store[0].price_level}
+                    rate={store[0].rating}
+                    phone={store[0].formatted_phone_number}
+                    place_id={store[0].place_id}
+                  />
+                </Stack>
+              </Carousel.Item>
+            )))}
       </Carousel>
     );
   }
