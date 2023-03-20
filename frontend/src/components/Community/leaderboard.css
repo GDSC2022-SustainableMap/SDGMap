@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 5vh 0.2vw;
+    padding: 5vh 2vw;
 }
 
 .board-rb {

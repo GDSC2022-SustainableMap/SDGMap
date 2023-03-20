@@ -86,7 +86,7 @@ function FriendProfile(data) {
             .map((store, index) => (
               store.length === 2 ? (
                 <Carousel.Item key={index}>
-                  <Stack direction="horizontal" className=" stack" gap={4} >
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -109,7 +109,7 @@ function FriendProfile(data) {
                 </Carousel.Item>
               ) : (
                 <Carousel.Item>
-                  <Stack direction="horizontal" className=" stack" gap={4} >
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -183,7 +183,7 @@ function FriendProfile(data) {
             .map((store, index) => (
               store.length === 2 ? (
                 <Carousel.Item key={index}>
-                  <Stack direction="horizontal" className=" stack" gap={4}>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -206,7 +206,7 @@ function FriendProfile(data) {
                 </Carousel.Item>
               ) : (
                 <Carousel.Item>
-                  <Stack direction="horizontal" className=" stack" gap={4}>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -463,7 +463,7 @@ function FriendProfile(data) {
       >
         <Modal.Header closeButton />
         <Modal.Body>
-          <div className="board-container">
+          <div className="leaderboard-container">
             <div style={{ justifyContent: "right" }}>
               <button id="addfriendbtn" onClick={AddFriend} name="增加好友">
                 <AiOutlineUserAdd size={36} />
@@ -678,13 +678,14 @@ function Leaderboard() {
         </MDBTableHead>
         <MDBTableBody>
           {loading ?
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <div>
+            <tr>
+              <td colSpan={5}>
                 <MDBSpinner className='mx-2' color='info'>
                   <span className='visually-hidden'>Loading...</span>
                 </MDBSpinner>
-              </div>
-            </div> :
+              </td>
+            </tr>  
+            :
             leaderboardData &&
             leaderboardData.map((item, index) => (
               <UserRow key={index} id={index} data={item}></UserRow>

@@ -713,13 +713,13 @@ function SearchFriends() {
           </MDBTableHead>
           <MDBTableBody>
             {loading ?
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <div>
+              <tr>
+                <td colSpan={5}>
                   <MDBSpinner className='mx-2' color='info'>
                     <span className='visually-hidden'>Loading...</span>
                   </MDBSpinner>
-                </div>
-              </div> :
+                </td>
+              </tr> :
               searchData &&
               <UserRow data={searchData} />
             }
