@@ -245,7 +245,7 @@
 
 /* ----- visited store collection ----- */
 .stack {
-    padding: 0 1.4vw;
+    padding: 0 1vw;
     justify-content: center;
     align-items: center;
 }
@@ -273,7 +273,6 @@
     border-radius: 20%;
     color: #ba8d33;
 }
-
 .card-button-green {
     background-color: #b5d0b5ee;
     border: none;

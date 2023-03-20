@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
+import { BsFillPinMapFill } from "react-icons/bs";
 import { IoMdAddCircle } from "react-icons/io";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
-import { BsFillPinMapFill } from "react-icons/bs";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
 import { MDBSpinner } from "mdb-react-ui-kit";
@@ -352,12 +353,13 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary" onClick={handleCheckin}>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
                   打卡
-                </button>
-                <button variant="secondary" onClick={handleClose}>
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
                   關閉頁面
-                </button>
+                </Button>
               </Modal.Footer>
             </Modal>
           </div>
@@ -386,15 +388,10 @@ function User(props) {
               }
               return accumulator;
             }, [])
-            .map((store) =>
+            .map((store, index) =>
               store.length === 2 ? (
-                <Carousel.Item>
-                  <Stack
-                    direction="horizontal"
-                    className=" stack"
-                    gap={4}
-                    style={{ margin: " 0 4%" }}
-                  >
+                <Carousel.Item key={index}>
+                  <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-orange card"
                       name={store[0].name}
@@ -417,20 +414,15 @@ function User(props) {
                 </Carousel.Item>
               ) : (
                 <Carousel.Item>
-                  <Stack
-                    direction="horizontal"
-                    className=" stack"
-                    gap={4}
-                    style={{ margin: " 0 4%" }}
-                  >
+                  <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-orange card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
-                      place_id={store[0].place_id}
                       phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
                     />
                   </Stack>
                 </Carousel.Item>
@@ -526,12 +518,13 @@ function User(props) {
                 價格: {p}
               </Modal.Body>
               <Modal.Footer>
-                <button variant="secondary" onClick={handleCheckin}>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
                   打卡
-                </button>
-                <button variant="secondary" onClick={handleClose}>
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
                   關閉頁面
-                </button>
+                </Button>
               </Modal.Footer>
             </Modal>
           </div>
@@ -560,23 +553,18 @@ function User(props) {
               }
               return accumulator;
             }, [])
-            .map((store) =>
-              store.length == 2 ? (
-                <Carousel.Item>
-                  <Stack
-                    direction="horizontal"
-                    className=" stack"
-                    gap={4}
-                    style={{ margin: " 0 4%" }}
-                  >
+            .map((store, index) =>
+              store.length === 2 ? (
+                <Carousel.Item key={index}>
+                  <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
-                      place_id={store[0].place_id}
                       phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
                     />
                     <InfoCard
                       className="card-green card"
@@ -584,27 +572,22 @@ function User(props) {
                       addr={store[1].formatted_address}
                       price={store[1].price_level}
                       rate={store[1].rating}
-                      place_id={store[1].place_id}
                       phone={store[1].formatted_phone_number}
+                      place_id={store[1].place_id}
                     />
                   </Stack>
                 </Carousel.Item>
               ) : (
                 <Carousel.Item>
-                  <Stack
-                    direction="horizontal"
-                    className=" stack"
-                    gap={4}
-                    style={{ margin: " 0 4%" }}
-                  >
+                  <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
-                      place_id={store[0].place_id}
                       phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
                     />
                   </Stack>
                 </Carousel.Item>

@@ -1,4 +1,4 @@
-.board-container {
+.leaderboard-container {
     display: flex;
     justify-content: center;
     position: relative;
@@ -10,7 +10,7 @@
     position: relative;
     justify-content: center;
     /* margin: 5vh 8vw; */
-    padding: 5vh 0vw;
+    padding: 5vh 1vw;
     height: 80vh;
     width: 90%;
     background-color: #fffef9;
@@ -285,6 +285,7 @@
 .card-green {
     background-color: #f5fff5;
 }
+
 .card-button-orange {
     background-color: #f9e79d;
     border: none;

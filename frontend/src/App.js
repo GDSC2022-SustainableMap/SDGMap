@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Home from "./components/Home";
 import NavBar from "./components/Navbar/NavBar";
 import Map from "./components/Map/map";
 import User from "./components/User/user";
@@ -19,7 +18,7 @@ function App() {
     <div className="App">
       <NavBar token={token} removeToken={removeToken}/>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<Map token={token} removeToken={removeToken}/>} />
         <Route exact path="/map" element={<Map token={token} removeToken={removeToken}/>} />
         <Route exact path="/sdgbook" element={<Book />} />
         <Route exact path="/user" element={<User token={token} removeToken={removeToken}/>} />
