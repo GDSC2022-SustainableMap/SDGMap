@@ -69,7 +69,7 @@ class User():
 
 class user_unity():
     """ Attirbutes for player's unity account """
-    def __init__(self) -> None:
+    def __init__(self, name: str, password:str) -> None:
         self.background: int = 0
         self.bearCl: dict = {
             "normal": True,
@@ -150,6 +150,26 @@ class user_unity():
             "greenMask": False,
             "normal": True
         }
+        self.hmedal : dict = {
+            "公共議題分享": False,
+            "公平交易": False,
+            "創意料理":False,
+            "創新蔬食": False,
+            "友善環境": False,
+            "在地食材": False,
+            "寵物友善": False,
+            "惜食不浪費": False,
+            "有機小農": False,
+            "流浪動物": False,
+            "減塑": False,
+            "源頭減量": False,
+            "純素": False,
+            "綠色採購": False,
+            "蛋奶素": False,
+            "關懷弱勢": False,
+            "食育教育": False,
+            "食農教育": False
+        }
         self.hshoe : dict = {
             "bwShoe": False,
             "fasionShoe": False,
@@ -157,6 +177,10 @@ class user_unity():
         }
         self.login : bool = False
         self.mask : int = 0
+        self.medal : dict = {
+            "medal1" : 0,
+            "medal2" : 0
+        }
         self.money : int = 2000
         self.monkeyCl : dict = {
             "normal": True,
@@ -169,8 +193,8 @@ class user_unity():
         }
         self.monkeyItems : int = 0
         self.monkeyclothes : int = 0
-        self.name : str = "Player001"
-        self.password: str = "001"
+        self.name : str = name
+        self.password: str = password
         self.shoe : int = 0
         self.sound1 : float = 0.5
         self.sound2 : float = 0.5
@@ -178,6 +202,3 @@ class user_unity():
     def get_attribute(self):
         outer_attribute = self.__dict__
         return outer_attribute
-
-
-

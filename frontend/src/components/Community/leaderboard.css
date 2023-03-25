@@ -1,5 +1,6 @@
 .leaderboard-container {
     display: flex;
+    justify-content: center;
     position: relative;
     flex-direction: column;
     padding: 5vh 2vw;
@@ -204,12 +205,15 @@
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
-    background-color: #fcf7e2;
+    padding: 3.2vh 2.4vw;
+    margin: 0;
 }
 
-#accordion-body3 {
-    padding: 0.4vh 0;
-    margin: 0;
+#accordion-body2 {
+    background-color: #fcf7e2;
+}
+#accordion-body3, #accordion-body1 {
+    padding: 3.2vh 2.4vw;
     background-color: #fffef9;
 }
 
@@ -312,6 +316,7 @@
     position: absolute;
     left: 0;
     margin: 0;
+    padding: 0;
     width: 20%;
 } 
 
@@ -319,5 +324,7 @@
     position: absolute;
     right: 0;
     margin: 0;
+    padding: 0;
     width: 25%;
+
 } 

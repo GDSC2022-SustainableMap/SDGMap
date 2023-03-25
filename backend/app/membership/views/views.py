@@ -70,6 +70,7 @@ def login():
         receive = request.get_json()
         try:
             user = auth.sign_in_with_email_and_password(receive["email"], receive["password"])
+            print(f"user: {user}")
             # Remember which user has logged in
             access_token = create_access_token(identity=user["localId"])
 
@@ -313,10 +314,10 @@ def get_user_image():
     # }
     current_user = get_jwt_identity()
     user_base64img = Db.child("profile_pics").child(current_user).get().val()
-    # return '<img src="{}">'.format(user_base64img)
     return jsonify(user_base64img)
 
 @bp.route("/leaderboard", methods=["GET"])
+@jwt_required()
 def get_leaderboard():
     all_user = Db.child("users").get().val()
     sorted_user = sorted(all_user.items(),key=lambda x: x[1]["coin"],reverse=True)
@@ -393,3 +394,4 @@ def search():
         return {"msg":"Find user!","result":{"user_data":new_dict,"user_log":log_obj,"user_save":save_obj,"user_pic":user_base64img}},201
     except:
         return {"msg":"Cannot find the user!"},502
+
