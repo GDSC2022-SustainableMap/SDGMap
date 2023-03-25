@@ -87,8 +87,9 @@ def user_log_records(place_type, current_user, gmap_result, place_id):
     )
     user_log["time"] = str(datetime.datetime.now())
     user_log["place_id"] = place_id
-    
-    print(user_log)
+    user_log["place_name"] = user_log["name"]
+    del user_log["name"]
+    print("user_log: ", user_log)
 
     db.child("user_log").child(place_type).child(current_user).child(f"log{current_log_count}").set(user_log)
 
@@ -105,7 +106,6 @@ def user_recent_log_records(current_user, gmap_result, place_id):
     else:
         db.child("user_recent_log").child(current_user).set({"log_count": 0})
     time.sleep(1)
-    print("slept")
     recent_count = db.child("user_recent_log").child(current_user).child("log_count").get().val()
     print(recent_count)
     rec_log = recent_log(store_name = gmap_result["name"], store_id = place_id).get_recent_log()
