@@ -24,6 +24,7 @@ def place_radius_search(params):
         place_info = gmaps.place(place_id = place_id, fields = my_fields)
         places.append(place_info['result'])
         json.dumps(places)
+    print(places_result)
     return places
 
 def place_name_search(params):

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 
 from wtforms import StringField, PasswordField, DateField
-from wtforms.validators import Length, Email, InputRequired
+from wtforms.validators import Length, InputRequired
 
 class RegisterForm(FlaskForm):
     userName = StringField(
@@ -16,4 +16,4 @@ class RegisterForm(FlaskForm):
         'birthday',
         validators=[InputRequired("Please enter your birthday.")]
     )
-    email = StringField("email",  [InputRequired("Please enter your email address."), Email("This field requires a valid email address")])
+    email = StringField("email",  [InputRequired("Please enter your email address.")])

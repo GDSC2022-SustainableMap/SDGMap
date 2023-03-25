@@ -119,7 +119,7 @@ def get_spot_from_radius():
                 result = []
         if result:
             obj.update(result[0])
-
+    print(gmap_raw)
     for obj in gmap_raw:
         spot = Spot.fromdict(obj)
         obj.update(spot.get_attribute())
@@ -142,7 +142,7 @@ def get_spot_from_radius():
             if key in ObjA and ObjA[key] == value:
                 scoreA += 1
         return scoreA
-
+    print(gmap_raw)
     # filtered_gmap = filter_condition(gmap_raw,"wifi" in params["condition"].values(),"socket" in params["condition"].values(),"limited_time" in params["condition"].values(),"open_now" in params["condition"].values())
     sorted_map = sorted(
         gmap_raw,
