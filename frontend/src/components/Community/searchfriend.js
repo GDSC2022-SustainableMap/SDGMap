@@ -887,7 +887,6 @@ function SearchFriends() {
           <MDBIcon icon="search" />
         </MDBBtn>
       </MDBInputGroup>
-      <br/>
       <div className="searchfrineds-result">
         <MDBTable align="middle" hover bordered small className="caption-top">
           <caption>Search Result</caption>

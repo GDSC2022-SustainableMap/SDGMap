@@ -333,3 +333,9 @@
     box-shadow: #00000029 1px 1px 10px;
     border-radius: 8%;
 }
+
+.ms-3 > p{
+    text-align:left;
+    color: #ba8d33;
+    margin: 1px;
+}

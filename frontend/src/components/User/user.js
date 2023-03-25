@@ -9,6 +9,15 @@ import "./user.css";
 import { MDBSpinner } from "mdb-react-ui-kit";
 import axios from "axios";
 import useToken from "../../hooks/token";
+import Unity, { UnityContext } from "react-unity-webgl";
+
+const unityContext = new UnityContext({
+  loaderUrl: "Build/Unity-WebGL.loader.js",
+  dataUrl: "Build/Unity-WebGL.data",
+  frameworkUrl: "Build/Unity-WebGL.framework.js",
+  codeUrl: "Build/Unity-WebGL.wasm",
+ });
+
 function User(props) {
   const navigate = useNavigate();
   const { getToken, removeToken } = useToken();
@@ -820,10 +829,8 @@ function User(props) {
   return (
     <div className="user-container">
       <div className="user-lb">
-        <img
-          className="vircharacter"
-          src={require("../../character/bear.gif")}
-        ></img>
+        {/* 600*960 */}
+      <Unity style={{width: '360px', height: '576px'}} unityContext={unityContext} />
       </div>
       <div className="user-rb">
         <div className="user-rtb">

@@ -846,7 +846,7 @@ function Leaderboard() {
             />
             <div className="ms-3">
               <p className="fw-bold mb-1">{data.user_data.name}</p>
-              <p className="text-muted mb-0">{data.user_data.email}</p>
+              <p >{data.user_data.email}</p>
             </div>
           </div>
         </td>
