@@ -1,7 +1,6 @@
 runtime: python38
 
 env_variables:
-  DJANGO_SETTINGS_MODULE: "myapp.settings"
   GOOGLE_PLACES_API_KEY: "AIzaSyDdYv7-xuoVVF-snwdTmo0e7sXng6gZ6eI"
   GOOGLE_GEOLOCATION_API_KEY: "AIzaSyDdEPFAlrvrKEkeNMRxh4PeXse1cUsaINg"
   JWT_SECRET_KEY: "IAMTHESECRETKEY"
