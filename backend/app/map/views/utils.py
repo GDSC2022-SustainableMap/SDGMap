@@ -1,6 +1,6 @@
 from numpy import sin, cos, arccos, pi, round
 from app.membership.infrastructure import db
-from app.map.domain.badge import Badge
+from app.map.domain.mapRepo import Badge
 def rad2deg(radians):
     degrees = radians * 180 / pi
     return degrees

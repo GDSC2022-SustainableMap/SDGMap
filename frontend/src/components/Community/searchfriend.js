@@ -8,14 +8,15 @@ import {
   MDBTableBody,
   MDBSpinner,
 } from "mdb-react-ui-kit";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import useToken from "../../hooks/token";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import axios from "axios";
 import './searchfriend.css';
-
+import { BsFillPinMapFill } from "react-icons/bs";
+import { Button } from "react-bootstrap";
 function FriendProfile(data) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -30,115 +31,92 @@ function FriendProfile(data) {
   function CarouselOfVisitedStore() {
     const [index, setIndex] = useState(0);
     const [current, setCurrent] = useState(0);
+    const [userPosition, setUserPosition] = useState([]);
+
+    const showLocation = (position) => {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      // alert(
+      //   "Latitude: " +
+      //     position.coords.latitude +
+      //     "\nLongitude: " +
+      //     position.coords.longitude
+      // );
+      setUserPosition([latitude, longitude]);
+    };
+    const errorHandler = (err) => {
+      if (err.code === 1) {
+        alert("Error: Access is denied!");
+      } else if (err.code === 2) {
+        alert("Error: Position is unavailable!");
+      }
+    };
+
+    useEffect(() => {
+      if (navigator.geolocation) {
+        var options = { timeout: 60000 };
+        navigator.geolocation.getCurrentPosition(
+          showLocation,
+          errorHandler,
+          options
+        );
+      } else {
+        alert("Geolocation not supported by this browser.");
+      }
+    }, [])
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
 
-    const InfoCard = ({ name, addr, price, rate, phone }) => {
+    const InfoCard = ({ name, addr, price, rate, phone,place_id,userPosition }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
       }
+      const [loading, setLoading] = useState(false);
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
-      return (
-        <div className="card">
-          <b>{name}</b>
-          <hr />
-          地址: {addr}
-          <br />
-          評分: {rate}&emsp;
-          <div>
-            電話: {phone}
-            <br />
-            價格: {p}
-            <br />
-            <button
-              className="card-button-orange"
-              variant="primary"
-              onClick={handleShow}
-            >
-              更多資訊
-            </button>
-          </div>
-        </div>
-      );
-    };
-    return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showindicators="false"
-      >
-        {data &&
-          data.data.user_log.log_spots
-            .reduce((accumulator, currentValue, currentIndex, array) => {
-              if (currentIndex % 2 === 0) {
-                accumulator.push(array.slice(currentIndex, currentIndex + 2));
-              } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length - 1) {
-                accumulator.push(array.slice(currentIndex, currentIndex + 1));
+      let rawResponse;
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
               }
-              return accumulator;
-            }, [])
-            .map((store, index) => (
-              store.length === 2 ? (
-                <Carousel.Item key={index}>
-                  <Stack direction="horizontal" className=" stack" gap={4}>
-                    <InfoCard className="card-orange card"
-                      name={store[0].name}
-                      addr={store[0].formatted_address}
-                      price={store[0].price_level}
-                      rate={store[0].rating}
-                      phone={store[0].formatted_phone_number}
-                      place_id={store[0].place_id}
-                    />
-                    <InfoCard
-                      className="card-orange card"
-                      name={store[1].name}
-                      addr={store[1].formatted_address}
-                      price={store[1].price_level}
-                      rate={store[1].rating}
-                      phone={store[1].formatted_phone_number}
-                      place_id={store[1].place_id}
-                    />
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
 
-                  </Stack>
-                </Carousel.Item>
-              ) : (
-                <Carousel.Item>
-                  <Stack direction="horizontal" className=" stack" gap={4} >
-                    <InfoCard className="card-orange card"
-                      name={store[0].name}
-                      addr={store[0].formatted_address}
-                      price={store[0].price_level}
-                      rate={store[0].rating}
-                      phone={store[0].formatted_phone_number}
-                      place_id={store[0].place_id}
-                    />
-                  </Stack>
-                </Carousel.Item>
-              )))}
-      </Carousel>
-    );
-  }
-  // Carousel2
-  function CarouselOfStoredStore() {
-    const [index, setIndex] = useState(0);
-    const handleSelect = (selectedIndex, e) => {
-      setIndex(selectedIndex);
-    };
-
-    const InfoCard = ({ name, addr, price, rate, phone }) => {
-      let p = "";
-      for (let i = 0; i < price; i++) {
-        p = p + "$";
-      }
-      const [show, setShow] = useState(false);
-      const handleClose = () => setShow(false);
-      const handleShow = () => setShow(true);
-
+            return error;
+          }
+        }
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
+        }
+        console.log(userPosition)
+        setLoading(false);
+        return rawResponse;
+      };
       return (
         <div className="card">
           <b>{name}</b>
@@ -158,17 +136,221 @@ function FriendProfile(data) {
             >
               更多資訊
             </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                地址: {addr}
+                <br />
+                評分: {rate}&emsp; 電話: {phone}
+                <br />
+                價格: {p}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
+                  打卡
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  關閉頁面
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
       );
     };
     return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showindicators="false"
-      >
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
+        {data &&
+          data.data.user_log.log_spots
+            .reduce((accumulator, currentValue, currentIndex, array) => {
+              if (currentIndex % 2 === 0) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 2));
+              } else if (currentIndex % 2 === 1 && currentIndex + 2 > array.length && currentIndex < array.length - 1) {
+                accumulator.push(array.slice(currentIndex, currentIndex + 1));
+              }
+              return accumulator;
+            }, [])
+            .map((store, index) => (
+              store.length === 2 ? (
+                <Carousel.Item key={index}>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
+                    <InfoCard className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                      userPosition={userPosition}
+                    />
+                    <InfoCard
+                      className="card-orange card"
+                      name={store[1].name}
+                      addr={store[1].formatted_address}
+                      price={store[1].price_level}
+                      rate={store[1].rating}
+                      phone={store[1].formatted_phone_number}
+                      place_id={store[1].place_id}
+                      userPosition={userPosition}
+                    />
+
+                  </Stack>
+                </Carousel.Item>
+              ) : (
+                <Carousel.Item>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
+                    <InfoCard className="card-orange card"
+                      name={store[0].name}
+                      addr={store[0].formatted_address}
+                      price={store[0].price_level}
+                      rate={store[0].rating}
+                      phone={store[0].formatted_phone_number}
+                      place_id={store[0].place_id}
+                      userPosition={userPosition}
+                    />
+                  </Stack>
+                </Carousel.Item>
+              )))}
+      </Carousel>
+    );
+  }
+  // Carousel2
+  function CarouselOfStoredStore() {
+    const [index, setIndex] = useState(0);
+    const [userPosition, setUserPosition] = useState([]);
+
+    const showLocation = (position) => {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      // alert(
+      //   "Latitude: " +
+      //     position.coords.latitude +
+      //     "\nLongitude: " +
+      //     position.coords.longitude
+      // );
+      setUserPosition([latitude, longitude]);
+    };
+    const errorHandler = (err) => {
+      if (err.code === 1) {
+        alert("Error: Access is denied!");
+      } else if (err.code === 2) {
+        alert("Error: Position is unavailable!");
+      }
+    };
+    const handleSelect = (selectedIndex, e) => {
+      setIndex(selectedIndex);
+    };
+    useEffect(() => {
+      if (navigator.geolocation) {
+        var options = { timeout: 60000 };
+        navigator.geolocation.getCurrentPosition(
+          showLocation,
+          errorHandler,
+          options
+        );
+      } else {
+        alert("Geolocation not supported by this browser.");
+      }
+    }, [])
+    
+    const InfoCard = ({ name, addr, price, rate, phone,place_id,userPosition }) => {
+      let p = "";
+      for (let i = 0; i < price; i++) {
+        p = p + "$";
+      }
+      const [show, setShow] = useState(false);
+      const [loading, setLoading] = useState(false);
+      const handleClose = () => setShow(false);
+      const handleShow = () => setShow(true);
+      let rawResponse;
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+
+            return error;
+          }
+        }
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
+        }
+        console.log(userPosition)
+        setLoading(false);
+        return rawResponse;
+      };
+      return (
+        <div className="card">
+          <b>{name}</b>
+          <hr />
+          地址: {addr}
+          <br />
+          評分: {rate}&emsp;
+          <div>
+            電話: {phone}
+            <br />
+            價格: {p}
+            <br />
+            <button
+              className="card-button-green"
+              variant="primary"
+              onClick={handleShow}
+            >
+              更多資訊
+            </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                地址: {addr}
+                <br />
+                評分: {rate}&emsp; 電話: {phone}
+                <br />
+                價格: {p}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
+                  打卡
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  關閉頁面
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+        </div>
+      );
+    };
+    return (
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
         {data &&
           data.data.user_save.save_spots
             .reduce((accumulator, currentValue, currentIndex, array) => {
@@ -182,7 +364,7 @@ function FriendProfile(data) {
             .map((store, index) => (
               store.length === 2 ? (
                 <Carousel.Item key={index}>
-                  <Stack direction="horizontal" className=" stack" gap={4}>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -190,6 +372,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                     <InfoCard
                       className="card-green card"
@@ -199,13 +382,14 @@ function FriendProfile(data) {
                       rate={store[1].rating}
                       phone={store[1].formatted_phone_number}
                       place_id={store[1].place_id}
+                      userPosition={userPosition}
                     />
   
                   </Stack>
                 </Carousel.Item>
               ) : (
                 <Carousel.Item>
-                  <Stack direction="horizontal" className=" stack" gap={4}>
+                  <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-green card"
                       name={store[0].name}
                       addr={store[0].formatted_address}
@@ -213,6 +397,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                   </Stack>
                 </Carousel.Item>

@@ -2,6 +2,8 @@ import Table from "react-bootstrap/Table";
 import "./community.css";
 import { React, useState, useEffect } from "react";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
+import { BsFillPinMapFill } from "react-icons/bs";
+import { Button } from "react-bootstrap";
 import {
   MDBBadge,
   MDBBtn,
@@ -31,18 +33,92 @@ function FriendProfile(data) {
   function CarouselOfVisitedStore() {
     const [index, setIndex] = useState(0);
     const [current, setCurrent] = useState(0);
+    const [userPosition, setUserPosition] = useState([]);
+
+    const showLocation = (position) => {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      // alert(
+      //   "Latitude: " +
+      //     position.coords.latitude +
+      //     "\nLongitude: " +
+      //     position.coords.longitude
+      // );
+      setUserPosition([latitude, longitude]);
+    };
+    const errorHandler = (err) => {
+      if (err.code === 1) {
+        alert("Error: Access is denied!");
+      } else if (err.code === 2) {
+        alert("Error: Position is unavailable!");
+      }
+    };
+
+    useEffect(() => {
+      if (navigator.geolocation) {
+        var options = { timeout: 60000 };
+        navigator.geolocation.getCurrentPosition(
+          showLocation,
+          errorHandler,
+          options
+        );
+      } else {
+        alert("Geolocation not supported by this browser.");
+      }
+    }, [])
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
 
-    const InfoCard = ({ name, addr, price, rate, phone }) => {
+    const InfoCard = ({ name, addr, price, rate, phone,place_id,userPosition }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
       }
+      const [loading, setLoading] = useState(false);
       const [show, setShow] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      let rawResponse;
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
+
+            return error;
+          }
+        }
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
+        }
+        console.log(userPosition)
+        setLoading(false);
+        return rawResponse;
+      };
       return (
         <div className="card">
           <b>{name}</b>
@@ -56,23 +132,39 @@ function FriendProfile(data) {
             價格: {p}
             <br />
             <button
-              className="card-button-orange"
+              className="card-button-green"
               variant="primary"
               onClick={handleShow}
             >
-              More info
+              更多資訊
             </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                地址: {addr}
+                <br />
+                評分: {rate}&emsp; 電話: {phone}
+                <br />
+                價格: {p}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
+                  打卡
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  關閉頁面
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
       );
     };
     return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showindicators="false"
-      >
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
         {data &&
           data.data.user_log.log_spots
             .reduce((accumulator, currentValue, currentIndex, array) => {
@@ -94,6 +186,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                     <InfoCard
                       className="card-orange card"
@@ -103,6 +196,7 @@ function FriendProfile(data) {
                       rate={store[1].rating}
                       phone={store[1].formatted_phone_number}
                       place_id={store[1].place_id}
+                      userPosition={userPosition}
                     />
 
                   </Stack>
@@ -117,6 +211,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                   </Stack>
                 </Carousel.Item>
@@ -127,19 +222,91 @@ function FriendProfile(data) {
   // Carousel2
   function CarouselOfStoredStore() {
     const [index, setIndex] = useState(0);
+    const [userPosition, setUserPosition] = useState([]);
+
+    const showLocation = (position) => {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      // alert(
+      //   "Latitude: " +
+      //     position.coords.latitude +
+      //     "\nLongitude: " +
+      //     position.coords.longitude
+      // );
+      setUserPosition([latitude, longitude]);
+    };
+    const errorHandler = (err) => {
+      if (err.code === 1) {
+        alert("Error: Access is denied!");
+      } else if (err.code === 2) {
+        alert("Error: Position is unavailable!");
+      }
+    };
     const handleSelect = (selectedIndex, e) => {
       setIndex(selectedIndex);
     };
-
-    const InfoCard = ({ name, addr, price, rate, phone }) => {
+    useEffect(() => {
+      if (navigator.geolocation) {
+        var options = { timeout: 60000 };
+        navigator.geolocation.getCurrentPosition(
+          showLocation,
+          errorHandler,
+          options
+        );
+      } else {
+        alert("Geolocation not supported by this browser.");
+      }
+    }, [])
+    
+    const InfoCard = ({ name, addr, price, rate, phone,place_id,userPosition }) => {
       let p = "";
       for (let i = 0; i < price; i++) {
         p = p + "$";
       }
       const [show, setShow] = useState(false);
+      const [loading, setLoading] = useState(false);
       const handleClose = () => setShow(false);
       const handleShow = () => setShow(true);
+      let rawResponse;
+      const handleCheckin = async () => {
+        try {
+          setLoading(true);
+          const t = getToken();
+          rawResponse = (
+            await axios.post(
+              "http://127.0.0.1:5000/map/check_in",
+              {
+                place_id: place_id,
+                user_lat: userPosition[0],
+                user_lng: userPosition[1],
+                scope: 1000,
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + t,
+                },
+              }
+            )
+          ).data;
+        } catch (error) {
+          console.log(error.response);
+          if (error.response.status === 401) {
+            removeToken();
+            alert("Token expired or you have not logined! Please login again!");
+            navigate("/signin");
 
+            return error;
+          }
+        }
+        if (rawResponse.msg === "You should come to this place to check in!") {
+          alert("You should come to this place to check in!");
+        } else if (rawResponse.msg === "You have checked in successfully!") {
+          alert("You have checked in successfully!");
+        }
+        console.log(userPosition)
+        setLoading(false);
+        return rawResponse;
+      };
       return (
         <div className="card">
           <b>{name}</b>
@@ -159,17 +326,33 @@ function FriendProfile(data) {
             >
               更多資訊
             </button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>{name}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                地址: {addr}
+                <br />
+                評分: {rate}&emsp; 電話: {phone}
+                <br />
+                價格: {p}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCheckin}>
+                  {loading ? <MDBSpinner size="sm" /> : <BsFillPinMapFill />}
+                  打卡
+                </Button>
+                <Button variant="secondary" onClick={handleClose}>
+                  關閉頁面
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
         </div>
       );
     };
     return (
-      <Carousel
-        activeIndex={index}
-        onSelect={handleSelect}
-        variant="dark"
-        showindicators="false"
-      >
+      <Carousel activeIndex={index} onSelect={handleSelect} variant="dark" showIndicators={false}>
         {data &&
           data.data.user_save.save_spots
             .reduce((accumulator, currentValue, currentIndex, array) => {
@@ -191,6 +374,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                     <InfoCard
                       className="card-green card"
@@ -200,6 +384,7 @@ function FriendProfile(data) {
                       rate={store[1].rating}
                       phone={store[1].formatted_phone_number}
                       place_id={store[1].place_id}
+                      userPosition={userPosition}
                     />
   
                   </Stack>
@@ -214,6 +399,7 @@ function FriendProfile(data) {
                       rate={store[0].rating}
                       phone={store[0].formatted_phone_number}
                       place_id={store[0].place_id}
+                      userPosition={userPosition}
                     />
                   </Stack>
                 </Carousel.Item>
@@ -606,18 +792,29 @@ function FriendProfile(data) {
 }
 
 function Leaderboard() {
-
+  const { getToken } = useToken();
   // Modal of VisitFriendProfile
   const [loading, setLoading] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState();
 
-
+  const errorHandler = (err) => {
+    if (err.code === 1) {
+      alert("Error: Access is denied!");
+    } else if (err.code === 2) {
+      alert("Error: Position is unavailable!");
+    }
+  };
   let rawResponse;
   //search by 名字, ex: 墨咖啡
   const fetchLeaderBoard = async () => {
     try {
       setLoading(true);
-      rawResponse = (await axios.get("http://127.0.0.1:5000/user/leaderboard"))
+      let t = getToken()
+      rawResponse = (await axios.get("http://127.0.0.1:5000/user/leaderboard",{
+        headers: {
+          Authorization: "Bearer " + t,
+        },
+      }))
         .data;
     } catch (e) {
       console.error(e);
@@ -667,7 +864,7 @@ function Leaderboard() {
   return (
     <div className="leaderboard-container">
       <MDBTable align="middle" hover>
-        <MDBTableHead>
+        <MDBTableHead >
           <tr>
             <th scope="col">排名</th>
             <th scope="col">玩家</th>
