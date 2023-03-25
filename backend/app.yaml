@@ -1,0 +1,21 @@
+runtime: python38
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: "myapp.settings"
+  GOOGLE_PLACES_API_KEY: "AIzaSyDdYv7-xuoVVF-snwdTmo0e7sXng6gZ6eI"
+  GOOGLE_GEOLOCATION_API_KEY: "AIzaSyDdEPFAlrvrKEkeNMRxh4PeXse1cUsaINg"
+  JWT_SECRET_KEY: "IAMTHESECRETKEY"
+  JWT_ACCESS_TOKEN_EXPIRES_HOURS: 1
+  USER_DB_CONFIG: '{"apiKey": "AIzaSyDU1CDsWYnSCg_GWBEBeQzF1PufjopN9zw",
+  "authDomain": "q--xwnb.firebaseapp.com",
+  "projectId": "q--xwnb",
+  "databaseURL": "https://q--xwnb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  "storageBucket": "q--xwnb.appspot.com",
+  "messagingSenderId": "501893428626",
+  "appId": "1:501893428626:web:1ae909856012d985267d4b",
+  "measurementId": "G-R5V5JKPNXC"}'
+  
+
+handlers:
+- url: /.*
+  script: auto
