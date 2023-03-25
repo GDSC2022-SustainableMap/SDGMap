@@ -395,3 +395,14 @@ def search():
     except:
         return {"msg":"Cannot find the user!"},502
 
+@bp.route("/email_to_userid", methods=["GET","POST"])
+def mail_to_id():
+    """return user id from email for unity login"""
+    receive = request.get_json()
+    params = {"user_email": receive['user_email']}
+    user_id = email_to_userid(params["user_email"])
+    if user_id:
+        return user_id
+    else:
+        return {"msg":"Cannot find the user!"},502
+    
