@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import axios from "axios";
+import './searchfriend.css';
 
 function FriendProfile(data) {
   const [show, setShow] = useState(false);
@@ -701,6 +702,7 @@ function SearchFriends() {
           <MDBIcon icon="search" />
         </MDBBtn>
       </MDBInputGroup>
+      <br/>
       <div className="searchfrineds-result">
         <MDBTable align="middle" hover bordered small className="caption-top">
           <caption>Search Result</caption>

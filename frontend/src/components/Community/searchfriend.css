@@ -306,3 +306,10 @@
     padding: 0;
     width: 25%;
 } 
+
+.searchfrineds-result{
+    background-color: #fffef9;
+    box-shadow: #00000029 1px 1px 10px;
+    border-radius: 8%;
+    padding: 4vh 3vw;
+}
