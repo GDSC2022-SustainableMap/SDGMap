@@ -9,13 +9,21 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import "./NavBar.css";
 import axios from "axios";
+
+let BACKEND_URL;
+if (process.env.REACT_APP_ENV === "development") {
+  BACKEND_URL = "http://localhost:5000";
+} else {
+  BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+}
+
 function NavBar(props) {
   let rawResponse;
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault();
     rawResponse = await axios
-      .get("http://127.0.0.1:5000/user/logout", {
+      .get(BACKEND_URL+"/user/logout", {
         headers: {
           Authorization: "Bearer " + props.token,
         },

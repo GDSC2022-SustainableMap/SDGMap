@@ -6,6 +6,14 @@ import dayjs from "dayjs";
 import "dayjs/locale/zh-tw";
 import locale from "antd/locale/zh_TW";
 import { DatePicker } from "antd";
+
+let BACKEND_URL;
+if (process.env.REACT_APP_ENV === "development") {
+  BACKEND_URL = "http://localhost:5000";
+} else {
+  BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+}
+
 function Signup() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,7 +27,7 @@ function Signup() {
     e.preventDefault();
     try {
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/user/register", {
+        await axios.post(BACKEND_URL+"/user/register", {
           userName: userName,
           email: email,
           password: password,

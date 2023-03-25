@@ -4,6 +4,14 @@ import "./login.css";
 import { useNavigate } from "react-router-dom";
 import { Link, Navigate  } from "react-router-dom";
 
+
+let BACKEND_URL;
+if (process.env.REACT_APP_ENV === "development") {
+  BACKEND_URL = "http://localhost:5000";
+} else {
+  BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+}
+
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
@@ -13,7 +21,7 @@ export default function Login(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     rawResponse = await axios
-      .post("http://127.0.0.1:5000/user/login", {
+      .post(BACKEND_URL+"/user/login", {
         email: email,
         password: password,
       })

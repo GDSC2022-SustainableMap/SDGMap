@@ -19,6 +19,13 @@ import axios from "axios";
 import useToken from "../../hooks/token";
 import { useNavigate } from "react-router-dom";
 
+let BACKEND_URL;
+if (process.env.REACT_APP_ENV === "development") {
+  BACKEND_URL = "http://localhost:5000";
+} else {
+  BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+}
+
 function FriendProfile(data) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -86,7 +93,7 @@ function FriendProfile(data) {
           const t = getToken();
           rawResponse = (
             await axios.post(
-              "http://127.0.0.1:5000/map/check_in",
+              BACKEND_URL+"/map/check_in",
               {
                 place_id: place_id,
                 user_lat: userPosition[0],
@@ -274,7 +281,7 @@ function FriendProfile(data) {
           const t = getToken();
           rawResponse = (
             await axios.post(
-              "http://127.0.0.1:5000/map/check_in",
+              BACKEND_URL+"/map/check_in",
               {
                 place_id: place_id,
                 user_lat: userPosition[0],
@@ -415,7 +422,7 @@ function FriendProfile(data) {
     try {
       rawResponse = (
         await axios.post(
-          "http://127.0.0.1:5000/user/add_friend",
+          BACKEND_URL+"/user/add_friend",
           {
             friend_email: data.data.user_data.email,
           },
@@ -452,7 +459,7 @@ function FriendProfile(data) {
     try {
       rawResponse = (
         await axios.post(
-          "http://127.0.0.1:5000/user/delete_friend",
+          BACKEND_URL+"/user/delete_friend",
           {
             friend_email: data.data.user_data.email,
           },
@@ -810,7 +817,7 @@ function Leaderboard() {
     try {
       setLoading(true);
       let t = getToken()
-      rawResponse = (await axios.get("http://127.0.0.1:5000/user/leaderboard",{
+      rawResponse = (await axios.get(BACKEND_URL+"/user/leaderboard",{
         headers: {
           Authorization: "Bearer " + t,
         },

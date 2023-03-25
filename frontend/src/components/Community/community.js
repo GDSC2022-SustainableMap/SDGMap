@@ -22,7 +22,7 @@ import {MdLeaderboard} from 'react-icons/md';
 export default function Community() {
   const [verticalActive, setVerticalActive] = useState('tab1');
 
-  const handleVerticalClick = (value: string) => {
+  const handleVerticalClick = (value) => {
     if (value === verticalActive) {
       return;
     }

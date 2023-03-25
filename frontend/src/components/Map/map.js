@@ -14,8 +14,17 @@ import { useNavigate } from "react-router-dom";
 import useToken from "../../hooks/token";
 import { InputNumber, Space } from 'antd';
 import greenOptions from "./greepOptions";
+
+
+
 // Map
 const SimpleMap = (props) => {
+  let BACKEND_URL;
+  if (process.env.REACT_APP_ENV === "development") {
+    BACKEND_URL = "http://localhost:5000";
+  } else {
+    BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+  }
   const { getToken, removeToken } = useToken();
   const navigate = useNavigate();
   const [places, setPlaces] = useState([]);
@@ -73,10 +82,11 @@ const SimpleMap = (props) => {
   let rawResponse;
   //search by 名字, ex: 墨咖啡
   const findByName = async () => {
+    console.log(BACKEND_URL)
     try {
       setLoading(true);
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/map/name_search", {
+        await axios.post(BACKEND_URL+"/map/name_search", {
           target_place: inputText,
         })
       ).data;
@@ -116,7 +126,7 @@ const SimpleMap = (props) => {
       // newData = Object.
       console.log(newData);
       rawResponse = (
-        await axios.post("http://127.0.0.1:5000/map/radius_search", {
+        await axios.post(BACKEND_URL+"/map/radius_search", {
           lat: parseFloat(inputlat),
           lng: parseFloat(inputlng),
           //Condition has not implemented in frontend.
@@ -172,7 +182,7 @@ const SimpleMap = (props) => {
         const t = getToken();
         rawResponse = (
           await axios.post(
-            "http://127.0.0.1:5000/map/check_in",
+            BACKEND_URL+"/map/check_in",
             {
               place_id: data.place_id,
               user_lat: userPosition[0],
@@ -212,7 +222,7 @@ const SimpleMap = (props) => {
         const t = getToken();
         rawResponse = (
           await axios.post(
-            "http://127.0.0.1:5000/map/save_store",
+            BACKEND_URL+"/map/save_store",
             {
               place_id: data.place_id,
             },
@@ -247,7 +257,7 @@ const SimpleMap = (props) => {
         const t = getToken();
         rawResponse = (
           await axios.post(
-            "http://127.0.0.1:5000/map/delete_saved_store",
+            BACKEND_URL+"/map/delete_saved_store",
             {
               place_id: data.place_id,
             },
@@ -279,7 +289,7 @@ const SimpleMap = (props) => {
       try {
         setLoading(true);
         rawResponse = (
-          await axios.get("http://127.0.0.1:5000/user/track_usersave", {
+          await axios.get(BACKEND_URL+"/user/track_usersave", {
             headers: {
               Authorization: "Bearer " + t,
             },

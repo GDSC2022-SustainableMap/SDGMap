@@ -9,6 +9,14 @@ import "./user.css";
 import { MDBSpinner } from "mdb-react-ui-kit";
 import axios from "axios";
 import useToken from "../../hooks/token";
+
+let BACKEND_URL;
+if (process.env.REACT_APP_ENV === "development") {
+  BACKEND_URL = "http://localhost:5000";
+} else {
+  BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
+}
+
 function User(props) {
   const navigate = useNavigate();
   const { getToken, removeToken } = useToken();
@@ -38,7 +46,7 @@ function User(props) {
     try {
       setLoading(true);
       rawResponse = (
-        await axios.get("http://127.0.0.1:5000/user/profile", {
+        await axios.get(BACKEND_URL+"/user/profile", {
           headers: {
             Authorization: "Bearer " + props.token,
           },
@@ -65,7 +73,7 @@ function User(props) {
     let imgRawResponse;
     try {
       imgRawResponse = (
-        await axios.get("http://127.0.0.1:5000/user/get_image", {
+        await axios.get(BACKEND_URL+"/user/get_image", {
           headers: {
             Authorization: "Bearer " + props.token,
           },
@@ -93,7 +101,7 @@ function User(props) {
     try {
       setLoading(true);
       saveResponse = (
-        await axios.get("http://127.0.0.1:5000/user/track_usersave", {
+        await axios.get(BACKEND_URL+"/user/track_usersave", {
           headers: {
             Authorization: "Bearer " + t,
           },
@@ -122,7 +130,7 @@ function User(props) {
     try {
       setLoading(true);
       logResponse = (
-        await axios.get("http://127.0.0.1:5000/user/track_userlog", {
+        await axios.get(BACKEND_URL+"/user/track_userlog", {
           headers: {
             Authorization: "Bearer " + t,
           },
@@ -150,7 +158,7 @@ function User(props) {
       try {
         rawResponse = (
           await axios.post(
-            "http://127.0.0.1:5000/user/edit_profile",
+            BACKEND_URL+"/user/edit_profile",
             {
               biograph: editBiograph,
               name: editName,
@@ -188,7 +196,7 @@ function User(props) {
       try {
         imgRawResponse = (
           await axios.post(
-            "http://127.0.0.1:5000/user/upload_image",
+            BACKEND_URL+"/user/upload_image",
             {
               base64_image: editImage.substring(
                 editImage.indexOf(",") + 1,
@@ -289,7 +297,7 @@ function User(props) {
           const t = getToken();
           rawResponse = (
             await axios.post(
-              "http://127.0.0.1:5000/map/check_in",
+              BACKEND_URL+"/map/check_in",
               {
                 place_id: place_id,
                 user_lat: userPosition[0],
@@ -453,7 +461,7 @@ function User(props) {
           const t = getToken();
           rawResponse = (
             await axios.post(
-              "http://127.0.0.1:5000/map/check_in",
+              BACKEND_URL+"/map/check_in",
               {
                 place_id: place_id,
                 user_lat: userPosition[0],
