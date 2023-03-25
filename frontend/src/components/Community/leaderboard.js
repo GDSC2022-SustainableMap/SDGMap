@@ -667,7 +667,7 @@ function Leaderboard() {
   return (
     <div className="leaderboard-container">
       <MDBTable align="middle" hover>
-        <MDBTableHead>
+        <MDBTableHead >
           <tr>
             <th scope="col">排名</th>
             <th scope="col">玩家</th>
