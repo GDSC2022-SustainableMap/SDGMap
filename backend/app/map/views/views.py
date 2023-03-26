@@ -330,7 +330,8 @@ def check_in_spot():
             float(spot_lng),
         )
         current_user = get_jwt_identity()
-
+        print(distance)
+        print(params["scope"])
         if distance < params["scope"]:
             # add to user_log
             user_log_records(place_type=place_type, current_user=current_user, gmap_result=gmap_result, place_id=params["place_id"])
@@ -339,7 +340,7 @@ def check_in_spot():
             # record the badges and coins obtained
             addBadge(params["place_id"], current_user)
 
-            return {"msg": "You have checked in successfully!"}
+            return {"msg": "You have checked in successfully!"},201
         else:
             return {"msg": "You should come to this place to check in!"}
     except Exception as e:
@@ -393,7 +394,7 @@ def save_spot():
                     .val()["place_id"]
                     == params["place_id"]
                 ):
-                    return {"msg": "place already saved"}
+                    return {"msg": "place already saved"},201
         # not yet have log
         else:
             db.child("user_save").child(current_user).set({"save_count": 0})

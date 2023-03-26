@@ -117,11 +117,7 @@ function FriendProfile(data) {
             return error;
           }
         }
-        if (rawResponse.msg === "You should come to this place to check in!") {
-          alert("You should come to this place to check in!");
-        } else if (rawResponse.msg === "You have checked in successfully!") {
-          alert("You have checked in successfully!");
-        }
+        alert(rawResponse.msg);
         console.log(userPosition)
         setLoading(false);
         return rawResponse;
