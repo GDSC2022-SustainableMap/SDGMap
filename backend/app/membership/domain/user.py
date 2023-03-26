@@ -151,24 +151,24 @@ class user_unity():
             "normal": True
         }
         self.hmedal : dict = {
-            "公共議題分享": False,
-            "公平交易": False,
-            "創意料理":False,
-            "創新蔬食": False,
-            "友善環境": False,
-            "在地食材": False,
-            "寵物友善": False,
-            "惜食不浪費": False,
-            "有機小農": False,
-            "流浪動物": False,
-            "減塑": False,
-            "源頭減量": False,
-            "純素": False,
-            "綠色採購": False,
-            "蛋奶素": False,
-            "關懷弱勢": False,
-            "食育教育": False,
-            "食農教育": False
+            "publicissue":False,
+            "freetrade":False,
+            "creativecuisine":False,
+            "creativevegetarian":False,
+            "envfriend":False,
+            "localgred":False,
+            "petfriend":False,
+            "appreciatefood":False,
+            "organic":False,
+            "stray":False,
+            "noplastic":False,
+            "sourcereduction":False,
+            "vegetarianism":False,
+            "greenprocurement":False,
+            "ovolacto":False,
+            "careforweak":False,
+            "foodeduc":False,
+            "foodagricultureeducation":False
         }
         self.hshoe : dict = {
             "bwShoe": False,
@@ -181,7 +181,7 @@ class user_unity():
             "medal1" : 0,
             "medal2" : 0
         }
-        self.money : int = 2000
+        self.money : int = 250
         self.monkeyCl : dict = {
             "normal": True,
             "workClothes": False

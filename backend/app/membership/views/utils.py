@@ -21,3 +21,10 @@ def email_to_userid(email):
         if(user.val()["email"] == email):
             return user.key()
     return users
+
+def get_user_attributes(email):
+    users = db.child("users").get()
+    for user in users:
+        if(user.val()["email"] == email):
+            return user.val()
+    return {"msg": "notfound"}
