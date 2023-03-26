@@ -25,7 +25,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Initialize Flask extensions here
-    CORS(app)
+    CORS(app, resources={r"/*": {"origins": ["http://localhost:3000","https://www.sdgsmap.app"]}})
     jwt = JWTManager(app)
     #Session(app)
     # # Register blueprints

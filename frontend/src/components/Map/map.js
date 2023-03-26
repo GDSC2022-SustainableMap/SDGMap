@@ -82,7 +82,6 @@ const SimpleMap = (props) => {
   let rawResponse;
   //search by 名字, ex: 墨咖啡
   const findByName = async () => {
-    console.log(BACKEND_URL)
     try {
       setLoading(true);
       rawResponse = (
