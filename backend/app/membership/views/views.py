@@ -243,22 +243,41 @@ def get_specific_userlog():
     #         continue
     #     elif (params["user_uuid"] == user_log[key]["user_id"]):
     #         obj[key] = user_log[key]
+
+    #抓未分類地點
+    # current_user = get_jwt_identity()
+    # print(current_user)
+    # user_log = db.child("user_log").child(current_user).get().val()
+    # print(user_log)
+    # obj = {"log_spots":[]}
+    # if(user_log):
+    #     for key in user_log:
+    #         if (key == "log_count"):
+    #             continue
+    #         else:
+    #             for inner_key in user_log[key]:
+    #                 obj["log_spots"].append(user_log[key][inner_key])
+    #     print(obj)
+    #     return obj
+    # else:
+    #     return {"msg":"No user_save record!"},204
+    #抓已分類地點
     current_user = get_jwt_identity()
     print(current_user)
-    user_log = db.child("user_log").child(current_user).get().val()
-    print(user_log)
     obj = {"log_spots":[]}
-    if(user_log):
-        for key in user_log:
-            if (key == "log_count"):
-                continue
-            else:
-                for inner_key in user_log[key]:
-                    obj["log_spots"].append(user_log[key][inner_key])
-        print(obj)
-        return obj
-    else:
-        return {"msg":"No user_save record!"},204
+    for i in ["Bakery","Tent","Bar","CoffeeShop","Restaurant"]:
+        user_log = db.child("user_log").child(i).child(current_user).get().val()
+        print(user_log)
+        if(user_log):
+            for key in user_log:
+                print(key)
+                if (key == "log_count"):
+                    continue
+                else:
+                    obj["log_spots"].append(user_log[key])
+            print(obj)
+    return obj
+
 
 
 @bp.route("/track_usersave", methods=["GET","POST"])
@@ -330,15 +349,26 @@ def get_leaderboard():
         new_dict["friend_number"] = i[1]["friends"]["friend_number"]
         user_log = db.child("user_log").child(i[0]).get().val()
         # print(user_log)
+        # log_obj = {"log_spots":[]}
+        # if(user_log):
+        #     for key in user_log:
+        #         if (key == "log_count"):
+        #             continue
+        #         else:
+        #             for inner_key in user_log[key]:
+        #                 log_obj["log_spots"].append(user_log[key][inner_key])
+        # print(log_obj)
         log_obj = {"log_spots":[]}
-        if(user_log):
-            for key in user_log:
-                if (key == "log_count"):
-                    continue
-                else:
-                    for inner_key in user_log[key]:
-                        log_obj["log_spots"].append(user_log[key][inner_key])
-        print(log_obj)
+        for j in ["Bakery","Tent","Bar","CoffeeShop","Restaurant"]:
+            user_log = db.child("user_log").child(j).child(i[0]).get().val()
+            print(user_log)
+            if(user_log):
+                for key in user_log:
+                    print(key)
+                    if (key == "log_count"):
+                        continue
+                    else:
+                        log_obj["log_spots"].append(user_log[key])
         user_save = db.child("user_save").child(i[0]).get().val()
         save_obj = {"save_spots_id":[],"save_spots":[]}
         if(user_save):
@@ -368,16 +398,27 @@ def search():
         new_dict = {key:val for key, val in search_data.items() if key in  ["backpack","badges","biograph","coin","email","name"]}
         new_dict["friend_number"] = search_data["friends"]["friend_number"]
         # print(search_data["friends"]["friend_number"])
-        user_log = db.child("user_log").child(search_id).get().val()
-        # print(user_log)
         log_obj = {"log_spots":[]}
-        if(user_log):
-            for key in user_log:
-                if (key == "log_count"):
-                    continue
-                else:
-                    for inner_key in user_log[key]:
-                        log_obj["log_spots"].append(user_log[key][inner_key])
+        for i in ["Bakery","Tent","Bar","CoffeeShop","Restaurant"]:
+            user_log = db.child("user_log").child(i).child(search_id).get().val()
+            print(user_log)
+            if(user_log):
+                for key in user_log:
+                    print(key)
+                    if (key == "log_count"):
+                        continue
+                    else:
+                        log_obj["log_spots"].append(user_log[key])
+        # user_log = db.child("user_log").child(search_id).get().val()
+        # # print(user_log)
+        # log_obj = {"log_spots":[]}
+        # if(user_log):
+        #     for key in user_log:
+        #         if (key == "log_count"):
+        #             continue
+        #         else:
+        #             for inner_key in user_log[key]:
+        #                 log_obj["log_spots"].append(user_log[key][inner_key])
         print(log_obj)
         user_save = db.child("user_save").child(search_id).get().val()
         save_obj = {"save_spots_id":[],"save_spots":[]}

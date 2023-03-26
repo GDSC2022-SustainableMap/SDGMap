@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd, AiOutlineUserDelete } from "react-icons/ai";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import axios from "axios";
+import './searchfriend.css';
 import { BsFillPinMapFill } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 
@@ -182,7 +183,7 @@ function FriendProfile(data) {
                 <Carousel.Item key={index}>
                   <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
@@ -192,7 +193,7 @@ function FriendProfile(data) {
                     />
                     <InfoCard
                       className="card-orange card"
-                      name={store[1].name}
+                      name={store[1].place_name}
                       addr={store[1].formatted_address}
                       price={store[1].price_level}
                       rate={store[1].rating}
@@ -207,7 +208,7 @@ function FriendProfile(data) {
                 <Carousel.Item>
                   <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}

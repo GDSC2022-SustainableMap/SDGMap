@@ -183,7 +183,7 @@ function FriendProfile(data) {
                 <Carousel.Item key={index}>
                   <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
@@ -193,7 +193,7 @@ function FriendProfile(data) {
                     />
                     <InfoCard
                       className="card-orange card"
-                      name={store[1].name}
+                      name={store[1].place_name}
                       addr={store[1].formatted_address}
                       price={store[1].price_level}
                       rate={store[1].rating}
@@ -208,7 +208,7 @@ function FriendProfile(data) {
                 <Carousel.Item>
                   <Stack direction="horizontal" className=" stack" gap={4} style={{margin:"0 4%"}}>
                     <InfoCard className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
@@ -849,7 +849,7 @@ function Leaderboard() {
             />
             <div className="ms-3">
               <p className="fw-bold mb-1">{data.user_data.name}</p>
-              <p className="text-muted mb-0">{data.user_data.email}</p>
+              <p >{data.user_data.email}</p>
             </div>
           </div>
         </td>
@@ -867,7 +867,7 @@ function Leaderboard() {
   return (
     <div className="leaderboard-container">
       <MDBTable align="middle" hover>
-        <MDBTableHead>
+        <MDBTableHead >
           <tr>
             <th scope="col">排名</th>
             <th scope="col">玩家</th>

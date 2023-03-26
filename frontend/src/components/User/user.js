@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
 import { BsFillPinMapFill } from "react-icons/bs";
-import { IoMdAddCircle } from "react-icons/io";
+import Unity, { UnityContext } from "react-unity-webgl";
 import { Modal, Carousel, Card, Stack } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,16 @@ if (process.env.REACT_APP_ENV === "development") {
   BACKEND_URL = "https://q--xwnb.de.r.appspot.com";
 }
 
+
+
+
 function User(props) {
+  const unityContext = new UnityContext({
+    loaderUrl: "Build/Unity-WebGL.loader.js",
+    dataUrl: "Build/Unity-WebGL.data",
+    frameworkUrl: "Build/Unity-WebGL.framework.js",
+    codeUrl: "Build/Unity-WebGL.wasm",
+   });
   const navigate = useNavigate();
   const { getToken, removeToken } = useToken();
   const [userImage, setUserImage] = useState([]);
@@ -147,6 +156,7 @@ function User(props) {
         return error;
       }
     }
+    console.log(logResponse);
     setUserLog(Object.values(logResponse)[0]);
 
     setLoading(false);
@@ -399,7 +409,7 @@ function User(props) {
                   <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
@@ -408,7 +418,7 @@ function User(props) {
                     />
                     <InfoCard
                       className="card-orange card"
-                      name={store[1].name}
+                      name={store[1].place_name}
                       addr={store[1].formatted_address}
                       price={store[1].price_level}
                       rate={store[1].rating}
@@ -422,7 +432,7 @@ function User(props) {
                   <Stack direction="horizontal" className=" stack" gap={4}>
                     <InfoCard
                       className="card-orange card"
-                      name={store[0].name}
+                      name={store[0].place_name}
                       addr={store[0].formatted_address}
                       price={store[0].price_level}
                       rate={store[0].rating}
@@ -825,10 +835,8 @@ function User(props) {
   return (
     <div className="user-container">
       <div className="user-lb">
-        <img
-          className="vircharacter"
-          src={require("../../character/bear.gif")}
-        ></img>
+        {/* 600*960 */}
+      <Unity style={{width: '360px', height: '576px'}} unityContext={unityContext} />
       </div>
       <div className="user-rb">
         <div className="user-rtb">
