@@ -1,6 +1,28 @@
-### Frontend has not implemented:
-1. Login.js function merging. (Normal login and google login.)
-2. Some css style rendered incorrectly. (eg: signup.js)
+# Frontend
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+1. Install [Node.js](https://nodejs.org/en/download/).
+2. Install [npm](https://www.npmjs.com/get-npm).
+3. Install depenencies for frontend.
+
+    For frontend:
+
+    ```bash
+        npm install
+    ```
+4. Go to Google Api to get a API key.(Can use the same api as backend does.)
+### Run Client Server
+
+1. Change into the repo directory: `cd frontend`
+2. Run the node server (will start on port 3000 by default):
+    ```bash
+        npm start
+    ```
+
 
 # Backend
 ## Getting Started
