@@ -5,8 +5,17 @@ Based on the use of Firebase as our database and the need for token further sett
 ```
 https://www.sdgsmap.app/
 ```
+We provide you with a test account. 
+Currently, our app is designed for local people, so traditional Chinese is used as our app main language. We will provide multilingual switching in the future.
+```
+email(電子郵件):testing1@gmail.com
+Password(密碼): abcdefg
+```
+Notice: This account can be used as both the login password for your personal account and as the password for 3D Unity interface.
 
 Thank you for your effort!
+Kindly connect us if you encounter any problem:
+Email1: leo.shr@iss.nthu.edu.tw
 
 # Frontend
 ## Getting Started
