@@ -1,5 +1,11 @@
+# For GDSC I
+
+
 # Frontend
 ## Getting Started
+Dear Google Solution Challenge Judge,
+Based on the use of Firebase in our database and the need for token and other settings, simplily cloned repo cannot be tested on the local side, please go directly to this website: https://www.sdgsmap.app/
+Thank you for your effort!
 
 To get a local copy up and running follow these simple steps.
 
