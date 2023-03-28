@@ -1,6 +1,6 @@
 # For Judge
 Dear Google Solution Challenge Judge,
-Based on the use of Firebase in our database and the need for token and other settings, simplily cloned repo cannot be tested on the local side, please go directly to this website: 
+Based on the use of Firebase as our database and the need for token further settings, simplily cloned repo cannot be tested on the local side, please go directly to this website: 
 
 ```
 https://www.sdgsmap.app/
